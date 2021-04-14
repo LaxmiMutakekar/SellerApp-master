@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'model/orders.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-
+class Quantity {
+var quantity = 0.0;
+}
 class OrderDetail {
+ 
   var now = DateTime(0);
   @override
   void settingModalBottomSheet(context, Orders item) {
@@ -34,6 +37,7 @@ class OrderDetail {
   }
 
   Column buildBottomSheet(item, BuildContext context) {
+     Quantity quant=new Quantity();
     String url;
     return Column(
       children: [
@@ -115,7 +119,7 @@ class OrderDetail {
                   itemBuilder: (context, int index) {
                     print(item.orderItems[index].image);
                     now = item.orderPlacedDate;
-
+                    quant.quantity+=item.orderItems[index].quantity;
                     return Padding(
                       padding: const EdgeInsets.only(left: 10, right: 10),
                       child: Container(
@@ -134,36 +138,16 @@ class OrderDetail {
                                     ),
                                     child: Center(
                                       child: Container(
-                                        height: 56,
+                                        height: 60,
                                         width: 70,
                                         child: ClipRRect(
                                           borderRadius:
-                                              BorderRadius.circular(10),
-                                          child: Image.network(
-                                            item.orderItems[index].image,
-                                            fit: BoxFit.fill,
-                                            loadingBuilder:
-                                                (BuildContext context,
-                                                    Widget child,
-                                                    ImageChunkEvent
-                                                        loadingProgress) {
-                                              if (loadingProgress == null)
-                                                return child;
-                                              return Center(
-                                                child:
-                                                    CircularProgressIndicator(
-                                                  value: loadingProgress
-                                                              .expectedTotalBytes !=
-                                                          null
-                                                      ? loadingProgress
-                                                              .cumulativeBytesLoaded /
-                                                          loadingProgress
-                                                              .expectedTotalBytes
-                                                      : null,
-                                                ),
-                                              );
-                                            },
-                                          ),
+                                              BorderRadius.circular(13),
+                                          child: CachedNetworkImage(
+        imageUrl: item.orderItems[index].image,
+        placeholder: (context, url) => CircularProgressIndicator(),
+        errorWidget: (context, url, error) => Icon(Icons.error),
+     ),
                                         ),
                                       ),
                                     )),
@@ -249,12 +233,13 @@ class OrderDetail {
                               ],
                             ),
                           ),
+                        
                           Padding(
                             padding: const EdgeInsets.all(10.0),
                             child: Column(
                               children: [
                                 Text(
-                                  '5',
+                                  '7',
                                   style: TextStyle(
                                       fontSize: 24,
                                       fontWeight: FontWeight.bold),
