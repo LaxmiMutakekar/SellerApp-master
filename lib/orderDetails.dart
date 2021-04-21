@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'model/orders.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'verification.dart';
 class Quantity {
 var quantity = 0.0;
 }
@@ -16,10 +17,11 @@ class OrderDetail {
         context: context,
         builder: (context) {
           return SingleChildScrollView(
+            
             child: Column(
               children: [
                 Container(
-                  height: 440,
+                  height: 600,
                   color: Color(0xff6D6D6D),
                   child: Container(
                     child: buildBottomSheet(item, context),
@@ -275,6 +277,32 @@ class OrderDetail {
                   clipper: CustomClipPath(),
                 ),
               ),
+              item.status=='Order Preparing'? Container(
+                height:34 ,
+                width: 130,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    RaisedButton(
+  onPressed: () => {Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => Verify()),
+  )},
+  color: Colors.white,
+  elevation: 10,
+  child: Row(
+    children: [
+       Text('Handover',style: TextStyle(fontSize: 15,fontWeight: FontWeight.w500),),
+      Icon(Icons.bike_scooter),
+     
+    ],
+  ),
+  //other properties
+),
+                  ],
+                ),
+              ):Container()
             ],
           ),
         ),

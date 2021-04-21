@@ -8,8 +8,10 @@ dependencies:
   flutter_switch: ^0.3.0
   intl: ^0.17.0
   cached_network_image: ^3.0.0
+  pinput: ^1.2.0
   flutter_secure_storage:
   http: ^0.13.1
+  shimmer: ^2.0.0
   
   flutter:  
     sdk: flutter

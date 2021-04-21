@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'model/orders.dart';
 import 'api/apiService.dart';
 import 'orderDetails.dart';
+import 'package:shimmer/shimmer.dart';
 
 class PendingOrders extends StatefulWidget {
   @override
@@ -46,6 +47,7 @@ class _PendingOrdersState extends State<PendingOrders>with SingleTickerProviderS
   }
   @override
   Widget build(BuildContext context) {
+    var count=0;
     Size size = MediaQuery.of(context).size;
     OrderDetail orderitems=new OrderDetail();
     String url;
@@ -64,6 +66,8 @@ class _PendingOrdersState extends State<PendingOrders>with SingleTickerProviderS
         child: FutureBuilder(
           future: APIService.fetchOrders(context, value.token),
           builder: (context, snapshot) {
+            count++;
+                  print('PendingOrders '+count.toString());
             if (snapshot.hasData) {
               
               return ListView.builder(
@@ -71,6 +75,7 @@ class _PendingOrdersState extends State<PendingOrders>with SingleTickerProviderS
                 itemCount: snapshot.data.length,
                 shrinkWrap: true,
                 itemBuilder: (BuildContext context, int index) {
+                  
                   Orders item = snapshot.data[index];
                   switch (item.businessUnit) {
                     case 'Sodimac':
@@ -231,16 +236,26 @@ class _PendingOrdersState extends State<PendingOrders>with SingleTickerProviderS
                 },
               );
             }
-            return ShaderMask(
-                shaderCallback: (rect){
-                  return LinearGradient(
-                      tileMode: TileMode.mirror,
-                      begin: Alignment.centerLeft,
-                      end: Alignment.centerRight,
-                      colors: [animationOne.value,animationTwo.value]).createShader(rect,textDirection: TextDirection.ltr);
-                },
-                child: Container(color: Colors.white,
-                  height:156,width:MediaQuery.of(context).size.width,));
+            return Shimmer.fromColors(
+              child: Expanded(
+                              child: SizedBox(
+                                                              child: Container(
+                                                                height: 150,
+                                                                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: 2,
+                  itemBuilder: (context, index) {
+                    return Container(
+                      height:130,
+                    );
+                  },
+                ),
+                                                              ),
+                              ),
+              ),
+              baseColor: Colors.black,
+              highlightColor:Colors.white,
+            );
           },
         ),
       );

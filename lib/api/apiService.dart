@@ -50,14 +50,18 @@ class APIService {
      
     final response = await http.get(Uri.parse("http://10.0.2.2:8080/orders/seller"),
         headers: {"Authorization": "Bearer " + token});
-    
-
+    List<dynamic> responseJson = json.decode(response.body);
+    List<Orders> orders =
+    responseJson.map((d) => new Orders.fromJson(d)).toList();
+    orders.sort((a, b) {
+  return a.orderFulfillmentTime.compareTo(b.orderFulfillmentTime);
+});
     if (response.statusCode == 200) {
      
     
-      return ordersFromJson(response.body);
+      return orders;
     } else {
-      throw Exception();
+      return ordersFromJson(response.body);
     }
   }
   

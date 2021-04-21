@@ -221,6 +221,7 @@ class _MenuDashboardState extends State<MenuDashboard>
   }
 
   Widget dashboard(context, token) {
+    var count=0;
     Size size = MediaQuery.of(context).size;
     screenheight = size.height;
     screenwidth = size.width;
@@ -270,6 +271,8 @@ class _MenuDashboardState extends State<MenuDashboard>
                               FutureBuilder(
                                   future: APIService.fetchName(context, token),
                                   builder: (context, snapshot) {
+                                    count++;
+                                    print('DashboardCount'+count.toString());
                                     if (snapshot.hasData) {
                                       return Text(snapshot.data);
                                     } else {
@@ -399,7 +402,10 @@ class _MenuDashboardState extends State<MenuDashboard>
                                 return Column(
                                   children: [
                                     
-                                    PendingOrders(),
+                                    Padding(
+                                      padding: const EdgeInsets.only(left:8.0),
+                                      child: PendingOrders(),
+                                    ),
                                   ],
                                 );
                               } else {

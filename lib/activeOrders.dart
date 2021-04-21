@@ -16,6 +16,7 @@ class ActiveOrders extends StatefulWidget {
 class _ActiveOrdersState extends State<ActiveOrders>with SingleTickerProviderStateMixin {
   CountDownController _controller = CountDownController();
   String url;
+  var count=0;
   OrderDetail orders = new OrderDetail();
    AnimationController controllerOne;
   Animation<Color> animationOne;
