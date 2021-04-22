@@ -63,35 +63,41 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
               elevation: 0,
               title: Consumer<Update>(builder: (context, Update orders, child) {
                 return Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              isDrawerOpen
-                                  ? IconButton(
-                                      icon: Icon(Icons.arrow_back),
-                                      onPressed: () {
-                                        setState(() {
-                                          isDrawerOpen = !isDrawerOpen;
-                                          _controller.reverse();
-                                        });
-                                      })
-                                  : IconButton(
-                                      icon: Icon(Icons.menu),
-                                      onPressed: () {
-                                        setState(() {
-                                          isDrawerOpen = !isDrawerOpen;
-                                          _controller.forward();
-                                        });
-                                      }),
-                                      Column(
-            children: [Text(orders.sellerName,style: TextStyle(fontSize: 14),), SwitchButton()],
-          ),
-          Icon(
-            Icons.notifications_active,
-            color: AppConfig.iconColor,
-          )
-                            ]);
-          }),
-          ),
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      isDrawerOpen
+                          ? IconButton(
+                              icon: Icon(Icons.arrow_back),
+                              onPressed: () {
+                                setState(() {
+                                  isDrawerOpen = !isDrawerOpen;
+                                  _controller.reverse();
+                                });
+                              })
+                          : IconButton(
+                              icon: Icon(Icons.menu),
+                              onPressed: () {
+                                setState(() {
+                                  isDrawerOpen = !isDrawerOpen;
+                                  _controller.forward();
+                                });
+                              }),
+                      Column(
+                        children: [
+                          Text(
+                            orders.sellerName,
+                            style: TextStyle(fontSize: 14),
+                          ),
+                          SwitchButton()
+                        ],
+                      ),
+                      Icon(
+                        Icons.notifications_active,
+                        color: AppConfig.iconColor,
+                      )
+                    ]);
+              }),
+            ),
             body: ListView(
               children: [
                 Center(

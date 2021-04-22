@@ -5,6 +5,7 @@ import 'package:order_listing/APIServices/APIServices.dart';
 import 'package:order_listing/models/loginModel.dart';
 import 'package:order_listing/widgets/progressHUD.dart';
 import 'package:flutter/material.dart';
+
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -139,7 +140,8 @@ class _LoginPageState extends State<LoginPage> {
                                 isApiCallProcess = true;
                               });
 
-                              APIServices.login(loginRequestModel).then((value) {
+                              APIServices.login(loginRequestModel)
+                                  .then((value) {
                                 if (value != null) {
                                   setState(() {
                                     isApiCallProcess = false;

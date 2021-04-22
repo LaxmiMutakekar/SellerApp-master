@@ -113,7 +113,7 @@ class OrderDetail {
                   itemCount: item.orderItems.length,
                   itemBuilder: (context, int index) {
                     print(item.orderItems[index].image);
-                    
+
                     return Padding(
                       padding: const EdgeInsets.only(left: 10, right: 10),
                       child: Container(
@@ -138,10 +138,14 @@ class OrderDetail {
                                           borderRadius:
                                               BorderRadius.circular(13),
                                           child: CachedNetworkImage(
-        imageUrl: item.orderItems[index].image,
-        placeholder: (context, url) => CircularProgressIndicator(),
-        errorWidget: (context, url, error) => Icon(Icons.error),
-     ),
+                                            imageUrl:
+                                                item.orderItems[index].image,
+                                            placeholder: (context, url) =>
+                                                CircularProgressIndicator(),
+                                            errorWidget:
+                                                (context, url, error) =>
+                                                    Icon(Icons.error),
+                                          ),
                                         ),
                                       ),
                                     )),
@@ -227,7 +231,6 @@ class OrderDetail {
                               ],
                             ),
                           ),
-                        
                           Padding(
                             padding: const EdgeInsets.all(10.0),
                             child: Column(

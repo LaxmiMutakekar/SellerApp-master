@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 class Cards extends StatelessWidget {
   final EdgeInsets margin;
   final EdgeInsets padding;
@@ -6,7 +7,9 @@ class Cards extends StatelessWidget {
   final Color color;
   final Widget child;
 
-  const Cards({Key key, this.margin, this.padding, this.radius,this.color, this.child}) : super(key: key);
+  const Cards(
+      {Key key, this.margin, this.padding, this.radius, this.color, this.child})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +18,7 @@ class Cards extends StatelessWidget {
       clipBehavior: Clip.hardEdge,
       padding: padding ?? EdgeInsets.all(10),
       decoration: BoxDecoration(
-        color: color??Theme.of(context).canvasColor,
+        color: color ?? Theme.of(context).canvasColor,
         // border: Border.all(
         //   color: Theme.of(context).dividerColor.withOpacity(0.8),
         // ),
@@ -36,6 +39,7 @@ class Cards extends StatelessWidget {
     );
   }
 }
+
 class ContainerCard extends StatelessWidget {
   final EdgeInsets margin;
   final EdgeInsets padding;
@@ -44,27 +48,35 @@ class ContainerCard extends StatelessWidget {
   final Widget child;
   final double height;
   final double width;
-  const ContainerCard({Key key, this.margin, this.padding, this.radius,this.color, this.child,this.height,this.width}) : super(key: key);
+  const ContainerCard(
+      {Key key,
+      this.margin,
+      this.padding,
+      this.radius,
+      this.color,
+      this.child,
+      this.height,
+      this.width})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ConstrainedBox(
-              constraints:
-                  BoxConstraints(minHeight: height??MediaQuery.of(context).size.height),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: color??Colors.white,
-                  borderRadius: BorderRadius.only(
-                      topLeft: radius??Radius.circular(30),
-                      topRight: radius??Radius.circular(30)),
-                ),
-                padding: padding ?? EdgeInsets.all(16),
-                child: Material(
-        child: child,
-        color: Colors.transparent,
-        borderRadius: radius ?? BorderRadius.circular(5),
-        clipBehavior: Clip.hardEdge,
-                )
-              ));
+        constraints: BoxConstraints(
+            minHeight: height ?? MediaQuery.of(context).size.height),
+        child: Container(
+            decoration: BoxDecoration(
+              color: color ?? Colors.white,
+              borderRadius: BorderRadius.only(
+                  topLeft: radius ?? Radius.circular(30),
+                  topRight: radius ?? Radius.circular(30)),
+            ),
+            padding: padding ?? EdgeInsets.all(16),
+            child: Material(
+              child: child,
+              color: Colors.transparent,
+              borderRadius: radius ?? BorderRadius.circular(5),
+              clipBehavior: Clip.hardEdge,
+            )));
   }
 }

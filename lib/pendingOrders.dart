@@ -151,9 +151,9 @@ class _PendingOrdersState extends State<PendingOrders> {
                                 elevation: 4,
                                 splashColor: Colors.red,
                                 onPressed: () {
-                                  
                                   setState(() {
-                                    _showRejectionchoiceDialog(index,orders,pendings);
+                                    _showRejectionchoiceDialog(
+                                        index, orders, pendings);
                                   });
                                 },
                                 color: AppConfig.buttonBackgrd,
@@ -179,7 +179,7 @@ class _PendingOrdersState extends State<PendingOrders> {
     });
   }
 
-  _showRejectionchoiceDialog(i,orders,pending) => showDialog(
+  _showRejectionchoiceDialog(i, orders, pending) => showDialog(
       context: context,
       builder: (context) {
         final _rejectioneNotifier =
@@ -212,10 +212,9 @@ class _PendingOrdersState extends State<PendingOrders> {
                   child: Text('Continue'),
                   onPressed: () {
                     setState(() {});
-                    orders.updateOrderStatus(
-                                      AppConfig.rejectedStatus, i);
-                                  APIServices.changeOrderStatus(
-                                      pending.orderId, AppConfig.rejectedStatus);
+                    orders.updateOrderStatus(AppConfig.rejectedStatus, i);
+                    APIServices.changeOrderStatus(
+                        pending.orderId, AppConfig.rejectedStatus);
                     Navigator.of(context).pop();
                   }),
               FlatButton(
