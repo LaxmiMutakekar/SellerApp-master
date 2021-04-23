@@ -1,11 +1,9 @@
+import 'package:order_listing/Home.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:Seller_App/providers/tokenModel.dart';
-import 'package:Seller_App/api/apiService.dart';
-import 'package:Seller_App/model/loginModel.dart';
-import 'package:provider/provider.dart';
-
-import '../progressHUD.dart';
+import 'package:order_listing/APIServices/APIServices.dart';
+import 'package:order_listing/models/loginModel.dart';
+import 'package:order_listing/widgets/progressHUD.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -141,8 +139,8 @@ class _LoginPageState extends State<LoginPage> {
                                 isApiCallProcess = true;
                               });
 
-                            
-                              APIService.login(loginRequestModel).then((value) {
+                              APIServices.login(loginRequestModel)
+                                  .then((value) {
                                 if (value != null) {
                                   setState(() {
                                     isApiCallProcess = false;
@@ -153,15 +151,12 @@ class _LoginPageState extends State<LoginPage> {
                                         content: Text("Login Successful"));
                                     scaffoldKey.currentState
                                         .showSnackBar(snackBar);
-                                    Provider.of<TokenModel>(context,
-                                            listen: false)
-                                        .addToken(value.token);
-                                    // Navigator.pushAndRemoveUntil(
-                                    //     context,
-                                    //     MaterialPageRoute(
-                                    //       builder: (context) => MenuDashboard(),
-                                    //     ),
-                                    //     (route) => false);
+                                    Navigator.pushAndRemoveUntil(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => HomeScreen(),
+                                        ),
+                                        (route) => false);
                                   } else {
                                     final snackBar =
                                         SnackBar(content: Text(value.error));

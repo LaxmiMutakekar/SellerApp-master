@@ -1,14 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'model/orders.dart';
+import 'package:order_listing/models/orders.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'verification.dart';
-class Quantity {
-var quantity = 0.0;
-}
+
 class OrderDetail {
- 
-  var now = DateTime(0);
   @override
   void settingModalBottomSheet(context, Orders item) {
     showModalBottomSheet(
@@ -17,11 +12,10 @@ class OrderDetail {
         context: context,
         builder: (context) {
           return SingleChildScrollView(
-            
             child: Column(
               children: [
                 Container(
-                  height: 600,
+                  height: 440,
                   color: Color(0xff6D6D6D),
                   child: Container(
                     child: buildBottomSheet(item, context),
@@ -39,7 +33,6 @@ class OrderDetail {
   }
 
   Column buildBottomSheet(item, BuildContext context) {
-     Quantity quant=new Quantity();
     String url;
     return Column(
       children: [
@@ -120,8 +113,7 @@ class OrderDetail {
                   itemCount: item.orderItems.length,
                   itemBuilder: (context, int index) {
                     print(item.orderItems[index].image);
-                    now = item.orderPlacedDate;
-                    quant.quantity+=item.orderItems[index].quantity;
+
                     return Padding(
                       padding: const EdgeInsets.only(left: 10, right: 10),
                       child: Container(
@@ -146,10 +138,14 @@ class OrderDetail {
                                           borderRadius:
                                               BorderRadius.circular(13),
                                           child: CachedNetworkImage(
-        imageUrl: item.orderItems[index].image,
-        placeholder: (context, url) => CircularProgressIndicator(),
-        errorWidget: (context, url, error) => Icon(Icons.error),
-     ),
+                                            imageUrl:
+                                                item.orderItems[index].image,
+                                            placeholder: (context, url) =>
+                                                CircularProgressIndicator(),
+                                            errorWidget:
+                                                (context, url, error) =>
+                                                    Icon(Icons.error),
+                                          ),
                                         ),
                                       ),
                                     )),
@@ -235,7 +231,6 @@ class OrderDetail {
                               ],
                             ),
                           ),
-                        
                           Padding(
                             padding: const EdgeInsets.all(10.0),
                             child: Column(
@@ -277,32 +272,6 @@ class OrderDetail {
                   clipper: CustomClipPath(),
                 ),
               ),
-              item.status=='Order Preparing'? Container(
-                height:34 ,
-                width: 130,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    RaisedButton(
-  onPressed: () => {Navigator.push(
-    context,
-    MaterialPageRoute(builder: (context) => Verify()),
-  )},
-  color: Colors.white,
-  elevation: 10,
-  child: Row(
-    children: [
-       Text('Handover',style: TextStyle(fontSize: 15,fontWeight: FontWeight.w500),),
-      Icon(Icons.bike_scooter),
-     
-    ],
-  ),
-  //other properties
-),
-                  ],
-                ),
-              ):Container()
             ],
           ),
         ),

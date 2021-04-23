@@ -1,278 +1,185 @@
-import 'package:Seller_App/model/rejectionReasonsJson.dart';
-import 'package:Seller_App/providers/rejectionReason.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:Seller_App/providers/tokenModel.dart';
-import 'package:Seller_App/providers/statusUpdate.dart';
+import 'package:order_listing/App_configs/app_configs.dart';
+import 'package:order_listing/providers/rejection.dart';
+import 'widgets/cards.dart';
+import 'package:order_listing/models/orders.dart';
+import 'widgets/BottomModalBar.dart';
+import 'package:order_listing/widgets/LoadingAnimation.dart';
+import 'APIServices/APIServices.dart';
+import 'widgets/widgets.dart';
+import 'models/rejectionReasons.dart';
 import 'package:provider/provider.dart';
-import 'model/orders.dart';
-import 'api/apiService.dart';
-import 'orderDetails.dart';
-import 'package:shimmer/shimmer.dart';
+import 'package:order_listing/models/rejectionReasons.dart';
+import 'providers/orderUpdate.dart';
 
 class PendingOrders extends StatefulWidget {
   @override
   _PendingOrdersState createState() => _PendingOrdersState();
 }
 
-class _PendingOrdersState extends State<PendingOrders>with SingleTickerProviderStateMixin {
-  
- AnimationController controllerOne;
-  Animation<Color> animationOne;
-  Animation<Color> animationTwo;
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    controllerOne = AnimationController(
-        duration: Duration(milliseconds: 2000),
-        vsync: this);
-    animationOne = ColorTween(begin: Colors.black38,end: Colors.white24).animate(controllerOne);
-    animationTwo = ColorTween(begin: Colors.white24,end: Colors.black38).animate(controllerOne);
-    controllerOne.forward();
-    controllerOne.addListener((){
-      if(controllerOne.status == AnimationStatus.completed){
-        controllerOne.reverse();
-      } else if(controllerOne.status == AnimationStatus.dismissed){
-        controllerOne.forward();
-      }
-      this.setState((){});
-    });
-  }
-  @override
-  void dispose() {
-    super.dispose();
-   
-    controllerOne.dispose();
-  }
+class _PendingOrdersState extends State<PendingOrders> {
+  OrderDetail orderItem = new OrderDetail();
+
   @override
   Widget build(BuildContext context) {
-    var count=0;
-    Size size = MediaQuery.of(context).size;
-    OrderDetail orderitems=new OrderDetail();
     String url;
-    
-    return Consumer2<TokenModel, StatusUpdate>(
-        builder: (context, value, child, val) {
-    //       APIService.fetchOrderItems(context,value.token).then((product_names) {
-    //   setState(() {
-    //     productNames=product_names;
-        
-    //   });
-    // });
-         
-      return Container(
-        height: 160,
-        child: FutureBuilder(
-          future: APIService.fetchOrders(context, value.token),
-          builder: (context, snapshot) {
-            count++;
-                  print('PendingOrders '+count.toString());
-            if (snapshot.hasData) {
-              
-              return ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: snapshot.data.length,
-                shrinkWrap: true,
-                itemBuilder: (BuildContext context, int index) {
-                  
-                  Orders item = snapshot.data[index];
-                  switch (item.businessUnit) {
-                    case 'Sodimac':
-                      url = 'assets/sodi.png';
-                      break;
-                    case 'Tottus':
-                      url = 'assets/tottus.png';
-                      break;
-                    default:
-                  }
-
-                  if (item.status == 'Order Placed') {
-                    return GestureDetector(
-                      onTap: () {
-                        orderitems.settingModalBottomSheet(context, item);
-                      },
-                      child: Card(
-                        shadowColor:Colors.black,
-                        elevation: 12,
-                        
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        color: Colors.white,
-                        
-                        child: Padding(
-                          padding: const EdgeInsets.all(3.0),
-                          child: Column(
+    return Consumer<Update>(builder: (context, Update orders, child) {
+      return ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: orders.ordersList.length,
+          shrinkWrap: true,
+          itemBuilder: (BuildContext context, int index) {
+            Orders pendings = orders.ordersList[index];
+            switch (pendings.businessUnit) {
+              case 'Sodimac':
+                url = 'assets/sodi.png';
+                break;
+              case 'Tottus':
+                url = 'assets/tottus.png';
+                break;
+              default:
+            }
+            if (pendings.status == "Order Placed") {
+              return GestureDetector(
+                onTap: () {
+                  orderItem.settingModalBottomSheet(context, pendings);
+                },
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 2),
+                  child: Cards(
+                    radius: BorderRadius.circular(20),
+                    margin: EdgeInsets.all(3),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            //mainAxisSize: MainAxisSize.min,
                             children: [
-                              Container(
-                                // decoration: new BoxDecoration(
-                                //   boxShadow: [
-                                //     BoxShadow(
-                                //       color: Colors.grey[400],
-                                //       blurRadius: 45.0, // soften the shadow
-                                //       spreadRadius: 5.0, //extend the shadow
-                                //       offset: Offset(
-                                //         5.0, // Move to right 10  horizontally
-                                //         15.0, // Move to bottom 10 Vertically
-                                //       ),
-                                //     )
-                                //   ],
-                                // ),
-                                height: 60,
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Container(
-                                        width: 150,
-                                        height: 75,
-                                        child: FittedBox(
-                                          child: Image(
-                                            image: new AssetImage(url),
-                                            
-                                          ),
-                                          fit: BoxFit.fill,
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.fromLTRB(8, 5, 8, 0),
-                                      child: Container(
-                                        //height: 40,
-                                        child: Column(
-                                          // mainAxisAlignment:
-                                          //     MainAxisAlignment.start,
-                                          children: [
-                                            Icon(
-                                              Icons.schedule,
-                                              size: 26,
-                                            ),
-                                            Text(
-                                              item.orderPlacedDate.hour.toString() +
-                                                  ":" +
-                                                  item.orderPlacedDate.minute.toString()+((item.orderPlacedDate.hour)<12?' am':' pm'),
-                                              style:
-                                                  TextStyle(color: Colors.black),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
                               Padding(
-                                padding: const EdgeInsets.only(left:8),
-                                child: Text(
-                                  '#00${item.orderId}',
-                                  style: TextStyle(
-                                      fontSize: 18.0,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold),
+                                padding: const EdgeInsets.all(5.0),
+                                child: Container(
+                                  width: 70,
+                                  height: 40,
+                                  child: FittedBox(
+                                    child: Image(
+                                      image: new AssetImage(url),
+                                    ),
+                                    fit: BoxFit.fill,
+                                  ),
                                 ),
                               ),
-                              Text(productName(item.orderItems)),
-                              Container(
-                                width: 200,
-                                child: Row(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 5),
-                                      child: RaisedButton(
-                                    
-                                        hoverColor: Colors.blueGrey,
-                                        onPressed: () {
-                                          setState(() {});
-                                          Provider.of<StatusUpdate>(context,
-                                                  listen: false)
-                                              .addToken(item.status);
-                                          APIService.changeOrderStatus(
-                                              item.orderId, value.token);
-                                        },
-                                        color: Colors.black,
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(15)),
-                                        child: Text("Accept",
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.bold)),
-                                      ),
+                              SizedBox(width: 60),
+                              Column(
+                                children: [
+                                  Container(
+                                    child: Icon(
+                                      Icons.schedule_sharp,
+                                      size: 34,
                                     ),
-                                    SizedBox(width: 5),
-                                    RaisedButton(
-                                      hoverColor: Colors.blueGrey,
-                                      onPressed: () {
-                                        _showRejectionchoiceDialog(
-                                            item, value.token);
-                                        //setState(() {});
-                                      },
-                                      color: Colors.black,
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(15)),
-                                      child: Text("Reject",
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.bold)),
-                                    ),
-                                  ],
-                                ),
-                              )
+                                  ),
+                                  Text(
+                                    pendings.orderPlacedDate.hour.toString() +
+                                        ":" +
+                                        pendings.orderPlacedDate.minute
+                                            .toString() +
+                                        ((pendings.orderPlacedDate.hour) < 12
+                                            ? ' A.M'
+                                            : ' P.M'),
+                                    style: TextStyle(color: Colors.black),
+                                  ),
+                                ],
+                              ),
                             ],
                           ),
                         ),
-                      ),
-                    );
-                  } else {
-                    return Container();
-                  }
-                },
-              );
-            }
-            return Shimmer.fromColors(
-              child: Expanded(
-                              child: SizedBox(
-                                                              child: Container(
-                                                                height: 150,
-                                                                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: 2,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      height:130,
-                    );
-                  },
-                ),
-                                                              ),
+                        Text(
+                          '#00${pendings.orderId}',
+                          style: TextStyle(
+                              fontSize: 18.0,
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        Row(
+                          children: [
+                            Text(
+                              productName(pendings.orderItems),
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.normal,
+                                  color: AppConfig.hidingText),
+                            ),
+                            Text(
+                              '\$' + pendings.totalPrice.toInt().toString(),
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.normal,
+                                  color: AppConfig.hidingText),
+                            )
+                          ],
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 5.0),
+                          child: Container(
+                              height: 2,
+                              width: 140,
+                              color: AppConfig.hidingText),
+                        ),
+                        Container(
+                          child: Row(
+                            children: [
+                              RaisedButton(
+                                elevation: 4,
+                                splashColor: AppConfig.buttonSplash,
+                                onPressed: () {
+                                  orders.updateOrderStatus(
+                                      AppConfig.acceptStatus, index);
+                                  APIServices.changeOrderStatus(
+                                      pendings.orderId, AppConfig.acceptStatus);
+                                },
+                                color: AppConfig.buttonBackgrd,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20)),
+                                child: Text("Accept",
+                                    style: TextStyle(
+                                        color: AppConfig.buttonText,
+                                        fontWeight: FontWeight.bold)),
                               ),
-              ),
-              baseColor: Colors.black,
-              highlightColor:Colors.white,
-            );
-          },
-        ),
-      );
+                              SizedBox(width: 8),
+                              RaisedButton(
+                                elevation: 4,
+                                splashColor: Colors.red,
+                                onPressed: () {
+                                  setState(() {
+                                    _showRejectionchoiceDialog(
+                                        index, orders, pendings);
+                                  });
+                                },
+                                color: AppConfig.buttonBackgrd,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20)),
+                                child: Text("Reject",
+                                    style: TextStyle(
+                                        color: AppConfig.buttonText,
+                                        fontWeight: FontWeight.bold)),
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            } else {
+              return Container();
+            }
+          });
     });
-    
   }
- String productName(List<OrderItem> data)
- {
-   String productNames="";
-    for(int i=0;i<data.length;i++)
-              {
-                productNames+=data[i].productName+", ";
-              }
-              return productNames;
- }
 
-  _showRejectionchoiceDialog(Orders item, token) => showDialog(
+  _showRejectionchoiceDialog(i, orders, pending) => showDialog(
       context: context,
       builder: (context) {
         final _rejectioneNotifier =
@@ -292,8 +199,8 @@ class _PendingOrdersState extends State<PendingOrders>with SingleTickerProviderS
                             groupValue: _rejectioneNotifier.currentReason,
                             selected: _rejectioneNotifier.currentReason == e,
                             onChanged: (value) {
-                              _rejectioneNotifier.updateCountry(value);
-                              Navigator.of(context).pop();
+                              _rejectioneNotifier.updateReason(value);
+                              // Navigator.of(context).pop();
                             },
                           ))
                       .toList(),
@@ -305,7 +212,9 @@ class _PendingOrdersState extends State<PendingOrders>with SingleTickerProviderS
                   child: Text('Continue'),
                   onPressed: () {
                     setState(() {});
-                    APIService.orderRejected(item.orderId, token);
+                    orders.updateOrderStatus(AppConfig.rejectedStatus, i);
+                    APIServices.changeOrderStatus(
+                        pending.orderId, AppConfig.rejectedStatus);
                     Navigator.of(context).pop();
                   }),
               FlatButton(
