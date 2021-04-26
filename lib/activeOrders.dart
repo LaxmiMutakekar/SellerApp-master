@@ -70,8 +70,24 @@ class _ActiveOrdersState extends State<ActiveOrders>
                 break;
               default:
             }
-            if (active.status == 'Order Preparing') {
-              return GestureDetector(
+            if(orders.chosenValue=='All accepted orders')
+            {
+              if(active.status!='Order Placed')
+              {
+                return activeOrders(active, url, orders, index);
+              }
+            }
+
+            else if (active.status == orders.chosenValue) {
+              return activeOrders(active, url, orders, index);
+            } else {
+              return Container();
+            }
+          });
+    });
+  }
+   activeOrders(Orders active,url,orders,index){
+    return GestureDetector(
                 onTap: () {
                   orderItem.settingModalBottomSheet(context, active);
                 },
@@ -209,10 +225,5 @@ class _ActiveOrdersState extends State<ActiveOrders>
                   ),
                 ),
               );
-            } else {
-              return Container();
-            }
-          });
-    });
   }
 }

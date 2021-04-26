@@ -6,6 +6,7 @@ import 'package:Seller_App/providers/orderUpdate.dart';
 import 'package:Seller_App/screens/verifyScreen.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
+
 class OrderDetail {
   DateTime fulfillmentTime;
   String time;
@@ -17,7 +18,7 @@ class OrderDetail {
         context: context,
         builder: (context) {
           return Container(
-            height: MediaQuery.of(context).size.height * 0.75,
+            height: MediaQuery.of(context).size.height * 0.85,
             color: Color(0xffCCCCCD),
             child: SingleChildScrollView(
               child: Column(
@@ -41,8 +42,9 @@ class OrderDetail {
   }
 
   buildBottomSheet(item, BuildContext context, scrollController) {
-    fulfillmentTime=item.orderPlacedDate;
-    time=DateFormat.jm().format(fulfillmentTime.add(Duration (minutes: item.orderFulfillmentTime.toInt())));
+    fulfillmentTime = item.orderPlacedDate;
+    time = DateFormat.jm().format(fulfillmentTime
+        .add(Duration(minutes: item.orderFulfillmentTime.toInt())));
 
     return SingleChildScrollView(
       child: Column(
@@ -78,16 +80,16 @@ class OrderDetail {
                 children: [
                   Row(mainAxisAlignment: MainAxisAlignment.start, children: [
                     Padding(
-                      padding: const EdgeInsets.only(left:16.0),
+                      padding: const EdgeInsets.only(left: 16.0),
                       child: Icon(
                         Icons.account_circle_sharp,
                         size: 60,
                       ),
                     ),
-                    
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
+                        
                         Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -99,23 +101,30 @@ class OrderDetail {
                                 child: Text(
                                   item.customer.name,
                                   style: TextStyle(
-                                      fontSize: 22, fontWeight: FontWeight.bold),
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.bold),
                                 )),
                             Text(
                               'Customer Name',
                               style: TextStyle(
                                   fontSize: 18, fontWeight: FontWeight.w200),
                             ),
-
                           ],
                         ),
-                        SizedBox(
-                          width:50
-                        ),
+                        SizedBox(width: 50),
                         Column(
                           children: [
-                            Text(time,style: TextStyle(fontSize: 20,color: Color(0xff9E545E),fontWeight: FontWeight.bold),),
-                            Text('Order Fulfillment Time',style: TextStyle(fontWeight: FontWeight.w300),),
+                            Text(
+                              time,
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  color: Color(0xff9E545E),
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              'Order Fulfillment Time',
+                              style: TextStyle(fontWeight: FontWeight.w300),
+                            ),
                           ],
                         ),
                       ],
@@ -130,6 +139,59 @@ class OrderDetail {
                 endIndent: 15,
                 color: Colors.white,
               ),
+              item.deliveryResource.driverName != null
+                  ? Container(
+                      child: Column(
+                        children: [
+  
+                          Row(
+                              //mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(left:16.0),
+                                  child: Icon(
+                                    Icons.account_circle_sharp,
+                                    size: 60,
+                                  ),
+                                ),
+                          
+                                Column(
+                                  //mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                  children: [
+                                    GestureDetector(
+                                        onTap: () {
+                                          showDriver(
+                                              item.deliveryResource, context);
+                                        },
+                                        child: Text(
+                                          item.deliveryResource.driverName,
+                                          style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold),
+                                        )),
+                                    Text(
+                                      'Driver Name',
+                                      style: TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w200),
+                                    ),
+                                  ],
+                                ),
+                              ]),
+                              const Divider(
+                              height: 17,
+                              thickness: 2,
+                              indent: 15,
+                              endIndent: 15,
+                              color: Colors.white,
+                            ),
+                        ],
+                      ),
+                    )
+                  : Container(),
+                  
               Container(
                 padding: EdgeInsets.all(8),
                 height: MediaQuery.of(context).size.height / 3,
@@ -138,113 +200,109 @@ class OrderDetail {
                   isAlwaysShown: true,
                   controller: scrollController,
                   thickness: 4,
-                  child: ListView.builder(
-                      controller: scrollController,
-                      shrinkWrap: true,
-                      itemCount: item.orderItems.length,
-                      itemBuilder: (context, int index) {
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: Container(
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Center(
-                                    child: Container(
-                                        height: 80,
-                                        width: 80,
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          color: Colors.white,
+                  child:ListView.builder(
+                  shrinkWrap: true,
+                  controller: scrollController,
+                  itemCount: item.orderItems.length,
+                  itemBuilder: (context, int index) {
+                    print(item.orderItems[index].image);
+                
+            
+                    return Padding(
+                      padding: const EdgeInsets.only(left: 10, right: 10),
+                      child: Container(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container(
+                                  height: 90,
+                                  width: 87,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8),
+                                    color: Colors.white,
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(top: 2.0),
+                                        child: Text(
+                                          item.orderItems[index].skuId,
+                                          style: TextStyle(
+                                              fontSize: 10,
+                                              fontWeight: FontWeight.bold),
                                         ),
-                                        child: Center(
-                                          child: Container(
-                                            // height: 50,
-                                            // width: 70,
-                                            child: ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(13),
-                                              child: Container(
-                                                height: 60,
-                                                width: 60,
-                                                child: CachedNetworkImage(
-                                                
-                                                  imageUrl: item
-                                                      .orderItems[index].image,fit: BoxFit.fill,
-                                                  placeholder: (context, url) =>
-                                                      CircularProgressIndicator(),
-                                                  errorWidget:
-                                                      (context, url, error) =>
-                                                          Icon(Icons.error),
-                                                ),
-                                              ),
+                                      ),
+                                      Center(
+                                        child: Container(
+                                          height: 60,
+                                          width: 70,
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(13),
+                                            child: CachedNetworkImage(
+                                              fit: BoxFit.fill,
+                                              imageUrl: item
+                                                  .orderItems[index].image,
+                                              placeholder: (context, url) =>
+                                                  CircularProgressIndicator(),
+                                              errorWidget:
+                                                  (context, url, error) =>
+                                                      Icon(Icons.error),
                                             ),
                                           ),
-                                        )),
-                                  ),
-                                  Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          item.orderItems[index].productName,
-                                          style: TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.normal),
                                         ),
-                                        Text(
-                                          'SKU ID:' +
-                                              item.orderItems[index].skuId,
-                                          style: TextStyle(fontSize: 10),
-                                        ),
-                                        Text(
-                                          '\$' +
-                                              item.orderItems[index].price
-                                                  .toString(),
-                                          style: TextStyle(
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.bold,
-                                              color: Color(0xff0D2F36)),
-                                        ),
-                                        SizedBox(width: 5),
-                                      ]),
-                                  Container(
-                                      height: 35,
-                                      width: 87,
-                                      child: Container(
-                                        alignment: Alignment.center,
-                                        decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            color: Colors.white),
+                                      ),
+                                      Text(
+                                        '\$' +
+                                            item.orderItems[index].price
+                                                .toString(),
+                                        style: TextStyle(
+                                            fontSize: 13,
+                                            fontWeight: FontWeight.bold,
+                                            color: Color(0xff0D2F36)),
+                                      ),
+                                    ],
+                                  )),
+                              Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      item.orderItems[index].productName,
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox(width: 5),
+                                    Container(
                                         child: Text(
+                                      'X ' +
                                           item.orderItems[index].quantity
                                               .toString(),
-                                          style: TextStyle(
-                                              fontSize: 24,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.black),
-                                        ),
-                                      )),
-                                  Text(
-                                    '\$' +
-                                        (item.orderItems[index].quantity *
-                                                item.orderItems[index].price)
-                                            .toString(),
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        color: Color(0xff0D2F36),
-                                        fontWeight: FontWeight.bold),
-                                  )
-                                ],
-                              ),
-                            ),
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w200,
+                                          color: Colors.black),
+                                    )),
+                                  ]),
+                              Text(
+                                '\$' +
+                                    (item.orderItems[index].quantity *
+                                            item.orderItems[index].price)
+                                        .toString(),
+                                style: TextStyle(
+                                    fontSize: 22,
+                                    color: Color(0xff0D2F36),
+                                    fontWeight: FontWeight.bold),
+                              )
+                            ],
                           ),
-                        );
-                      }),
+                        ),
+                      ),
+                    );
+                  }),
                 ),
               ),
               Padding(
@@ -254,7 +312,7 @@ class OrderDetail {
                   children: [
                     ClipPath(
                       child: Container(
-                          width: 400,
+                          width: 470,
                           height: 70,
                           color: Colors.white,
                           child: Row(
@@ -275,7 +333,7 @@ class OrderDetail {
                                 ),
                               ),
                               Padding(
-                                padding: const EdgeInsets.all(10.0),
+                                padding: const EdgeInsets.all(10),
                                 child: Column(
                                   children: [
                                     Text(
@@ -291,7 +349,7 @@ class OrderDetail {
                                 children: [
                                   Padding(
                                     padding: const EdgeInsets.only(
-                                        top: 12.0, right: 35),
+                                        top: 12.0, right: 10),
                                     child: Column(children: [
                                       Text(
                                         '\$' + item.totalPrice.toString(),
@@ -318,7 +376,7 @@ class OrderDetail {
                         painter: BorderPainter(),
                         child: Container(
                           height: 70.0,
-                          width: 400,
+                          width: 470,
                         )),
                   ],
                 ),
@@ -352,7 +410,7 @@ class OrderDetail {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                            builder: (context) => Verify()));
+                                            builder: (context) => Verify(oid: item.orderId,)));
                                   },
                                   shape: RoundedRectangleBorder(
                                       borderRadius:
@@ -404,6 +462,42 @@ class OrderDetail {
     );
   }
 }
+showDriver(DeliveryResource dri, BuildContext context) {
+    // set up the button
+    Widget okButton = FlatButton(
+      child: Text("OK"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Driver Details"),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text("Driver name: " + dri.driverName),
+          Text("Phone number: " + dri.phone.toString()),
+          Text("Licence number: " + dri.licenseNumber),
+          Text("threePLName: " + dri.threePlName),
+          Text("Vehicle number: " + dri.vehicleNumber)
+        ],
+      ),
+      actions: [
+        okButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
 
 class CustomClipPath extends CustomClipper<Path> {
   var radius = 30.0;

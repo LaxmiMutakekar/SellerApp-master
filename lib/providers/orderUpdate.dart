@@ -6,12 +6,16 @@ class Update extends ChangeNotifier {
   List<Orders> ordersList = [];
 
   String sellerName = " ";
+  String chosenValue = 'All accepted orders';
   bool sellerAvlb = true;
   void ordersAdded() async {
     ordersList = await APIServices.fetchOrders();
     notifyListeners();
   }
-
+  void sort(String value) {
+    chosenValue=value;
+    notifyListeners();
+  }
   void updateOrderStatus(String status, int index) {
     ordersList[index].status = status;
     notifyListeners();

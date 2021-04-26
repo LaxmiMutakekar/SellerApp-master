@@ -19,5 +19,6 @@ class AppConfig {
   static String rejectedStatus='Order Rejected';
   static String timeout='Order Timeout';
   static String habdedoverStatus='Delivery Assigned';
+  static String doneStatus='Order Complete';
   static double elevation=8;
 }

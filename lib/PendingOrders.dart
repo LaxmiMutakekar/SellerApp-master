@@ -85,8 +85,9 @@ class _PendingOrdersState extends State<PendingOrders> {
                                   ),
                                   Text(
                                     time,
-                                    style: TextStyle(color: Colors.black),
+                                    style: TextStyle(color: Color(0xff2248B4)),
                                   ),
+                                  Text('Order placed time',style: TextStyle(fontSize: 12,fontWeight: FontWeight.w300),)
                                 ],
                               ),
                             ],

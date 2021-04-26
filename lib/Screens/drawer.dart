@@ -1,4 +1,5 @@
 import 'package:Seller_App/screens/LoginScreen.dart';
+import 'package:Seller_App/screens/orderHistory.dart';
 import 'catalogue.dart';
 import '../session.dart';
 import 'package:flutter/material.dart';
@@ -68,7 +69,12 @@ class _MenuDashboardState extends State<MenuDashboard> {
                     Row(
                       children: [
                         TextButton.icon(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => OrderHistory()));
+                          },
                           icon: Icon(
                             Icons.history,
                             color: Colors.white,
