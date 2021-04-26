@@ -1,9 +1,9 @@
-import 'package:order_listing/Home.dart';
+import 'package:Seller_App/Home.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:order_listing/APIServices/APIServices.dart';
-import 'package:order_listing/models/loginModel.dart';
-import 'package:order_listing/widgets/progressHUD.dart';
+import 'package:Seller_App/APIServices/APIServices.dart';
+import 'package:Seller_App/models/loginModel.dart';
+import 'package:Seller_App/widgets/progressHUD.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -133,8 +133,6 @@ class _LoginPageState extends State<LoginPage> {
                               vertical: 12, horizontal: 80),
                           onPressed: () {
                             if (validateAndSave()) {
-                              print(loginRequestModel.toJson());
-
                               setState(() {
                                 isApiCallProcess = true;
                               });

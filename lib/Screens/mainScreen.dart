@@ -1,12 +1,11 @@
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:order_listing/pendingOrders.dart';
-import 'package:order_listing/activeOrders.dart';
-import 'package:order_listing/widgets/cards.dart';
-import 'package:order_listing/providers/orderUpdate.dart';
-import 'package:order_listing/widgets/widgets.dart';
-import 'package:order_listing/App_configs/app_configs.dart';
+import '../pendingOrders.dart';
+import '../activeOrders.dart';
+import '../widgets/cards.dart';
+import '../providers/orderUpdate.dart';
+import '../widgets/widgets.dart';
+import '../App_configs/app_configs.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -58,6 +57,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
           child: Scaffold(
             backgroundColor: AppConfig.backgroundM,
             appBar: AppBar(
+              automaticallyImplyLeading: false,
               backgroundColor: AppConfig.backgroundM,
               elevation: 0,
               title: Consumer<Update>(builder: (context, Update orders, child) {

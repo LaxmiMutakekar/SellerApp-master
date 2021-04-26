@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:order_listing/models/rejectionReasons.dart';
+import 'package:Seller_App/models/rejectionReasons.dart';
 class RejectionReasons extends ChangeNotifier {
   String _currentReason = reasons[0];
   RejectionReasons();
@@ -9,7 +9,6 @@ class RejectionReasons extends ChangeNotifier {
   updateReason(String value) {
     if (value != _currentReason) {
       _currentReason = value;
-      print(_currentReason);
       notifyListeners();
     }
   }

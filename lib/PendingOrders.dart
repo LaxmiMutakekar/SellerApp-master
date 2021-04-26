@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:order_listing/App_configs/app_configs.dart';
-import 'package:order_listing/providers/rejection.dart';
+import 'App_configs/app_configs.dart';
+import 'providers/rejection.dart';
 import 'widgets/cards.dart';
-import 'package:order_listing/models/orders.dart';
+import 'models/orders.dart';
 import 'widgets/BottomModalBar.dart';
-import 'package:order_listing/widgets/LoadingAnimation.dart';
 import 'APIServices/APIServices.dart';
 import 'widgets/widgets.dart';
 import 'models/rejectionReasons.dart';
 import 'package:provider/provider.dart';
-import 'package:order_listing/models/rejectionReasons.dart';
 import 'providers/orderUpdate.dart';
+import 'package:intl/intl.dart';
 
 class PendingOrders extends StatefulWidget {
   @override
@@ -19,10 +18,12 @@ class PendingOrders extends StatefulWidget {
 
 class _PendingOrdersState extends State<PendingOrders> {
   OrderDetail orderItem = new OrderDetail();
-
+  DateTime orderplacedTime;
+  String time;
   @override
   Widget build(BuildContext context) {
     String url;
+    String networkUrl;
     return Consumer<Update>(builder: (context, Update orders, child) {
       return ListView.builder(
           scrollDirection: Axis.horizontal,
@@ -30,12 +31,15 @@ class _PendingOrdersState extends State<PendingOrders> {
           shrinkWrap: true,
           itemBuilder: (BuildContext context, int index) {
             Orders pendings = orders.ordersList[index];
+            orderplacedTime=pendings.orderPlacedDate;
+            time=DateFormat.jm().format(orderplacedTime);
+            networkUrl=pendings.businessUnit;
             switch (pendings.businessUnit) {
               case 'Sodimac':
-                url = 'assets/sodi.png';
+                url = 'assets/$networkUrl.png';
                 break;
               case 'Tottus':
-                url = 'assets/tottus.png';
+                url = 'assets/$networkUrl.png';
                 break;
               default:
             }
@@ -80,13 +84,7 @@ class _PendingOrdersState extends State<PendingOrders> {
                                     ),
                                   ),
                                   Text(
-                                    pendings.orderPlacedDate.hour.toString() +
-                                        ":" +
-                                        pendings.orderPlacedDate.minute
-                                            .toString() +
-                                        ((pendings.orderPlacedDate.hour) < 12
-                                            ? ' A.M'
-                                            : ' P.M'),
+                                    time,
                                     style: TextStyle(color: Colors.black),
                                   ),
                                 ],
@@ -137,6 +135,7 @@ class _PendingOrdersState extends State<PendingOrders> {
                                       AppConfig.acceptStatus, index);
                                   APIServices.changeOrderStatus(
                                       pendings.orderId, AppConfig.acceptStatus);
+                                      showInSnackBar('Order accepted succesfully!!',context);
                                 },
                                 color: AppConfig.buttonBackgrd,
                                 shape: RoundedRectangleBorder(
@@ -215,6 +214,7 @@ class _PendingOrdersState extends State<PendingOrders> {
                     orders.updateOrderStatus(AppConfig.rejectedStatus, i);
                     APIServices.changeOrderStatus(
                         pending.orderId, AppConfig.rejectedStatus);
+                  
                     Navigator.of(context).pop();
                   }),
               FlatButton(
@@ -226,4 +226,6 @@ class _PendingOrdersState extends State<PendingOrders> {
           );
         });
       });
+      
 }
+

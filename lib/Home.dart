@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:order_listing/App_configs/app_configs.dart';
+import 'providers/products.dart';
+import 'screens/mainScreen.dart';
 import 'screens/drawer.dart';
-import 'package:order_listing/screens/mainScreen.dart';
-import 'package:order_listing/widgets/cards.dart';
-import 'package:order_listing/widgets/widgets.dart';
-import 'pendingOrders.dart';
-import 'activeOrders.dart';
 import 'package:provider/provider.dart';
 import 'providers/orderUpdate.dart';
 
@@ -15,6 +11,16 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Provider.of<Update>(context, listen: false).ordersAdded();
+    Provider.of<Update>(context, listen: false).fetchName();
+    Provider.of<Update>(context, listen: false).fetchAvlb();
+    Provider.of<Product>(context, listen: false).addProducts();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Material(

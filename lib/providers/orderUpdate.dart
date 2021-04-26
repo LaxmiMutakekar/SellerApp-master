@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:order_listing/APIServices/APIServices.dart';
-import 'package:order_listing/models/orders.dart';
+import 'package:Seller_App/APIServices/APIServices.dart';
+import 'package:Seller_App/models/orders.dart';
 
 class Update extends ChangeNotifier {
   List<Orders> ordersList = [];
+
   String sellerName = " ";
   bool sellerAvlb = true;
   void ordersAdded() async {

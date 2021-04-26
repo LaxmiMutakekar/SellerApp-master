@@ -1,69 +1,39 @@
 import 'package:flutter/material.dart';
-import 'package:order_listing/APIServices/APIServices.dart';
-import 'package:order_listing/App_configs/app_configs.dart';
-import 'package:order_listing/models/orders.dart';
+import 'package:Seller_App/APIServices/APIServices.dart';
+import 'package:Seller_App/App_configs/app_configs.dart';
+import 'package:Seller_App/models/orders.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:provider/provider.dart';
-import 'package:order_listing/providers/orderUpdate.dart';
+import 'package:Seller_App/providers/orderUpdate.dart';
 
-class AppBarContainer extends StatefulWidget {
-
-  @override
-  _AppBarContainerState createState() => _AppBarContainerState();
-}
-
-class _AppBarContainerState extends State<AppBarContainer> {
-  @override
-  Widget build(BuildContext context) {
-    return Consumer<Update>(builder: (context, Update orders, child) {
-    return Container(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          IconButton(
-            icon: Icon(Icons.menu, color: Colors.black),
-            onPressed: () {
-              setState(() {
-                AppConfig.isDrawerOpen=true;
-                print(AppConfig.isDrawerOpen);
-              });
-            },
-          ),
-          Column(
-            children: [Text(orders.sellerName,style: TextStyle(fontSize: 14),), SwitchButton()],
-          ),
-          Icon(
-            Icons.notifications_active,
-            color: AppConfig.iconColor,
-          ),
-        ],
-      ),
-    );
-    });
-  }
-}
 String productName(List<OrderItem> data) {
-    String productNames = "";
-    String firstHalf="";
-    for (int i = 0; i < data.length; i++) {
-      if(i==data.length-1)
+  String productNames = "";
+  String firstHalf = "";
+  for (int i = 0; i < data.length; i++) {
+    if (i == data.length - 1) {
+      productNames += data[i].productName + " ";
+    } else {
       {
-      productNames += data[i].productName+" " ;
-      }
-      else{
-        {
-      productNames += data[i].productName + ", ";
-      }
+        productNames += data[i].productName + ", ";
       }
     }
-    if (productNames.length > 17) {
-      for (int i = 0; i < 17; i++) {
-        firstHalf += productNames[i];
-      }
-      productNames = firstHalf + "...";
-    }
-    return productNames;
   }
+  if (productNames.length > 15) {
+    for (int i = 0; i < 15; i++) {
+      firstHalf += productNames[i];
+    }
+    productNames = firstHalf + "...";
+  }
+  return productNames;
+}
+
+void showInSnackBar(String value, BuildContext context) {
+  Scaffold.of(context).showSnackBar(new SnackBar(
+    content: new Text(value,style: TextStyle(fontWeight: FontWeight.bold),),
+    duration: const Duration(seconds: 2),
+    backgroundColor: Colors.green[300],
+  ));
+}
 
 class SwitchButton extends StatefulWidget {
   @override
@@ -74,28 +44,27 @@ class _SwitchButtonState extends State<SwitchButton> {
   bool isSwitched = true;
   @override
   Widget build(BuildContext context) {
-
     return Consumer<Update>(builder: (context, Update orders, child) {
-    return FlutterSwitch(
-        activeSwitchBorder: Border.all(width: 2, color: Colors.green),
-        activeColor: Colors.white,
-        activeToggleColor: Colors.green,
-        inactiveToggleBorder: Border.all(width: 3.0, color: Colors.black),
-        activeToggleBorder: Border.all(width: 2.0, color: Colors.green),
-        width: 45.0,
-        height: 20.0,
-        valueFontSize: 10.0,
-        activeTextColor: Colors.green,
-        toggleSize: 18.0,
-        value: orders.sellerAvlb,
-        borderRadius: 15.0,
-        padding: 0.0,
-        showOnOff: true,
-        onToggle: (val) {
-          setState(() {
-            showAleart(val);
+      return FlutterSwitch(
+          activeSwitchBorder: Border.all(width: 2, color: Colors.green),
+          activeColor: Colors.white,
+          activeToggleColor: Colors.green,
+          inactiveToggleBorder: Border.all(width: 3.0, color: Colors.black),
+          activeToggleBorder: Border.all(width: 2.0, color: Colors.green),
+          width: 45.0,
+          height: 20.0,
+          valueFontSize: 10.0,
+          activeTextColor: Colors.green,
+          toggleSize: 18.0,
+          value: orders.sellerAvlb,
+          borderRadius: 15.0,
+          padding: 0.0,
+          showOnOff: true,
+          onToggle: (val) {
+            setState(() {
+              showAleart(val);
+            });
           });
-        });
     });
   }
 
@@ -110,8 +79,7 @@ class _SwitchButtonState extends State<SwitchButton> {
       child: val ? Text("Go online") : Text('Go Offline'),
       onPressed: () {
         setState(() {
-          Provider.of<Update>(context, listen: false)
-              .updateStatus(val);
+          Provider.of<Update>(context, listen: false).updateStatus(val);
         });
         APIServices.updateAvailable(val);
         Navigator.of(context, rootNavigator: true).pop();
@@ -134,7 +102,6 @@ class _SwitchButtonState extends State<SwitchButton> {
       },
     );
   }
-  
 }
 
 Container errorBox() {
@@ -171,5 +138,4 @@ Container errorBox() {
       ),
     ),
   );
-  
 }

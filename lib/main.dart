@@ -1,24 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:order_listing/providers/orderUpdate.dart';
-import 'package:order_listing/providers/rejection.dart';
-import 'package:order_listing/widgets/root.dart';
+import 'providers/orderUpdate.dart';
+import 'providers/products.dart';
+import 'providers/rejection.dart';
+import 'widgets/root.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'session.dart';
-void main() async{
+
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Session.init();
   runApp(MultiProvider(
-      providers: [
-        
-        ChangeNotifierProvider<RejectionReasons>(
-        create: (_) => RejectionReasons(),),
-        ChangeNotifierProvider<Update>(
-        create: (_) => Update(),),
-        
-      ],
-      child: MyApp(),
-    ));
+    providers: [
+      ChangeNotifierProvider<RejectionReasons>(
+        create: (_) => RejectionReasons(),
+      ),
+      ChangeNotifierProvider<Product>(
+        create: (_) => Product(),
+      ),
+      ChangeNotifierProvider<Update>(
+        create: (_) => Update(),
+      ),
+    ],
+    child: MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -27,18 +32,18 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
+      title: 'Seller App',
       theme: ThemeData(
-        
         primarySwatch: Colors.blue,
+        highlightColor: Colors.black
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(title: 'Seller App Home Page'),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-
   MyHomePage({Key key, this.title}) : super(key: key);
   final String title;
   @override
@@ -46,22 +51,22 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  FirebaseMessaging _firebaseMessaging =FirebaseMessaging();
-   _getToken() {
+  FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+  _getToken() {
     _firebaseMessaging.getToken().then((token) {
       print("Device Token: $token");
     });
-}
-_configureFirebaseListeners() {
+  }
+
+  _configureFirebaseListeners() {
     _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
-        
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
             content: ListTile(
-              title: Text(message['notification']['title']),
-              subtitle: Text(message['notification']['body']),
+              title: Text('New Order placed!!'),
+              subtitle: Text('continue'),
             ),
             actions: <Widget>[
               FlatButton(
@@ -71,53 +76,49 @@ _configureFirebaseListeners() {
             ],
           ),
         );
-       print('onMessage: $message');
+        print('onMessage: $message');
         Provider.of<Update>(context, listen: false).ordersAdded();
         _setMessage(message);
       },
       onLaunch: (Map<String, dynamic> message) async {
-        print('onLaunch: $message');
+        //print('onLaunch: $message');
         _setMessage(message);
       },
       onResume: (Map<String, dynamic> message) async {
         Provider.of<Update>(context, listen: false).ordersAdded();
-        print('onResume: $message');
+        //print('onResume: $message');
         _setMessage(message);
       },
     );
     _firebaseMessaging.requestNotificationPermissions(
       const IosNotificationSettings(sound: true, badge: true, alert: true),
     );
-}
-List<Message> _messages;
+  }
+
+  List<Message> _messages;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    Provider.of<Update>(context, listen: false).ordersAdded();
-    Provider.of<Update>(context, listen: false).fetchName();
-    Provider.of<Update>(context, listen: false).fetchAvlb();
-    _messages=List<Message>();
+    _messages = List<Message>();
     _getToken();
     _configureFirebaseListeners();
-
-    
   }
+
   _setMessage(Map<String, dynamic> message) {
     final notification = message['notification'];
     final data = message['data'];
     final String title = notification['title'];
     final String body = notification['body'];
     String mMessage = data['message'];
-    print("Title: $title, body: $body, message: $mMessage");
     setState(() {
       Message msg = Message(title, body, mMessage);
       _messages.add(msg);
     });
-}
+  }
+
   @override
   Widget build(BuildContext context) {
-   
     return MaterialApp(
       title: 'Image Loader',
       debugShowCheckedModeBanner: false,
@@ -139,7 +140,7 @@ List<Message> _messages;
           bodyText1: TextStyle(
             fontSize: 14.0,
             fontWeight: FontWeight.w400,
-            color: Colors.blueAccent,
+            color: Colors.black,
           ),
         ),
       ),
@@ -147,13 +148,14 @@ List<Message> _messages;
     );
   }
 }
-class Message{
+
+class Message {
   String title;
   String body;
   String message;
-  Message(title,body,message){
-    this.title=title;
-    this.body=body;
-    this.message=message;
+  Message(title, body, message) {
+    this.title = title;
+    this.body = body;
+    this.message = message;
   }
 }

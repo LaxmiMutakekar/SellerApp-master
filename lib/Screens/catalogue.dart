@@ -1,9 +1,11 @@
-import 'package:order_listing/session.dart';
+import 'package:Seller_App/App_configs/app_configs.dart';
+import 'package:Seller_App/providers/products.dart';
 import 'package:flutter/material.dart';
-import 'package:order_listing/APIServices/APIServices.dart';
-import 'package:order_listing/models/products.dart';
+import 'package:Seller_App/models/products.dart';
+import 'package:Seller_App/widgets/cards.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_switch/flutter_switch.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:Seller_App/widgets/switchButton.dart';
 
 class Catalogue extends StatefulWidget {
   @override
@@ -11,138 +13,118 @@ class Catalogue extends StatefulWidget {
 }
 
 class _CatalogueState extends State<Catalogue> {
-  bool vl = false;
-  Future<List<dynamic>> _products;
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    _products = APIServices.fetchProducts();
-  }
-
+  SwitchButton switchButton = new SwitchButton();
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "Catalogue",
-          textAlign: TextAlign.center,
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-        ),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            FutureBuilder(
-                future: _products,
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return ListView.builder(
-                        scrollDirection: Axis.vertical,
-                        physics: NeverScrollableScrollPhysics(),
-                        itemCount: snapshot.data.length,
-                        shrinkWrap: true,
-                        itemBuilder: (BuildContext context, int index) {
-                          Products item = snapshot.data[index];
-                          //vl = item.available;
-                          return GestureDetector(
-                            onTap: () {},
-                            child: Card(
-                                child: Row(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Container(
-                                      height: 80,
-                                      width: 80,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(8),
-                                        image: new DecorationImage(
-                                            fit: BoxFit.fill,
-                                            image: NetworkImage(
-                                                'https://raw.githubusercontent.com/LaxmiMutakekar/SellerApp-master/master/assets/pizza.jpeg')),
-                                      )),
+    return Consumer<Product>(builder: (context, Product products, child) {
+      return Scaffold(
+          backgroundColor: AppConfig.homeScreen,
+          appBar: AppBar(
+            title: Text(
+              "Catalogue",
+              textAlign: TextAlign.center,
+              style:
+                  TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+            ),
+          ),
+          body: ListView.builder(
+              scrollDirection: Axis.vertical,
+              itemCount: products.productsList.length,
+              shrinkWrap: true,
+              itemBuilder: (BuildContext context, int index) {
+                Products item = products.productsList[index];
+                return GestureDetector(
+                  onTap: () {},
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                    child: Cards(
+                        padding: EdgeInsets.all(5),
+                        margin: EdgeInsets.all(3),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            children: [
+                              ClipRRect(
+                                clipBehavior: Clip.hardEdge,
+                                borderRadius: BorderRadius.circular(20),
+                                child: Container(
+                                  width: 100,
+                                  height: 100,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(13)),
+                                  clipBehavior: Clip.hardEdge,
+                                  child: CachedNetworkImage(
+                                    imageUrl: item.image,
+                                    fit: BoxFit.fill,
+                                    placeholder: (context, url) =>
+                                        CircularProgressIndicator(),
+                                    errorWidget: (context, url, error) =>
+                                        Icon(Icons.error),
+                                  ),
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      top: 8.0, bottom: 8.0),
-                                  child: Container(
-                                      child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            Text(
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Container(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width /
+                                                6,
+                                            child: Text(
                                               item.name,
                                               style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 20.0),
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold),
                                             ),
-                                            FlutterSwitch(
-                                              width: 50.0,
-                                              height: 25.0,
-                                              valueFontSize: 13.0,
-                                              toggleSize: 10.0,
-                                              value: !vl,
-                                              borderRadius: 30.0,
-                                              padding: 6.0,
-                                              showOnOff: true,
-                                              onToggle: (val) {
-                                                print(item.pid.toString() +
-                                                    vl.toString());
-                                                setState(() {
-                                                  vl = val;
-                                                  // APIService
-                                                  //     .updateProdAvailable(
-                                                  //         val,
-                                                  //         value.token,
-                                                  //         item.pid);
-                                                });
-                                              },
-                                            )
-                                          ],
-                                        ),
-                                        Text(
-                                          item.skuId,
-                                          style: TextStyle(fontSize: 12),
-                                        ),
-                                        SizedBox(height: 10),
-                                        Container(
-                                          width: 250,
-                                          child: Text(
-                                            item.description,
-                                            maxLines: 2,
-                                            overflow: TextOverflow.ellipsis,
-                                            softWrap: false,
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.w200,
-                                                fontSize: 15),
                                           ),
+                                          SizedBox(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width /
+                                                4,
+                                          ),
+                                          switchButton.showSwitch(
+                                              context, index),
+                                        ],
+                                      ),
+                                      Text(
+                                        item.skuId,
+                                        style: TextStyle(fontSize: 12),
+                                      ),
+                                      SizedBox(height: 10),
+                                      Container(
+                                        width: 250,
+                                        child: Text(
+                                          item.description,
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                          softWrap: false,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w200,
+                                              fontSize: 15),
                                         ),
-                                        SizedBox(height: 3),
-                                        Text(
-                                          item.price.toString(),
-                                          style: TextStyle(color: Colors.red),
-                                        ),
-                                      ])),
-                                ),
-                              ],
-                            )),
-                          );
-                        });
-                  } else {
-                    return CircularProgressIndicator();
-                  }
-                }),
-          ],
-        ),
-      ),
-    );
+                                      ),
+                                      SizedBox(height: 3),
+                                      Text(
+                                        item.price.toString(),
+                                        style: TextStyle(color: Colors.red),
+                                      ),
+                                    ]),
+                              ),
+                            ],
+                          ),
+                        )),
+                  ),
+                );
+              }));
+    });
   }
 }

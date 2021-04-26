@@ -16,9 +16,11 @@ class Orders {
         this.status,
         this.businessUnit,
         this.totalPrice,
+        this.totalQuantity,
         this.orderFulfillmentTime,
         this.orderPreparationTime,
         this.orderItems,
+        this.deliveryResource,
     });
 
     int orderId;
@@ -27,9 +29,11 @@ class Orders {
     String status;
     String businessUnit;
     double totalPrice;
+    int totalQuantity;
     double orderFulfillmentTime;
     double orderPreparationTime;
     List<OrderItem> orderItems;
+    DeliveryResource deliveryResource;
 
     factory Orders.fromJson(Map<String, dynamic> json) => Orders(
         orderId: json["orderId"],
@@ -38,9 +42,11 @@ class Orders {
         status: json["status"],
         businessUnit: json["businessUnit"],
         totalPrice: json["totalPrice"],
+        totalQuantity: json["totalQuantity"],
         orderFulfillmentTime: json["orderFulfillmentTime"],
         orderPreparationTime: json["orderPreparationTime"],
         orderItems: List<OrderItem>.from(json["orderItems"].map((x) => OrderItem.fromJson(x))),
+        deliveryResource: DeliveryResource.fromJson(json["deliveryResource"]),
     );
 
     Map<String, dynamic> toJson() => {
@@ -50,9 +56,11 @@ class Orders {
         "status": status,
         "businessUnit": businessUnit,
         "totalPrice": totalPrice,
+        "totalQuantity": totalQuantity,
         "orderFulfillmentTime": orderFulfillmentTime,
         "orderPreparationTime": orderPreparationTime,
         "orderItems": List<dynamic>.from(orderItems.map((x) => x.toJson())),
+        "deliveryResource": deliveryResource.toJson(),
     };
 }
 
@@ -105,6 +113,46 @@ class Location {
     Map<String, dynamic> toJson() => {
         "latitude": latitude,
         "longitude": longitude,
+    };
+}
+
+class DeliveryResource {
+    DeliveryResource({
+        this.driverName,
+        this.phone,
+        this.image,
+        this.otp,
+        this.licenseNumber,
+        this.threePlName,
+        this.vehicleNumber,
+    });
+
+    dynamic driverName;
+    int phone;
+    dynamic image;
+    dynamic otp;
+    dynamic licenseNumber;
+    dynamic threePlName;
+    dynamic vehicleNumber;
+
+    factory DeliveryResource.fromJson(Map<String, dynamic> json) => DeliveryResource(
+        driverName: json["driverName"],
+        phone: json["phone"],
+        image: json["image"],
+        otp: json["otp"],
+        licenseNumber: json["licenseNumber"],
+        threePlName: json["threePLName"],
+        vehicleNumber: json["vehicleNumber"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "driverName": driverName,
+        "phone": phone,
+        "image": image,
+        "otp": otp,
+        "licenseNumber": licenseNumber,
+        "threePLName": threePlName,
+        "vehicleNumber": vehicleNumber,
     };
 }
 
