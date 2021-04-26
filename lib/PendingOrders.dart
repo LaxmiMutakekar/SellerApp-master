@@ -131,10 +131,12 @@ class _PendingOrdersState extends State<PendingOrders> {
                                 elevation: 4,
                                 splashColor: AppConfig.buttonSplash,
                                 onPressed: () {
-                                  orders.updateOrderStatus(
+                                  setState(() {
+                                    orders.updateOrderStatus(
                                       AppConfig.acceptStatus, index);
                                   APIServices.changeOrderStatus(
                                       pendings.orderId, AppConfig.acceptStatus);
+                                  });                              
                                       showInSnackBar('Order accepted succesfully!!',context);
                                 },
                                 color: AppConfig.buttonBackgrd,
@@ -210,10 +212,12 @@ class _PendingOrdersState extends State<PendingOrders> {
               FlatButton(
                   child: Text('Continue'),
                   onPressed: () {
-                    setState(() {});
-                    orders.updateOrderStatus(AppConfig.rejectedStatus, i);
+                    setState(() {
+                      orders.updateOrderStatus(AppConfig.rejectedStatus, i);
                     APIServices.changeOrderStatus(
                         pending.orderId, AppConfig.rejectedStatus);
+                    });
+                    
                   
                     Navigator.of(context).pop();
                   }),

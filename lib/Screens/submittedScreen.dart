@@ -45,9 +45,9 @@ class SubmitPage extends StatelessWidget {
                 height: 45,
               ),
               Container(
-                  child: Text('Order Fulfilled',
+                  child: Text('Order Handover Successful',
                       style: TextStyle(
-                          fontSize: 38, fontWeight: FontWeight.bold))),
+                          fontSize: 30, fontWeight: FontWeight.bold))),
               Container(
                   child: Icon(
                 Icons.check_sharp,

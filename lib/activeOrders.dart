@@ -171,7 +171,14 @@ class _ActiveOrdersState extends State<ActiveOrders>
                                 elevation: 4,
                                 splashColor: AppConfig.buttonSplash,
                                 onPressed: () {
-                                  setState(() {});
+                                  setState(() {
+                                    orders.updateOrderStatus(
+                                      AppConfig.markAsDone, index);
+                                  APIServices.changeOrderStatus(
+                                      active.orderId, AppConfig.markAsDone);
+                                    
+                                  });
+                                  
                                 },
                                 color: AppConfig.buttonBackgrd,
                                 shape: RoundedRectangleBorder(

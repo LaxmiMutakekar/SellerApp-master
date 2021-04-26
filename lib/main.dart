@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'providers/orderUpdate.dart';
 import 'providers/products.dart';
 import 'providers/rejection.dart';
-import 'widgets/root.dart';
+import 'root.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'session.dart';
