@@ -22,32 +22,33 @@ class _ActiveOrdersState extends State<ActiveOrders>
   Animation<Color> animationTwo;
   OrderDetail orderItem = new OrderDetail();
   @override
-    void initState() {
-      // TODO: implement initState
-      //
-      super.initState();
-      controllerOne = AnimationController(
-          duration: Duration(milliseconds: 500), vsync: this);
-      animationOne = ColorTween(begin: Colors.black38, end: Colors.white24)
-          .animate(controllerOne);
-      animationTwo = ColorTween(begin: Colors.white24, end: Colors.black38)
-          .animate(controllerOne);
-      controllerOne.forward();
-      controllerOne.addListener(() {
-        if (controllerOne.status == AnimationStatus.completed) {
-          controllerOne.reverse();
-        } else if (controllerOne.status == AnimationStatus.dismissed) {
-          controllerOne.forward();
-        }
-        this.setState(() {});
-      });
-    }
+  void initState() {
+    // TODO: implement initState
+    //
+    super.initState();
+    controllerOne =
+        AnimationController(duration: Duration(milliseconds: 500), vsync: this);
+    animationOne = ColorTween(begin: Colors.black38, end: Colors.white24)
+        .animate(controllerOne);
+    animationTwo = ColorTween(begin: Colors.white24, end: Colors.black38)
+        .animate(controllerOne);
+    controllerOne.forward();
+    controllerOne.addListener(() {
+      if (controllerOne.status == AnimationStatus.completed) {
+        controllerOne.reverse();
+      } else if (controllerOne.status == AnimationStatus.dismissed) {
+        controllerOne.forward();
+      }
+      this.setState(() {});
+    });
+  }
 
-    @override
-    void dispose() {
-      super.dispose();
-      controllerOne.dispose();
-    }
+  @override
+  void dispose() {
+    super.dispose();
+    controllerOne.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     String url;
@@ -60,7 +61,7 @@ class _ActiveOrdersState extends State<ActiveOrders>
           shrinkWrap: true,
           itemBuilder: (BuildContext context, int index) {
             Orders active = orders.ordersList[index];
-            networhUrl=active.businessUnit;
+            networhUrl = active.businessUnit;
             switch (active.businessUnit) {
               case 'Sodimac':
                 url = 'assets/$networhUrl.png';
@@ -70,195 +71,200 @@ class _ActiveOrdersState extends State<ActiveOrders>
                 break;
               default:
             }
-            if(orders.chosenValue=='All accepted orders')
-            {
-              if(active.status!='Order Placed'&&active.status!='Order Rejected')
-              {
+            if (orders.chosenValue == 'All accepted orders') {
+              if (active.status != 'Order Placed' &&
+                  active.status != 'Order Rejected') {
                 return activeOrders(active, url, orders, index);
+              } else {
+                return Container();
               }
-              else{
+            } else {
+              if (active.status == orders.chosenValue) {
+                return activeOrders(active, url, orders, index);
+              } else {
                 return Container();
               }
             }
-
-            else  {
-              if(active.status == orders.chosenValue)
-              {
-                return activeOrders(active, url, orders, index);
-              }
-              else {
-              return Container();
-            }
-            } 
           });
     });
   }
-   activeOrders(Orders active,url,orders,index){
-    return GestureDetector(
-                onTap: () {
-                  orderItem.settingModalBottomSheet(context, active,index);
-                },
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 2.0),
-                  child: Cards(
-                    color: Colors.grey[300],
-                    radius: BorderRadius.circular(20),
-                    margin: EdgeInsets.all(3),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(10.0),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10)),
-                                  clipBehavior: Clip.hardEdge,
-                                  width: 100,
-                                  height: 60,
-                                  child: FittedBox(
-                                    child: Image(
-                                      image: new AssetImage(url),
-                                    ),
-                                    fit: BoxFit.fill,
-                                  ),
-                                ),
-                              ),
-                              SizedBox(width: 60),
-                              Container(
-                                padding: EdgeInsets.all(8),
-                                child: CircularCountDownTimer(
-                                  width: 60.0,
-                                  height: 60.0,
-                                  duration:
-                                      active.orderPreparationTime.toInt() ,
-                                  fillColor: Colors.amber,
-                                  ringColor: Colors.white,
-                                  controller: _controller,
-                                  backgroundColor: Colors.white54,
-                                  strokeWidth: 5.0,
-                                  strokeCap: StrokeCap.round,
-                                  isTimerTextShown: true,
-                                  isReverse: true,
-                                  onComplete: () {
-                                    setState(() {
-                                      APIServices.changeOrderStatus(
-                                        active.orderId, AppConfig.timeout);
-                                        orders.updateOrderStatus(AppConfig.timeout, index);
 
-                                    });
-                                    
-                                  },
-                                  textStyle: TextStyle(
-                                      fontSize: 15.0, color: Colors.black),
-                                ),
-                              ),
-                            ],
+  activeOrders(Orders active, url, orders, index) {
+    bool done = false;
+    return GestureDetector(
+      onTap: () {
+        orderItem.settingModalBottomSheet(context, active, index);
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 2.0),
+        child: Cards(
+          color: Colors.grey[300],
+          radius: BorderRadius.circular(20),
+          margin: EdgeInsets.all(3),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10)),
+                        clipBehavior: Clip.hardEdge,
+                        width: 100,
+                        height: 60,
+                        child: FittedBox(
+                          child: Image(
+                            image: new AssetImage(url),
                           ),
+                          fit: BoxFit.fill,
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              '#00${active.orderId}',
-                              style: TextStyle(
-                                  fontSize: 18.0,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(top:16.0),
-                              child: Container(
-                                        //width: 100,
-                                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(10),color: active.status=='Order Ready'?AppConfig.readyColor:active.status=='Order Complete'?AppConfig.completedColor:AppConfig.preparingColor,),
-                                        
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(2.0),
-                                          child: Text(
-                                            
-                                            active.status,
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.bold,color: Colors.white),
-                                          ),
-                                        )),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              productName(active.orderItems),
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.normal,
-                                  color: AppConfig.hidingText),
-                            ),
-                            Text(
-                              '\$' + active.totalPrice.toInt().toString(),
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.normal,
-                                  color: AppConfig.hidingText),
-                            )
-                          ],
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 5.0),
-                          child: Container(
-                              height: 2,
-                              width: 140,
-                              color: AppConfig.hidingText),
-                        ),
-                        Container(
-                          child: Row(
-                            children: [
-                              active.status=='Order Preparing'? RaisedButton(
-                                elevation: 4,
-                                splashColor: AppConfig.buttonSplash,
-                                onPressed: () {
-                                  setState(() {
-                                    orders.updateOrderStatus(
-                                      AppConfig.markAsDone, index);
-                                  APIServices.changeOrderStatus(
-                                      active.orderId, AppConfig.markAsDone);
-                                    
-                                  });
-                                  
-                                },
-                                color: AppConfig.buttonBackgrd,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20)),
-                                child: Text("Mark as done",
-                                    style: TextStyle(
-                                        color: AppConfig.buttonText,
-                                        fontWeight: FontWeight.bold)),
-                              ):SizedBox(width:0),
-                              SizedBox(width: 8),
-                             active.status!='Order Complete'? RaisedButton(
-                                elevation: 4,
-                                splashColor: Colors.red,
-                                onPressed: () {},
-                                color: AppConfig.buttonBackgrd,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20)),
-                                child: Text("update ETC",
-                                    style: TextStyle(
-                                        color: AppConfig.buttonText,
-                                        fontWeight: FontWeight.bold)),
-                              ):Container(),
-                            ],
-                          ),
-                        )
-                      ],
+                      ),
                     ),
-                  ),
+                    SizedBox(width: 60),
+                    Container(
+                        padding: EdgeInsets.all(8),
+                        child: active.status == 'Order Preparing'
+                            ? CircularCountDownTimer(
+                                width: 60.0,
+                                height: 60.0,
+                                duration: active.orderPreparationTime.toInt()*60,
+                                fillColor:
+                                    done ? Colors.green[800] : Colors.red[700],
+                                ringColor: Colors.white,
+                                controller: _controller,
+                                backgroundColor: Colors.white54,
+                                strokeWidth: 2.0,
+                                strokeCap: StrokeCap.round,
+                                isTimerTextShown: true,
+                                isReverse: true,
+                                onComplete: () {
+                                  setState(() {
+                                    
+                                    done = true;
+                                  });
+                                  orders.updateOrderStatus(
+                                        AppConfig.timeout, index);
+                                  APIServices.changeOrderStatus(
+                                      active.orderId, AppConfig.timeout);
+                                },
+                                textFormat: CountdownTextFormat.MM_SS,
+                                textStyle: TextStyle(
+                                    fontSize: 15.0, color: Colors.black),
+                              )
+                            : Container()),
+                  ],
                 ),
-              );
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    '#00${active.orderId}',
+                    style: TextStyle(
+                        fontSize: 18.0,
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 16.0),
+                    child: Container(
+                        //width: 100,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: active.status == 'Order Ready'
+                              ? AppConfig.readyColor
+                              : active.status == 'Order Complete'
+                                  ? AppConfig.completedColor
+                                  : AppConfig.preparingColor,
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(2.0),
+                          child: Text(
+                            active.status,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
+                          ),
+                        )),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Text(
+                    productName(active.orderItems),
+                    style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.normal,
+                        color: AppConfig.hidingText),
+                  ),
+                  Text(
+                    '\$' + active.totalPrice.toInt().toString(),
+                    style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.normal,
+                        color: AppConfig.hidingText),
+                  )
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 5.0),
+                child: Container(
+                    height: 2, width: 140, color: AppConfig.hidingText),
+              ),
+              Container(
+                child: Row(
+                  children: [
+                    active.status == 'Order Preparing'
+                        ? RaisedButton(
+                            elevation: 4,
+                            splashColor: AppConfig.buttonSplash,
+                            onPressed: () {
+                              setState(() {
+                                orders.updateOrderStatus(
+                                    AppConfig.markAsDone, index);
+                                APIServices.changeOrderStatus(
+                                    active.orderId, AppConfig.markAsDone);
+                              });
+                            },
+                            color: AppConfig.buttonBackgrd,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20)),
+                            child: Text("Mark as done",
+                                style: TextStyle(
+                                    color: AppConfig.buttonText,
+                                    fontWeight: FontWeight.bold)),
+                          )
+                        : SizedBox(width: 0),
+                    SizedBox(width: 8),
+                    active.status != 'Order Complete'
+                        ? RaisedButton(
+                            elevation: 4,
+                            splashColor: Colors.red,
+                            onPressed: () {},
+                            color: AppConfig.buttonBackgrd,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20)),
+                            child: Text("update ETC",
+                                style: TextStyle(
+                                    color: AppConfig.buttonText,
+                                    fontWeight: FontWeight.bold)),
+                          )
+                        : Container(),
+                  ],
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

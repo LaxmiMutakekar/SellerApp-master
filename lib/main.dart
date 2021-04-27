@@ -51,14 +51,15 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  String deviceToken;
   FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   _getToken() {
-    
+   
     _firebaseMessaging.getToken().then((token) {
+     // APIServices.updateSellerDevice(token);
       print("Device Token: $token");
     });
   }
-
   _configureFirebaseListeners() {
     _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {

@@ -155,4 +155,23 @@ class APIServices {
     );
     return response;
   }
+  static Future<http.Response> updateSellerDevice(String token) async {
+    final response = await http.patch(
+      Uri.parse("http://10.0.2.2:8080/update/seller/device" ),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        "Authorization": "Bearer " + Session.token
+      },
+      body: jsonEncode(<String, String>{
+        "deviceId":token,
+      }),
+    );
+    if (response.statusCode == 200) {
+      print("Device token changed!");
+    } else {
+      print("Seller device token update failed!");
+    }
+    return response;
+  }
+
 }
