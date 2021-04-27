@@ -135,7 +135,7 @@ class _ActiveOrdersState extends State<ActiveOrders>
                                   width: 60.0,
                                   height: 60.0,
                                   duration:
-                                      active.orderPreparationTime.toInt() * 60,
+                                      active.orderPreparationTime.toInt() ,
                                   fillColor: Colors.amber,
                                   ringColor: Colors.white,
                                   controller: _controller,
@@ -145,8 +145,13 @@ class _ActiveOrdersState extends State<ActiveOrders>
                                   isTimerTextShown: true,
                                   isReverse: true,
                                   onComplete: () {
-                                    APIServices.changeOrderStatus(
+                                    setState(() {
+                                      APIServices.changeOrderStatus(
                                         active.orderId, AppConfig.timeout);
+                                        orders.updateOrderStatus(AppConfig.timeout, index);
+
+                                    });
+                                    
                                   },
                                   textStyle: TextStyle(
                                       fontSize: 15.0, color: Colors.black),

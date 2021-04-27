@@ -18,7 +18,7 @@ class Update extends ChangeNotifier {
   }
   void updateOrderStatus(String status, int index) {
     ordersList[index].status = status;
-    print(status);
+    //print(status);
     notifyListeners();
   }
 
