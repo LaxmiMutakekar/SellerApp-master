@@ -168,7 +168,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                                 onChanged: (String value) {
                                   setState(() {
                                     _chosenValue = value;
-                                    print(_chosenValue);
+                                    //print(_chosenValue);
                                   });
 
                                   Provider.of<Update>(context, listen: false)

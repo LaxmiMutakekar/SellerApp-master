@@ -5,8 +5,9 @@ import 'package:pin_code_fields/pin_code_fields.dart';
 class Verify extends StatelessWidget {
   
   final int oid;
+  final int index;
    Verify(
-      {Key key,this.oid})
+      {Key key,this.oid,this.index})
       : super(key: key);
   String otp;
   @override
@@ -81,7 +82,7 @@ class Verify extends StatelessWidget {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => SubmitPage(oid: oid,)));
+                                    builder: (context) => SubmitPage(oid: oid,index: index,)));
                           } else {
                             showError(context);
                           }

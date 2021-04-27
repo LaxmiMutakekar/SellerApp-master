@@ -72,24 +72,31 @@ class _ActiveOrdersState extends State<ActiveOrders>
             }
             if(orders.chosenValue=='All accepted orders')
             {
-              if(active.status!='Order Placed')
+              if(active.status!='Order Placed'&&active.status!='Order Rejected')
               {
                 return activeOrders(active, url, orders, index);
               }
+              else{
+                return Container();
+              }
             }
 
-            else if (active.status == orders.chosenValue) {
-              return activeOrders(active, url, orders, index);
-            } else {
+            else  {
+              if(active.status == orders.chosenValue)
+              {
+                return activeOrders(active, url, orders, index);
+              }
+              else {
               return Container();
             }
+            } 
           });
     });
   }
    activeOrders(Orders active,url,orders,index){
     return GestureDetector(
                 onTap: () {
-                  orderItem.settingModalBottomSheet(context, active);
+                  orderItem.settingModalBottomSheet(context, active,index);
                 },
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 2.0),
@@ -148,12 +155,35 @@ class _ActiveOrdersState extends State<ActiveOrders>
                             ],
                           ),
                         ),
-                        Text(
-                          '#00${active.orderId}',
-                          style: TextStyle(
-                              fontSize: 18.0,
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              '#00${active.orderId}',
+                              style: TextStyle(
+                                  fontSize: 18.0,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top:16.0),
+                              child: Container(
+                                        //width: 100,
+                                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(10),color: active.status=='Order Ready'?AppConfig.readyColor:active.status=='Order Complete'?AppConfig.completedColor:AppConfig.preparingColor,),
+                                        
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(2.0),
+                                          child: Text(
+                                            
+                                            active.status,
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.bold,color: Colors.white),
+                                          ),
+                                        )),
+                            ),
+                          ],
                         ),
                         Row(
                           children: [
@@ -183,7 +213,7 @@ class _ActiveOrdersState extends State<ActiveOrders>
                         Container(
                           child: Row(
                             children: [
-                              RaisedButton(
+                              active.status=='Order Preparing'? RaisedButton(
                                 elevation: 4,
                                 splashColor: AppConfig.buttonSplash,
                                 onPressed: () {
@@ -203,20 +233,20 @@ class _ActiveOrdersState extends State<ActiveOrders>
                                     style: TextStyle(
                                         color: AppConfig.buttonText,
                                         fontWeight: FontWeight.bold)),
-                              ),
+                              ):SizedBox(width:0),
                               SizedBox(width: 8),
-                              RaisedButton(
+                             active.status!='Order Complete'? RaisedButton(
                                 elevation: 4,
                                 splashColor: Colors.red,
                                 onPressed: () {},
                                 color: AppConfig.buttonBackgrd,
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(20)),
-                                child: Text("Handover",
+                                child: Text("update ETC",
                                     style: TextStyle(
                                         color: AppConfig.buttonText,
                                         fontWeight: FontWeight.bold)),
-                              ),
+                              ):Container(),
                             ],
                           ),
                         )

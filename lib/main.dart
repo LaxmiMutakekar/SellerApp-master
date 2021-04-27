@@ -53,6 +53,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   _getToken() {
+    
     _firebaseMessaging.getToken().then((token) {
       print("Device Token: $token");
     });

@@ -69,8 +69,8 @@ class APIServices {
   }
 
   static Future<http.Response> updateAvailable(bool value) async {
-    final response = await http.put(
-      Uri.parse("http://10.0.2.2:8080/update/seller"),
+    final response = await http.patch(
+      Uri.parse("http://10.0.2.2:8080/update/seller/available"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         "Authorization": "Bearer " + Session.token
@@ -88,7 +88,7 @@ class APIServices {
   }
 
   static Future<http.Response> changeOrderStatus(int oid, String status) async {
-    final response = await http.put(
+    final response = await http.patch(
       Uri.parse("http://10.0.2.2:8080/orders/" + oid.toString()),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
@@ -96,6 +96,25 @@ class APIServices {
       },
       body: jsonEncode(<String, String>{
         "status": status,
+      }),
+    );
+    if (response.statusCode == 200) {
+      //print("Order status changed!");
+    } else {
+      //print("Seller status update failed!");
+    }
+    return response;
+  }
+  static Future<http.Response> addRejectionStatus(int oid, String reason,String status) async {
+    final response = await http.patch(
+      Uri.parse("http://10.0.2.2:8080/orders/" + oid.toString()),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        "Authorization": "Bearer " + Session.token
+      },
+      body: jsonEncode(<String, String>{
+        "status": status,
+        "rejectionReason":reason,
       }),
     );
     if (response.statusCode == 200) {
@@ -122,7 +141,7 @@ class APIServices {
   }
 
   static Future<http.Response> updateProduct(int index, bool value) async {
-    final response = await http.put(
+    final response = await http.patch(
       Uri.parse("http://10.0.2.2:8080/product"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
@@ -132,6 +151,7 @@ class APIServices {
         'pid': index,
         'available': value,
       }),
+      
     );
     return response;
   }

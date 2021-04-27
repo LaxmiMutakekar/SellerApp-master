@@ -25,12 +25,12 @@ class SwitchButton {
           padding: 0.0,
           showOnOff: true,
           onToggle: (val) {
-            showAleart(index, val, context);
+            showAleart(item,index, val, context);
           });
     });
   }
 
-  showAleart(index, val, context) {
+  showAleart(item,index, val, context) {
     Widget cancelButton = FlatButton(
       child: Text("Cancel"),
       onPressed: () {
@@ -40,9 +40,10 @@ class SwitchButton {
     Widget continueButton = FlatButton(
       child: val ? Text("Go online") : Text('Go Offline'),
       onPressed: () {
+        
         Provider.of<Product>(context, listen: false).updateAvlb(index, val);
 
-        APIServices.updateProduct(index, val);
+        APIServices.updateProduct(item.pid, val);
         Navigator.of(context, rootNavigator: true).pop();
       },
     );

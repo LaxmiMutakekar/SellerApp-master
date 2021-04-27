@@ -11,7 +11,7 @@ class OrderDetail {
   DateTime fulfillmentTime;
   String time;
   @override
-  void settingModalBottomSheet(context, Orders item) {
+  void settingModalBottomSheet(context, Orders item,int index) {
     final ScrollController _scrollController = ScrollController();
     showModalBottomSheet(
         isScrollControlled: true,
@@ -26,7 +26,7 @@ class OrderDetail {
                   Container(
                     color: Color(0xff6D6D6D),
                     child: Container(
-                      child: buildBottomSheet(item, context, _scrollController),
+                      child: buildBottomSheet(item, context, _scrollController,index),
                       decoration: BoxDecoration(
                           color: Color(0xffCCCCCD),
                           borderRadius: BorderRadius.only(
@@ -41,7 +41,7 @@ class OrderDetail {
         });
   }
 
-  buildBottomSheet(item, BuildContext context, scrollController) {
+  buildBottomSheet(item, BuildContext context, scrollController,index) {
     fulfillmentTime = item.orderPlacedDate;
     time = DateFormat.jm().format(fulfillmentTime
         .add(Duration(minutes: item.orderFulfillmentTime.toInt())));
@@ -89,7 +89,6 @@ class OrderDetail {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        
                         Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -143,22 +142,19 @@ class OrderDetail {
                   ? Container(
                       child: Column(
                         children: [
-  
                           Row(
                               //mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 Padding(
-                                  padding: const EdgeInsets.only(left:16.0),
+                                  padding: const EdgeInsets.only(left: 16.0),
                                   child: Icon(
                                     Icons.account_circle_sharp,
                                     size: 60,
                                   ),
                                 ),
-                          
                                 Column(
                                   //mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     GestureDetector(
                                         onTap: () {
@@ -180,18 +176,17 @@ class OrderDetail {
                                   ],
                                 ),
                               ]),
-                              const Divider(
-                              height: 17,
-                              thickness: 2,
-                              indent: 15,
-                              endIndent: 15,
-                              color: Colors.white,
-                            ),
+                          const Divider(
+                            height: 17,
+                            thickness: 2,
+                            indent: 15,
+                            endIndent: 15,
+                            color: Colors.white,
+                          ),
                         ],
                       ),
                     )
                   : Container(),
-                  
               Container(
                 padding: EdgeInsets.all(8),
                 height: MediaQuery.of(context).size.height / 3,
@@ -200,109 +195,108 @@ class OrderDetail {
                   isAlwaysShown: true,
                   controller: scrollController,
                   thickness: 4,
-                  child:ListView.builder(
-                  shrinkWrap: true,
-                  controller: scrollController,
-                  itemCount: item.orderItems.length,
-                  itemBuilder: (context, int index) {
-                    print(item.orderItems[index].image);
-                
-            
-                    return Padding(
-                      padding: const EdgeInsets.only(left: 10, right: 10),
-                      child: Container(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(
-                                  height: 90,
-                                  width: 87,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(8),
-                                    color: Colors.white,
-                                  ),
-                                  child: Column(
-                                    children: [
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(top: 2.0),
-                                        child: Text(
-                                          item.orderItems[index].skuId,
-                                          style: TextStyle(
-                                              fontSize: 10,
-                                              fontWeight: FontWeight.bold),
-                                        ),
+                  child: ListView.builder(
+                      shrinkWrap: true,
+                      controller: scrollController,
+                      itemCount: item.orderItems.length,
+                      itemBuilder: (context, int index) {
+                        return Padding(
+                          padding: const EdgeInsets.only(left: 10, right: 10),
+                          child: Container(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Container(
+                                      height: 90,
+                                      width: 87,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(8),
+                                        color: Colors.white,
                                       ),
-                                      Center(
-                                        child: Container(
-                                          height: 60,
-                                          width: 70,
-                                          child: ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(13),
-                                            child: CachedNetworkImage(
-                                              fit: BoxFit.fill,
-                                              imageUrl: item
-                                                  .orderItems[index].image,
-                                              placeholder: (context, url) =>
-                                                  CircularProgressIndicator(),
-                                              errorWidget:
-                                                  (context, url, error) =>
-                                                      Icon(Icons.error),
+                                      child: Column(
+                                        children: [
+                                          Padding(
+                                            padding:
+                                                const EdgeInsets.only(top: 2.0),
+                                            child: Text(
+                                              item.orderItems[index].skuId,
+                                              style: TextStyle(
+                                                  fontSize: 10,
+                                                  fontWeight: FontWeight.bold),
                                             ),
                                           ),
+                                          Center(
+                                            child: Container(
+                                              height: 60,
+                                              width: 70,
+                                              child: ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(13),
+                                                child: CachedNetworkImage(
+                                                  fit: BoxFit.fill,
+                                                  imageUrl: item
+                                                      .orderItems[index].image,
+                                                  placeholder: (context, url) =>
+                                                      CircularProgressIndicator(),
+                                                  errorWidget:
+                                                      (context, url, error) =>
+                                                          Icon(Icons.error),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          Text(
+                                            '\$' +
+                                                item.orderItems[index].price
+                                                    .toString(),
+                                            style: TextStyle(
+                                                fontSize: 13,
+                                                fontWeight: FontWeight.bold,
+                                                color: Color(0xff0D2F36)),
+                                          ),
+                                        ],
+                                      )),
+                                  Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          item.orderItems[index].productName,
+                                          style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold),
                                         ),
-                                      ),
-                                      Text(
-                                        '\$' +
-                                            item.orderItems[index].price
-                                                .toString(),
-                                        style: TextStyle(
-                                            fontSize: 13,
-                                            fontWeight: FontWeight.bold,
-                                            color: Color(0xff0D2F36)),
-                                      ),
-                                    ],
-                                  )),
-                              Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      item.orderItems[index].productName,
-                                      style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    SizedBox(width: 5),
-                                    Container(
-                                        child: Text(
-                                      'X ' +
-                                          item.orderItems[index].quantity
-                                              .toString(),
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w200,
-                                          color: Colors.black),
-                                    )),
-                                  ]),
-                              Text(
-                                '\$' +
-                                    (item.orderItems[index].quantity *
-                                            item.orderItems[index].price)
-                                        .toString(),
-                                style: TextStyle(
-                                    fontSize: 22,
-                                    color: Color(0xff0D2F36),
-                                    fontWeight: FontWeight.bold),
-                              )
-                            ],
+                                        SizedBox(width: 5),
+                                        Container(
+                                            child: Text(
+                                          'X ' +
+                                              item.orderItems[index].quantity
+                                                  .toString(),
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w200,
+                                              color: Colors.black),
+                                        )),
+                                      ]),
+                                  Text(
+                                    '\$' +
+                                        (item.orderItems[index].quantity *
+                                                item.orderItems[index].price)
+                                            .toString(),
+                                    style: TextStyle(
+                                        fontSize: 22,
+                                        color: Color(0xff0D2F36),
+                                        fontWeight: FontWeight.bold),
+                                  )
+                                ],
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                    );
-                  }),
+                        );
+                      }),
                 ),
               ),
               Padding(
@@ -391,30 +385,46 @@ class OrderDetail {
                       return item.deliveryResource.driverName != null
                           ? Container(
                               width: 120,
-                              child: RaisedButton(
-                                  elevation: 10,
-                                  color: Colors.black,
-                                  child: Row(
-                                    children: [
-                                      Icon(
-                                        Icons.delivery_dining,
-                                        color: Colors.white,
+                              child: item.status != 'Order Complete'
+                                  ? RaisedButton(
+                                      elevation: 10,
+                                      color: Colors.black,
+                                      child: Row(
+                                        children: [
+                                          Icon(
+                                            Icons.delivery_dining,
+                                            color: Colors.white,
+                                          ),
+                                          Text(
+                                            " Handover",
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          ),
+                                        ],
                                       ),
-                                      Text(
-                                        " Handover",
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                    ],
-                                  ),
-                                  onPressed: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => Verify(oid: item.orderId,)));
-                                  },
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                          new BorderRadius.circular(30.0))),
+                                      onPressed: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) => Verify(
+                                                      oid: item.orderId,index: index,
+                                                    )));
+                                      },
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              new BorderRadius.circular(30.0)))
+                                  : Container(
+                                      width: 600,
+                                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(10),color: Colors.white),
+                                      
+                                      child: Text(
+                                        
+                                        'Order completed successfully!!',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.bold),
+                                      )),
                             )
                           : Container();
                     }),
@@ -462,42 +472,43 @@ class OrderDetail {
     );
   }
 }
+
 showDriver(DeliveryResource dri, BuildContext context) {
-    // set up the button
-    Widget okButton = FlatButton(
-      child: Text("OK"),
-      onPressed: () {
-        Navigator.of(context).pop();
-      },
-    );
+  // set up the button
+  Widget okButton = FlatButton(
+    child: Text("OK"),
+    onPressed: () {
+      Navigator.of(context).pop();
+    },
+  );
 
-    // set up the AlertDialog
-    AlertDialog alert = AlertDialog(
-      title: Text("Driver Details"),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text("Driver name: " + dri.driverName),
-          Text("Phone number: " + dri.phone.toString()),
-          Text("Licence number: " + dri.licenseNumber),
-          Text("threePLName: " + dri.threePlName),
-          Text("Vehicle number: " + dri.vehicleNumber)
-        ],
-      ),
-      actions: [
-        okButton,
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: Text("Driver Details"),
+    content: Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text("Driver name: " + dri.driverName),
+        Text("Phone number: " + dri.phone.toString()),
+        Text("Licence number: " + dri.licenseNumber),
+        Text("threePLName: " + dri.threePlName),
+        Text("Vehicle number: " + dri.vehicleNumber)
       ],
-    );
+    ),
+    actions: [
+      okButton,
+    ],
+  );
 
-    // show the dialog
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
-  }
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
 
 class CustomClipPath extends CustomClipper<Path> {
   var radius = 30.0;

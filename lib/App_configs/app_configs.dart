@@ -18,7 +18,10 @@ class AppConfig {
   static String markAsDone='Order Ready';
   static String rejectedStatus='Order Rejected';
   static String timeout='Order Timeout';
-  static String habdedoverStatus='Delivery Assigned';
+  static String handedoverStatus='Delivery Assigned';
   static String doneStatus='Order Complete';
   static double elevation=8;
+  static Color readyColor=Colors.blue[300];
+  static Color preparingColor=Colors.pink[300];
+  static Color completedColor=Colors.green[300];
 }

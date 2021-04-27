@@ -7,8 +7,9 @@ import 'package:Seller_App/APIServices/APIServices.dart';
 import 'package:animated_check/animated_check.dart';
 class SubmitPage extends StatefulWidget {
   final int oid;
+  final int index;
   const SubmitPage(
-      {Key key, this.oid})
+      {Key key, this.oid,this.index})
       : super(key: key);
 
   @override
@@ -50,7 +51,7 @@ class _SubmitPageState extends State<SubmitPage> with SingleTickerProviderStateM
             onPressed: () {
               setState(() {
                 orders.updateOrderStatus(
-                                      AppConfig.doneStatus, widget.oid);
+                                      AppConfig.doneStatus, widget.index);
                                   APIServices.changeOrderStatus(
                                       widget.oid, AppConfig.doneStatus);
               });

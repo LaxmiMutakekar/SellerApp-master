@@ -46,7 +46,7 @@ class _PendingOrdersState extends State<PendingOrders> {
             if (pendings.status == "Order Placed") {
               return GestureDetector(
                 onTap: () {
-                  orderItem.settingModalBottomSheet(context, pendings);
+                  orderItem.settingModalBottomSheet(context, pendings,index);
                 },
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 2),
@@ -215,8 +215,8 @@ class _PendingOrdersState extends State<PendingOrders> {
                   onPressed: () {
                     setState(() {
                       orders.updateOrderStatus(AppConfig.rejectedStatus, i);
-                    APIServices.changeOrderStatus(
-                        pending.orderId, AppConfig.rejectedStatus);
+                    APIServices.addRejectionStatus(
+                        pending.orderId,value.currentReason, AppConfig.rejectedStatus);
                     });
                     
                   
