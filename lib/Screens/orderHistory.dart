@@ -27,10 +27,10 @@ class _OrderHistoryState extends State<OrderHistory> {
           backgroundColor: Colors.grey[300],
           body: ListView.builder(
             scrollDirection: Axis.vertical,
-            itemCount: orders.ordersList.length,
+            itemCount: orders.completedOrders.length,
             shrinkWrap: true,
             itemBuilder: (BuildContext context, int index) {
-              Orders item = orders.ordersList[index];
+              Orders item = orders.completedOrders[index];
               if (item.status == 'Order Complete') {
                 return Cards(
                   margin: EdgeInsets.symmetric(vertical: 10, horizontal: 25),

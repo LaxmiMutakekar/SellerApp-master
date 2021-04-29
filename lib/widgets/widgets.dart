@@ -1,3 +1,6 @@
+import 'package:Seller_App/providers/seller.dart';
+import 'package:Seller_App/widgets/cards.dart';
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:Seller_App/APIServices/APIServices.dart';
 import 'package:Seller_App/App_configs/app_configs.dart';
@@ -5,6 +8,7 @@ import 'package:Seller_App/models/orders.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:provider/provider.dart';
 import 'package:Seller_App/providers/orderUpdate.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 String productName(List<OrderItem> data) {
   String productNames = "";
@@ -29,12 +33,33 @@ String productName(List<OrderItem> data) {
 
 void showInSnackBar(String value, BuildContext context) {
   Scaffold.of(context).showSnackBar(new SnackBar(
-    content: new Text(value,style: TextStyle(fontWeight: FontWeight.bold),),
+    content: new Text(
+      value,
+      style: TextStyle(fontWeight: FontWeight.bold),
+    ),
     duration: const Duration(seconds: 2),
     backgroundColor: Colors.green[300],
   ));
 }
-
+Container currentlyNoOrders(context)
+{
+  return Container(
+                        height: MediaQuery.of(context).size.height * 0.9,
+                        width: MediaQuery.of(context).size.width,
+                        child: Center(
+                            child: Padding(
+                              padding: const EdgeInsets.all(20.0),
+                              child: Text(
+                                
+                          'Currently you dont have any orders!!!',
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.poppins(
+                                textStyle: TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.bold)),
+                        ),
+                            )),
+                      );
+}
 class SwitchButton extends StatefulWidget {
   @override
   _SwitchButtonState createState() => _SwitchButtonState();
@@ -44,7 +69,7 @@ class _SwitchButtonState extends State<SwitchButton> {
   bool isSwitched = true;
   @override
   Widget build(BuildContext context) {
-    return Consumer<Update>(builder: (context, Update orders, child) {
+    return Consumer2<Update,SellerDetail>(builder: (context, Update orders, seller,child) {
       return FlutterSwitch(
           activeSwitchBorder: Border.all(width: 2, color: Colors.green),
           activeColor: Colors.white,
@@ -56,7 +81,7 @@ class _SwitchButtonState extends State<SwitchButton> {
           valueFontSize: 10.0,
           activeTextColor: Colors.green,
           toggleSize: 18.0,
-          value: orders.sellerAvlb,
+          value: seller.seller.available==null?true:seller.seller.available,
           borderRadius: 15.0,
           padding: 0.0,
           showOnOff: true,
@@ -79,7 +104,7 @@ class _SwitchButtonState extends State<SwitchButton> {
       child: val ? Text("Go online") : Text('Go Offline'),
       onPressed: () {
         setState(() {
-          Provider.of<Update>(context, listen: false).updateStatus(val);
+          Provider.of<SellerDetail>(context, listen: false).changeAvailabiliy(val);
         });
         APIServices.updateAvailable(val);
         Navigator.of(context, rootNavigator: true).pop();
@@ -102,6 +127,24 @@ class _SwitchButtonState extends State<SwitchButton> {
       },
     );
   }
+}
+
+Container noPendingOrders() {
+  return Container(
+      child: Padding(
+    padding: const EdgeInsets.symmetric(vertical:8.0,horizontal: 40),
+    child: Cards(
+        child: Column(
+          children: [
+            Icon(FluentIcons.emoji_16_regular),
+            Text(
+      'No new orders are received',
+      textAlign: TextAlign.center,
+      style: GoogleFonts.poppins(textStyle: TextStyle(fontSize: 14)),
+    ),
+          ],
+        )),
+  ));
 }
 
 Container errorBox() {

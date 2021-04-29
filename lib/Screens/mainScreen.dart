@@ -1,4 +1,8 @@
+import 'package:Seller_App/models/sellerDetails.dart';
+import 'package:Seller_App/pendingOrders.dart';
+import 'package:Seller_App/providers/seller.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../pendingOrders.dart';
 import '../activeOrders.dart';
@@ -6,6 +10,7 @@ import '../widgets/cards.dart';
 import '../providers/orderUpdate.dart';
 import '../widgets/widgets.dart';
 import '../App_configs/app_configs.dart';
+import 'package:Seller_App/pendingOrders.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -38,7 +43,6 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    String _chosenValue;
     Size size = MediaQuery.of(context).size;
     screenheight = size.height;
     screenwidth = size.width;
@@ -61,8 +65,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
               automaticallyImplyLeading: false,
               backgroundColor: AppConfig.backgroundM,
               elevation: 0,
-              title: Consumer<Update>(builder: (context, Update orders, child) {
-                _chosenValue = orders.chosenValue;
+              title: Consumer2<Update,SellerDetail>(builder: (context, Update orders, seller ,child) {
                 return Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -86,7 +89,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                       Column(
                         children: [
                           Text(
-                            orders.sellerName,
+                            (seller.seller.name==null)?('Loading..'):seller.seller.name,
                             style: TextStyle(fontSize: 14),
                           ),
                           SwitchButton()
@@ -99,93 +102,46 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                     ]);
               }),
             ),
-            body: ListView(
-              children: [
-                Center(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      'Pending Orders',
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
-                Consumer<Update>(
-                    builder: (context, Update statusUpdate, child) {
-                  bool status = statusUpdate.sellerAvlb;
-                  if (status) {
-                    return SizedBox(height: 182, child: PendingOrders());
-                  } else {
-                    return errorBox();
+            body: Consumer2<Update,SellerDetail>(builder: (context, Update orders, seller ,child) {
+              bool status = seller.seller.available;
+              if (orders.pendingOrders.isEmpty && orders.activeOrders.isEmpty) {
+                return currentlyNoOrders(context);
+              } else {
+                if (status) {
+                  if (orders.pendingOrders.isEmpty &&
+                      orders.activeOrders.isNotEmpty) {
+                    return SingleChildScrollView(
+                        physics: ClampingScrollPhysics(),
+                        child: Column(
+                          children: [
+                            noPendingOrders(),
+                            ActiveOrders(),
+                          ],
+                        ));
                   }
-                }),
-                Consumer<Update>(builder: (context, Update orders, child) {
-                  _chosenValue = orders.chosenValue;
-                  return Center(
-                    child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 14.0, right: 8),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Active Orders',
-                                style: TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.bold),
-                              ),
-                              // IconButton(
-                              //     icon: Icon(Icons.sort),
-                              //     onPressed: () {}),
-                              DropdownButton<String>(
-                                value: _chosenValue,
-                                underline: Container(
-                                  height: 2,
-                                  color: Colors.black45,
-                                ),
-                                elevation: 10,
-                                style: TextStyle(color: Colors.black),
-
-                                items: <String>[
-                                  'All accepted orders',
-                                  'Order Preparing',
-                                  'Order Ready',
-                                  'Order Timeout',
-                                ].map<DropdownMenuItem<String>>((String value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value,
-                                    child: Text(value),
-                                  );
-                                }).toList(),
-                                hint: Text(
-                                  "Sort the orders",
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w300),
-                                ),
-                                onChanged: (String value) {
-                                  setState(() {
-                                    _chosenValue = value;
-                                    //print(_chosenValue);
-                                  });
-
-                                  Provider.of<Update>(context, listen: false)
-                                      .sort(_chosenValue);
-                                },
-                                //value:_chosenValue;
-                              ),
-                            ],
-                          ),
-                        )),
-                  );
-                }),
-                ContainerCard(
-                  child: ActiveOrders(),
-                )
-              ],
-            ),
+                  return SingleChildScrollView(
+                      physics: ClampingScrollPhysics(),
+                      child: Column(
+                        children: [
+                          SizedBox(height: 222, child: PendingOrders()),
+                          ActiveOrders(),
+                        ],
+                      ));
+                } else {
+                  if (orders.activeOrders.isNotEmpty) {
+                    return SingleChildScrollView(
+                        physics: ClampingScrollPhysics(),
+                        child: Column(
+                          children: [
+                            errorBox(),
+                            ActiveOrders(),
+                          ],
+                        ));
+                  }
+                  return errorBox();
+                }
+              }
+            }),
           ),
         ),
       ),

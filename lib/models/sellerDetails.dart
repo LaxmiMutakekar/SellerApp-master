@@ -13,6 +13,7 @@ class Seller {
         this.shortName,
         this.phone,
         this.type,
+        this.deviceId,
         this.location,
     });
 
@@ -23,6 +24,7 @@ class Seller {
     String shortName;
     String phone;
     String type;
+    String deviceId;
     Location location;
 
      factory Seller.fromJson(Map<String, dynamic> json) => Seller(
@@ -33,6 +35,7 @@ class Seller {
         shortName: json["shortName"],
         phone: json["phone"],
         type: json["type"],
+        deviceId: json["deviceId"],
         location: Location.fromJson(json["location"]),
     );
 
@@ -44,6 +47,7 @@ class Seller {
         "shortName": shortName,
         "phone": phone,
         "type": type,
+        "deviceId": deviceId,
         "location": location.toJson(),
     };
 }

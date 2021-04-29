@@ -1,40 +1,71 @@
 import 'package:flutter/material.dart';
 import 'package:Seller_App/APIServices/APIServices.dart';
 import 'package:Seller_App/models/orders.dart';
-
+import 'package:Seller_App/App_configs/app_configs.dart';
 class Update extends ChangeNotifier {
   List<Orders> ordersList = [];
-
-  String sellerName = " ";
+  List<Orders> pendingOrders=[];
+  List<Orders> activeOrders=[];
+  List<Orders>rejectedOrders=[];
+  List<Orders>completedOrders=[];
   String chosenValue = 'All accepted orders';
-  bool sellerAvlb = true;
   void ordersAdded() async {
+    pendingOrders.clear();
+    activeOrders.clear();
+    rejectedOrders.clear();
+    completedOrders.clear();
     ordersList = await APIServices.fetchOrders();
+    print('orderList'+ordersList.length.toString());
+    ordersList.forEach((element) {if(element.status==AppConfig.pendingStatus){
+      pendingOrders.add(element);
+    }});
+    print('pending   '+pendingOrders.length.toString());
+    ordersList.forEach((element) {if(element.status==AppConfig.acceptStatus||element.status==AppConfig.markAsDone||element.status==AppConfig.timeout){
+      activeOrders.add(element);
+    }});
+    print('active  '+activeOrders.length.toString());
+    ordersList.forEach((element) {if(element.status==AppConfig.rejectedStatus){
+      rejectedOrders.add(element);
+    }});
+    print('rejected'+rejectedOrders.length.toString());
+    ordersList.forEach((element) {if(element.status==AppConfig.doneStatus){
+      completedOrders.add(element);
+    }});
+    print('completed'+completedOrders.length.toString());
     notifyListeners();
   }
   void sort(String value) {
     chosenValue=value;
     notifyListeners();
   }
-  void updateOrderStatus(String status, int index) {
-    ordersList[index].status = status;
-    //print(status);
+  void acceptOrder(int index) {
+    pendingOrders[index].status=AppConfig.acceptStatus;
+    activeOrders.add(pendingOrders[index]);
+    print('active'+activeOrders.length.toString());
+    print('index'+index.toString());
+    pendingOrders.removeAt(index);
+    print('pending'+pendingOrders.length.toString());
     notifyListeners();
   }
-
-  void fetchName() async {
-    sellerName = await APIServices.fetchSeller().then((value) => value.name);
+  void rejectOrder(int index){
+    pendingOrders[index].status=AppConfig.rejectedStatus;
+    rejectedOrders.add(pendingOrders[index]);
+    print('rejected'+activeOrders.length.toString());
+    print('index'+index.toString());
+    pendingOrders.removeAt(index);
+    print('pending'+pendingOrders.length.toString());
     notifyListeners();
   }
-
-  void fetchAvlb() async {
-    sellerAvlb =
-        await APIServices.fetchSeller().then((value) => value.available);
+  void activeOrdersUpdate(int index,String status)
+  {
+    activeOrders[index].status=status;
     notifyListeners();
   }
-
-  void updateStatus(bool value) {
-    sellerAvlb = value;
+  void completeOrders(int index){
+    print('removed oid '+activeOrders[index].orderId.toString());
+    activeOrders[index].status=AppConfig.doneStatus;
+    completedOrders.add(activeOrders[index]);
+    activeOrders.removeAt(index);
     notifyListeners();
   }
 }

@@ -97,11 +97,16 @@ class OrderDetail {
                                 onTap: () {
                                   showAlertDialog(item.customer, context);
                                 },
-                                child: Text(
-                                  item.customer.name,
-                                  style: TextStyle(
-                                      fontSize: 22,
-                                      fontWeight: FontWeight.bold),
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      item.customer.name,
+                                      style: TextStyle(
+                                          fontSize: 22,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    Icon(Icons.expand_more),
+                                  ],
                                 )),
                             Text(
                               'Customer Name',
@@ -161,11 +166,16 @@ class OrderDetail {
                                           showDriver(
                                               item.deliveryResource, context);
                                         },
-                                        child: Text(
-                                          item.deliveryResource.driverName,
-                                          style: TextStyle(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.bold),
+                                        child: Row(
+                                          children: [
+                                            Text(
+                                              item.deliveryResource.driverName,
+                                              style: TextStyle(
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            Icon(Icons.expand_more),
+                                          ],
                                         )),
                                     Text(
                                       'Driver Name',

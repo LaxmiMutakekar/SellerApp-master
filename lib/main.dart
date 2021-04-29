@@ -1,3 +1,4 @@
+import 'package:Seller_App/providers/seller.dart';
 import 'package:flutter/material.dart';
 import 'providers/orderUpdate.dart';
 import 'providers/products.dart';
@@ -6,7 +7,8 @@ import 'root.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'session.dart';
-
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
+import 'APIServices/APIServices.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Session.init();
@@ -20,6 +22,9 @@ void main() async {
       ),
       ChangeNotifierProvider<Update>(
         create: (_) => Update(),
+      ),
+      ChangeNotifierProvider<SellerDetail>(
+        create: (_) => SellerDetail(),
       ),
     ],
     child: MyApp(),
@@ -51,16 +56,22 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  String deviceToken;
+  String devicetoken;
   FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   _getToken() {
    
     _firebaseMessaging.getToken().then((token) {
-     // APIServices.updateSellerDevice(token);
+      devicetoken=token;  
+        APIServices.updateSellerDevice(devicetoken);
       print("Device Token: $token");
     });
   }
+  
   _configureFirebaseListeners() {
+//     Stream<String> fcmStream = _firebaseMessaging.onTokenRefresh;
+// fcmStream.listen((token) {
+//   print(token);
+// });
     _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
         showDialog(
@@ -104,6 +115,7 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
     _messages = List<Message>();
     _getToken();
+    Provider.of<SellerDetail>(context, listen: false).fetchSeller();
     _configureFirebaseListeners();
   }
 

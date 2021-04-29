@@ -27,10 +27,10 @@ class _RejectedOrdersState extends State<RejectedOrders> {
           backgroundColor: Colors.grey[300],
           body: ListView.builder(
             scrollDirection: Axis.vertical,
-            itemCount: orders.ordersList.length,
+            itemCount: orders.rejectedOrders.length,
             shrinkWrap: true,
             itemBuilder: (BuildContext context, int index) {
-              Orders item = orders.ordersList[index];
+              Orders item = orders.rejectedOrders[index];
               if (item.status == 'Order Rejected') {
                 return Cards(
                   margin: EdgeInsets.symmetric(vertical: 10, horizontal: 25),

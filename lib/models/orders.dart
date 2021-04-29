@@ -21,11 +21,12 @@ class Orders {
         this.orderPreparationTime,
         this.orderItems,
         this.deliveryResource,
+        this.orderStatusHistory,
     });
 
     int orderId;
     Customer customer;
-    DateTime orderPlacedDate;
+    String orderPlacedDate;
     String status;
     String businessUnit;
     double totalPrice;
@@ -34,11 +35,12 @@ class Orders {
     double orderPreparationTime;
     List<OrderItem> orderItems;
     DeliveryResource deliveryResource;
+    OrderStatusHistory orderStatusHistory;
 
     factory Orders.fromJson(Map<String, dynamic> json) => Orders(
         orderId: json["orderId"],
         customer: Customer.fromJson(json["customer"]),
-        orderPlacedDate: DateTime.parse(json["orderPlacedDate"]),
+        orderPlacedDate: json["orderPlacedDate"],
         status: json["status"],
         businessUnit: json["businessUnit"],
         totalPrice: json["totalPrice"],
@@ -47,12 +49,13 @@ class Orders {
         orderPreparationTime: json["orderPreparationTime"],
         orderItems: List<OrderItem>.from(json["orderItems"].map((x) => OrderItem.fromJson(x))),
         deliveryResource: DeliveryResource.fromJson(json["deliveryResource"]),
+        orderStatusHistory: OrderStatusHistory.fromJson(json["orderStatusHistory"]),
     );
 
     Map<String, dynamic> toJson() => {
         "orderId": orderId,
         "customer": customer.toJson(),
-        "orderPlacedDate": orderPlacedDate.toIso8601String(),
+        "orderPlacedDate": orderPlacedDate,
         "status": status,
         "businessUnit": businessUnit,
         "totalPrice": totalPrice,
@@ -61,6 +64,7 @@ class Orders {
         "orderPreparationTime": orderPreparationTime,
         "orderItems": List<dynamic>.from(orderItems.map((x) => x.toJson())),
         "deliveryResource": deliveryResource.toJson(),
+        "orderStatusHistory": orderStatusHistory.toJson(),
     };
 }
 
@@ -201,5 +205,41 @@ class OrderItem {
         "basic_etc": basicEtc,
         "description": description,
         "productName": productName,
+    };
+}
+
+class OrderStatusHistory {
+    OrderStatusHistory({
+        this.orderPlaced,
+        this.orderPreparing,
+        this.orderReady,
+        this.orderTimeout,
+        this.orderHandover,
+        this.orderFulfilled,
+    });
+
+    DateTime orderPlaced;
+    dynamic orderPreparing;
+    dynamic orderReady;
+    dynamic orderTimeout;
+    dynamic orderHandover;
+    dynamic orderFulfilled;
+
+    factory OrderStatusHistory.fromJson(Map<String, dynamic> json) => OrderStatusHistory(
+        orderPlaced: DateTime.parse(json["orderPlaced"]),
+        orderPreparing: json["orderPreparing"],
+        orderReady: json["orderReady"],
+        orderTimeout: json["orderTimeout"],
+        orderHandover: json["orderHandover"],
+        orderFulfilled: json["orderFulfilled"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "orderPlaced": orderPlaced.toIso8601String(),
+        "orderPreparing": orderPreparing,
+        "orderReady": orderReady,
+        "orderTimeout": orderTimeout,
+        "orderHandover": orderHandover,
+        "orderFulfilled": orderFulfilled,
     };
 }

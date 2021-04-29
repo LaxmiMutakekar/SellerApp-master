@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 import 'submittedScreen.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
+import 'package:provider/provider.dart';
+import 'package:Seller_App/App_configs/app_configs.dart';
+import 'package:Seller_App/APIServices/APIServices.dart';
+import 'package:Seller_App/providers/orderUpdate.dart';
 
 class Verify extends StatelessWidget {
-  
   final int oid;
   final int index;
-   Verify(
-      {Key key,this.oid,this.index})
-      : super(key: key);
+  Verify({Key key, this.oid, this.index}) : super(key: key);
   String otp;
   @override
   Widget build(BuildContext context) {
+    final orders = Provider.of<Update>(context, listen: false);
     return Material(
       child: Scaffold(
         appBar: AppBar(
@@ -78,11 +80,16 @@ class Verify extends StatelessWidget {
                           if (otp == null) {
                             showOTP(context);
                           } else if (otp == '1234') {
+                            orders.completeOrders(index);
+                            APIServices.changeOrderStatus(
+                                oid, AppConfig.doneStatus);
                             showSnackBar(context);
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => SubmitPage(oid: oid,index: index,)));
+                                    builder: (context) => SubmitPage(
+                                          oid: oid,
+                                        )));
                           } else {
                             showError(context);
                           }

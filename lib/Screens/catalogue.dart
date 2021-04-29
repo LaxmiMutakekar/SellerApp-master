@@ -39,7 +39,7 @@ class _CatalogueState extends State<Catalogue> {
                     padding: const EdgeInsets.symmetric(horizontal: 5.0),
                     child: Cards(
                         padding: EdgeInsets.all(5),
-                        margin: EdgeInsets.all(3),
+                        margin: EdgeInsets.all(2),
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Row(
@@ -77,7 +77,7 @@ class _CatalogueState extends State<Catalogue> {
                                             width: MediaQuery.of(context)
                                                     .size
                                                     .width /
-                                                6,
+                                                7,
                                             child: Text(
                                               item.name,
                                               style: TextStyle(
@@ -101,9 +101,11 @@ class _CatalogueState extends State<Catalogue> {
                                       ),
                                       SizedBox(height: 10),
                                       Container(
-                                        width: 250,
+                                        width: 230,
                                         child: Text(
+                                          
                                           item.description,
+                                          textAlign: TextAlign.left,
                                           maxLines: 2,
                                           overflow: TextOverflow.ellipsis,
                                           softWrap: false,

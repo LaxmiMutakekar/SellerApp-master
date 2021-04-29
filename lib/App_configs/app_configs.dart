@@ -14,6 +14,7 @@ class AppConfig {
   static double errorBoxwidth=300;
   static double headindFont=20;
   static double headingPading=10;
+  static String pendingStatus='Order Placed';
   static String acceptStatus='Order Preparing';
   static String markAsDone='Order Ready';
   static String rejectedStatus='Order Rejected';

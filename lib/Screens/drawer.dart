@@ -1,3 +1,4 @@
+import 'package:Seller_App/providers/seller.dart';
 import 'package:Seller_App/screens/LoginScreen.dart';
 import 'package:Seller_App/screens/orderHistory.dart';
 import 'catalogue.dart';
@@ -15,9 +16,10 @@ class MenuDashboard extends StatefulWidget {
 }
 
 class _MenuDashboardState extends State<MenuDashboard> {
+  
   @override
   Widget build(BuildContext context) {
-    return Consumer<Update>(builder: (context, Update orders, child) {
+    return Consumer<SellerDetail>(builder: (context,seller, child) {
       return Material(
         child: Container(
           color: AppConfig.drawerBackground,
@@ -39,7 +41,7 @@ class _MenuDashboardState extends State<MenuDashboard> {
                           'Welcome',
                           style: TextStyle(color: Colors.white, fontSize: 18),
                         ),
-                        Text(orders.sellerName,
+                        Text(seller.seller.name==null?('Loading..'):seller.seller.name,
                             style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold)),

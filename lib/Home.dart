@@ -1,3 +1,4 @@
+import 'package:Seller_App/providers/seller.dart';
 import 'package:flutter/material.dart';
 import 'providers/products.dart';
 import 'screens/mainScreen.dart';
@@ -16,9 +17,9 @@ class _HomeScreenState extends State<HomeScreen> {
     // TODO: implement initState
     super.initState();
     Provider.of<Update>(context, listen: false).ordersAdded();
-    Provider.of<Update>(context, listen: false).fetchName();
-    Provider.of<Update>(context, listen: false).fetchAvlb();
+    Provider.of<SellerDetail>(context, listen: false).fetchSeller();
     Provider.of<Product>(context, listen: false).addProducts();
+
   }
 
   @override
