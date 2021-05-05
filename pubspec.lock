@@ -50,13 +50,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.2.0"
-  circular_countdown_timer:
-    dependency: "direct main"
-    description:
-      name: circular_countdown_timer
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.2.0"
   clock:
     dependency: transitive
     description:
@@ -296,6 +289,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.11.0"
+  percent_indicator:
+    dependency: "direct main"
+    description:
+      name: percent_indicator
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.1.9+1"
   petitparser:
     dependency: transitive
     description:
@@ -406,6 +406,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.99"
+  slide_countdown_clock:
+    dependency: "direct main"
+    description:
+      name: slide_countdown_clock
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.3"
   source_span:
     dependency: transitive
     description:

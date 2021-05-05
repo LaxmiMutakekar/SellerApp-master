@@ -53,9 +53,9 @@ Container currentlyNoOrders(context)
                                 
                           'Currently you dont have any orders!!!',
                           textAlign: TextAlign.center,
-                          style: GoogleFonts.poppins(
+                          style: GoogleFonts.sourceSansPro(
                                 textStyle: TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.bold)),
+                                    fontSize: 28, fontWeight: FontWeight.w600)),
                         ),
                             )),
                       );
@@ -173,7 +173,7 @@ Container errorBox() {
                         'You cant receive orders as you are offline, if you have any pending orders please fulfill them ',
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.w300)),
+                            fontSize: 18, fontWeight: FontWeight.w300)),
                   )
                 ]),
           ),

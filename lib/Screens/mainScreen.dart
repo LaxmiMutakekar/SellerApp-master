@@ -1,16 +1,12 @@
-import 'package:Seller_App/models/sellerDetails.dart';
 import 'package:Seller_App/pendingOrders.dart';
 import 'package:Seller_App/providers/seller.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../pendingOrders.dart';
-import '../activeOrders.dart';
-import '../widgets/cards.dart';
+import 'package:Seller_App/activeOrders.dart';
 import '../providers/orderUpdate.dart';
 import '../widgets/widgets.dart';
 import '../App_configs/app_configs.dart';
-import 'package:Seller_App/pendingOrders.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -60,10 +56,10 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
               ? BorderRadius.circular(40)
               : BorderRadius.circular(0),
           child: Scaffold(
-            backgroundColor: AppConfig.backgroundM,
+
             appBar: AppBar(
+
               automaticallyImplyLeading: false,
-              backgroundColor: AppConfig.backgroundM,
               elevation: 0,
               title: Consumer2<Update,SellerDetail>(builder: (context, Update orders, seller ,child) {
                 return Row(
@@ -103,7 +99,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
               }),
             ),
             body: Consumer2<Update,SellerDetail>(builder: (context, Update orders, seller ,child) {
-              bool status = seller.seller.available;
+              bool status = seller.seller.available??true;
               if (orders.pendingOrders.isEmpty && orders.activeOrders.isEmpty) {
                 return currentlyNoOrders(context);
               } else {
@@ -123,7 +119,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                       physics: ClampingScrollPhysics(),
                       child: Column(
                         children: [
-                          SizedBox(height: 222, child: PendingOrders()),
+                          SizedBox(height: 234, child: PendingOrders()),
                           ActiveOrders(),
                         ],
                       ));

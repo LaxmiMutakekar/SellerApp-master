@@ -66,7 +66,7 @@ class ContainerCard extends StatelessWidget {
             minHeight: height ?? MediaQuery.of(context).size.height),
         child: Container(
             decoration: BoxDecoration(
-              color: color ?? Colors.white,
+              color: color ?? Theme.of(context).canvasColor,
               borderRadius: BorderRadius.only(
                   topLeft: radius ?? Radius.circular(30),
                   topRight: radius ?? Radius.circular(30)),

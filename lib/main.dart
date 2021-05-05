@@ -2,21 +2,18 @@ import 'package:Seller_App/providers/seller.dart';
 import 'package:flutter/material.dart';
 import 'providers/orderUpdate.dart';
 import 'providers/products.dart';
-import 'providers/rejection.dart';
 import 'root.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'session.dart';
-import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'APIServices/APIServices.dart';
+import 'package:google_fonts/google_fonts.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Session.init();
   runApp(MultiProvider(
     providers: [
-      ChangeNotifierProvider<RejectionReasons>(
-        create: (_) => RejectionReasons(),
-      ),
+
       ChangeNotifierProvider<Product>(
         create: (_) => Product(),
       ),
@@ -39,10 +36,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Seller App',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        highlightColor: Colors.black
-      ),
       home: MyHomePage(title: 'Seller App Home Page'),
     );
   }
@@ -59,14 +52,13 @@ class _MyHomePageState extends State<MyHomePage> {
   String devicetoken;
   FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   _getToken() {
-   
     _firebaseMessaging.getToken().then((token) {
-      devicetoken=token;  
-        APIServices.updateSellerDevice(devicetoken);
+      devicetoken = token;
+      APIServices.updateSellerDevice(devicetoken);
       print("Device Token: $token");
     });
   }
-  
+
   _configureFirebaseListeners() {
 //     Stream<String> fcmStream = _firebaseMessaging.onTokenRefresh;
 // fcmStream.listen((token) {
@@ -77,10 +69,21 @@ class _MyHomePageState extends State<MyHomePage> {
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            content: ListTile(
-              title: Text('New Order placed!!'),
-              subtitle: Text('continue'),
-            ),
+            content: Container(
+                height: 40,
+                decoration: new BoxDecoration(
+                  shape: BoxShape.rectangle,
+                  color: const Color(0xFFFFFF),
+                  borderRadius: new BorderRadius.all(new Radius.circular(32.0)),
+                ),
+                child: Text(
+                  'New order received!!',
+                  style: TextStyle(
+                    letterSpacing: 1.1,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                  ),
+                )),
             actions: <Widget>[
               FlatButton(
                 child: Text('Ok'),
@@ -133,31 +136,150 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Image Loader',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        fontFamily: 'Poppins',
+    var darkTextThem = TextTheme(
+      headline1: TextStyle(fontSize: 22.0, color: Colors.blueGrey),
+      headline2: TextStyle(
+        fontSize: 24.0,
+        fontWeight: FontWeight.w700,
+        color: Colors.white,
+      ),
+      subtitle1: TextStyle(
+          fontSize: 18, color: Colors.white, fontWeight: FontWeight.w400),
+      subtitle2: TextStyle(
+          fontSize: 16, color: Colors.white, fontWeight: FontWeight.bold),
+      bodyText1: TextStyle(
+        fontSize: 14.0,
+        color: Colors.white,
+        fontWeight: FontWeight.w400,
+      ),
+      bodyText2: TextStyle(
+        fontSize: 12.0,
+        color: Colors.white,
+        fontWeight: FontWeight.w300,
+      ),
+      caption: TextStyle(
+        fontSize: 14,
+        color: Colors.white,
+        fontWeight: FontWeight.w300,
+      ),
+    );
+    var darkTheme = ThemeData(
         primaryColor: Colors.white,
+        highlightColor: Colors.white,
+        dividerColor: Colors.white,
+        buttonColor: Colors.white,
+        textButtonTheme: TextButtonThemeData(
+            style: TextButton.styleFrom(
+          primary: Colors.white,
+        )),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+              fixedSize: Size(100, 20),
+              elevation: 5,
+              primary: Colors.white,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20))),
+        ),
+        scaffoldBackgroundColor: Colors.grey[300],
         floatingActionButtonTheme: FloatingActionButtonThemeData(
           elevation: 0,
           foregroundColor: Colors.white,
         ),
         accentColor: Color(0xff393E43),
-        textTheme: TextTheme(
-          headline1: TextStyle(fontSize: 22.0, color: Colors.blueGrey),
-          headline2: TextStyle(
-            fontSize: 24.0,
-            fontWeight: FontWeight.w700,
-            color: Colors.blueGrey,
-          ),
-          bodyText1: TextStyle(
-            fontSize: 14.0,
-            fontWeight: FontWeight.w400,
-            color: Colors.black,
-          ),
-        ),
+        textTheme: darkTextThem);
+    var theme = ThemeData(
+      primarySwatch: Colors.grey,
+      primaryColor: Colors.grey[300],
+      highlightColor: Colors.black,
+      dividerColor: Colors.black12,
+      buttonColor: Colors.black,
+      textButtonTheme: TextButtonThemeData(
+          style: TextButton.styleFrom(
+        primary: Colors.black87,
+      )),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          textStyle: Theme.of(context).textTheme.bodyText1,
+            fixedSize: Size(100, 20),
+            elevation: 5,
+            
+            primary: Colors.black,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15))),
       ),
+      scaffoldBackgroundColor: Colors.grey[300],
+      floatingActionButtonTheme: FloatingActionButtonThemeData(
+        elevation: 0,
+        foregroundColor: Colors.white,
+      ),
+      accentColor: Color(0xff393E43),
+      textTheme: TextTheme(
+        
+        headline1: GoogleFonts.raleway(
+            textStyle: TextStyle(fontSize: 28.0)),
+        headline2: GoogleFonts.raleway(
+            textStyle: TextStyle(
+          fontSize: 24.0,
+          fontWeight: FontWeight.w700,
+        )),
+        headline6: GoogleFonts.raleway(
+          textStyle: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+        ),
+        subtitle1: GoogleFonts.raleway(
+            textStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.w400)),
+        subtitle2: GoogleFonts.raleway(
+            textStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+        bodyText1: GoogleFonts.raleway(
+            textStyle: TextStyle(
+          fontSize: 14.0,
+          fontWeight: FontWeight.bold,
+        )),
+        bodyText2: GoogleFonts.raleway(
+            textStyle: TextStyle(
+          fontSize: 14.0,
+          fontWeight: FontWeight.w400,
+        )),
+        caption: GoogleFonts.raleway(
+            textStyle: TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.w400,
+        )),
+        overline: 
+        GoogleFonts.raleway(
+            textStyle: TextStyle(
+          fontSize: 14,
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+        )),
+        button: 
+        GoogleFonts.raleway(
+            textStyle: TextStyle(
+          fontSize: 15,
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+        )),
+      ),
+      tabBarTheme: TabBarTheme(
+        labelPadding: EdgeInsets.all(0),
+      
+        unselectedLabelStyle:GoogleFonts.raleway(
+            textStyle: TextStyle(
+          fontSize: 15,
+          color: Colors.white,
+          fontWeight: FontWeight.w600,
+        )) ,
+        labelStyle:GoogleFonts.raleway(
+            textStyle: TextStyle(
+          fontSize: 16,
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+        )),
+      )
+    );
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: theme,
+      darkTheme: darkTheme,
       home: RootPage(),
     );
   }

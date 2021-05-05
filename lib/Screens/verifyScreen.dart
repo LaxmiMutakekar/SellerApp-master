@@ -9,8 +9,9 @@ import 'package:Seller_App/providers/orderUpdate.dart';
 class Verify extends StatelessWidget {
   final int oid;
   final int index;
-  Verify({Key key, this.oid, this.index}) : super(key: key);
-  String otp;
+  final String deliveryOTP;
+  Verify({Key key, this.oid, this.index,this.deliveryOTP}) : super(key: key);
+  var  otp;
   @override
   Widget build(BuildContext context) {
     final orders = Provider.of<Update>(context, listen: false);
@@ -40,8 +41,8 @@ class Verify extends StatelessWidget {
                               fontSize: 19, fontWeight: FontWeight.w300))),
                   Container(
                     color: Colors.transparent,
-                    margin: const EdgeInsets.symmetric(horizontal: 70),
-                    padding: const EdgeInsets.all(20.0),
+                    margin: const EdgeInsets.symmetric(horizontal: 50,vertical: 10),
+                    //padding: const EdgeInsets.all(10.0),
                     child: PinCodeTextField(
                       cursorColor: Colors.green[400],
                       boxShadows: [
@@ -53,7 +54,7 @@ class Verify extends StatelessWidget {
                         ),
                       ],
                       appContext: context,
-                      length: 4,
+                      length: 6,
                       onChanged: (value) {},
                       pinTheme: PinTheme(
                         shape: PinCodeFieldShape.box,
@@ -79,7 +80,7 @@ class Verify extends StatelessWidget {
                         onPressed: () {
                           if (otp == null) {
                             showOTP(context);
-                          } else if (otp == '1234') {
+                          } else if (otp == deliveryOTP) {
                             orders.completeOrders(index);
                             APIServices.changeOrderStatus(
                                 oid, AppConfig.doneStatus);

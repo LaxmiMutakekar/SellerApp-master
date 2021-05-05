@@ -11,8 +11,9 @@ dependencies:
   animated_check: ^1.0.0
   fluentui_system_icons: ^1.1.120
   google_fonts: ^2.0.0
+  percent_indicator: "^2.1.7+2"
   intl: ^0.17.0
-  circular_countdown_timer:
+  slide_countdown_clock: ^1.0.3
   
   
   flutter:  

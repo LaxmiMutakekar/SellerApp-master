@@ -15,7 +15,7 @@ class _OrderHistoryState extends State<OrderHistory> {
     return Consumer<Update>(builder: (context, Update orders, child) {
       return Scaffold(
           appBar: AppBar(
-            backgroundColor: Color(0xffCCCCCD),
+            //backgroundColor: Color(0xffCCCCCD),
             title: Text(
               'Orders History',
               style: TextStyle(
@@ -24,7 +24,7 @@ class _OrderHistoryState extends State<OrderHistory> {
                   color: Colors.black),
             ),
           ),
-          backgroundColor: Colors.grey[300],
+          //backgroundColor: Colors.grey[300],
           body: ListView.builder(
             scrollDirection: Axis.vertical,
             itemCount: orders.completedOrders.length,

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 class AppConfig {
   static Color loadingColorforworg=Colors.black38;
   static Color homeScreen=Color(0xffCCCCCD);
-  static Color loadingColorBackword=Colors.white24;
   static Color backgroundM=Color(0xffE5E5E5);
   static Color drawerBackground=Color(0xff393E43);
   static Color hidingText=Colors.grey[500];

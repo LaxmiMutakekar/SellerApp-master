@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:Seller_App/models/orders.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:Seller_App/providers/orderUpdate.dart';
-import 'package:Seller_App/screens/verifyScreen.dart';
+import 'package:Seller_App/Screens/verifyScreen.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
@@ -11,41 +11,25 @@ class OrderDetail {
   DateTime fulfillmentTime;
   String time;
   @override
-  void settingModalBottomSheet(context, Orders item,int index) {
+  void settingModalBottomSheet(context, Orders item, int index) {
     final ScrollController _scrollController = ScrollController();
     showModalBottomSheet(
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(40), topRight: Radius.circular(40))),
         isScrollControlled: true,
         context: context,
         builder: (context) {
-          return Container(
-            height: MediaQuery.of(context).size.height * 0.85,
-            color: Color(0xffCCCCCD),
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Container(
-                    color: Color(0xff6D6D6D),
-                    child: Container(
-                      child: buildBottomSheet(item, context, _scrollController,index),
-                      decoration: BoxDecoration(
-                          color: Color(0xffCCCCCD),
-                          borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(40),
-                              topRight: Radius.circular(40))),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+          return SingleChildScrollView(
+            child: buildBottomSheet(item, context, _scrollController, index),
           );
         });
   }
 
-  buildBottomSheet(item, BuildContext context, scrollController,index) {
+  buildBottomSheet(item, BuildContext context, scrollController, index) {
     fulfillmentTime = item.orderPlacedDate;
     time = DateFormat.jm().format(fulfillmentTime
         .add(Duration(minutes: item.orderFulfillmentTime.toInt())));
-
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -60,17 +44,14 @@ class OrderDetail {
                     children: [
                       Text(
                         'Order Details',
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.normal,
-                        ),
+                        style: Theme.of(context).textTheme.headline6,
                       ),
                       const Divider(
                         height: 17,
                         thickness: 4,
                         indent: 130,
                         endIndent: 130,
-                        color: Color(0xff393E43),
+                        //color: Color(0xff393E43),
                       ),
                     ],
                   ),
@@ -99,23 +80,18 @@ class OrderDetail {
                                 },
                                 child: Row(
                                   children: [
-                                    Text(
-                                      item.customer.name,
-                                      style: TextStyle(
-                                          fontSize: 22,
-                                          fontWeight: FontWeight.bold),
-                                    ),
+                                    Text(item.customer.name,
+                                        style: Theme.of(context).textTheme.subtitle2),
                                     Icon(Icons.expand_more),
                                   ],
                                 )),
                             Text(
                               'Customer Name',
-                              style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.w200),
+                              
                             ),
                           ],
                         ),
-                        SizedBox(width: 50),
+                        SizedBox(width: 40),
                         Column(
                           children: [
                             Text(
@@ -127,7 +103,6 @@ class OrderDetail {
                             ),
                             Text(
                               'Order Fulfillment Time',
-                              style: TextStyle(fontWeight: FontWeight.w300),
                             ),
                           ],
                         ),
@@ -141,49 +116,72 @@ class OrderDetail {
                 thickness: 2,
                 indent: 15,
                 endIndent: 15,
-                color: Colors.white,
+                //color: Colors.white,
               ),
               item.deliveryResource.driverName != null
                   ? Container(
                       child: Column(
                         children: [
                           Row(
-                              //mainAxisAlignment: MainAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 16.0),
-                                  child: Icon(
-                                    Icons.account_circle_sharp,
-                                    size: 60,
-                                  ),
-                                ),
-                                Column(
-                                  //mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                Row(
                                   children: [
-                                    GestureDetector(
-                                        onTap: () {
-                                          showDriver(
-                                              item.deliveryResource, context);
-                                        },
-                                        child: Row(
-                                          children: [
-                                            Text(
-                                              item.deliveryResource.driverName,
-                                              style: TextStyle(
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                            Icon(Icons.expand_more),
-                                          ],
-                                        )),
-                                    Text(
-                                      'Driver Name',
-                                      style: TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w200),
+                                    Padding(
+                                      padding:
+                                          const EdgeInsets.only(left: 16.0),
+                                      child: Icon(
+                                        Icons.account_circle_sharp,
+                                        size: 60,
+                                      ),
+                                    ),
+                                    Column(
+                                      //mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        GestureDetector(
+                                            onTap: () {
+                                              showDriver(
+                                                item.deliveryResource,
+                                                context,
+                                              );
+                                            },
+                                            child: Row(
+                                              children: [
+                                                Text(
+                                                  item.deliveryResource
+                                                      .driverName,
+                                                  style: Theme.of(context).textTheme.subtitle2
+                                                ),
+                                                Icon(Icons.expand_more),
+                                              ],
+                                            )),
+                                        Text(
+                                          'Driver Name',
+                  
+                                        ),
+                                      ],
                                     ),
                                   ],
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(16.0),
+                                  child: Column(
+                                    children: [
+                                      Text(
+                                        'Vehicle Number',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyText1,
+                                      ),
+                                      Text(
+                                        item.deliveryResource.vehicleNumber,
+                                        style:
+                                            Theme.of(context).textTheme.caption,
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ]),
                           const Divider(
@@ -191,7 +189,7 @@ class OrderDetail {
                             thickness: 2,
                             indent: 15,
                             endIndent: 15,
-                            color: Colors.white,
+                            //color: Colors.white,
                           ),
                         ],
                       ),
@@ -224,7 +222,7 @@ class OrderDetail {
                                       width: 87,
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(8),
-                                        color: Colors.white,
+                                        //color: Colors.white,
                                       ),
                                       child: Column(
                                         children: [
@@ -396,39 +394,30 @@ class OrderDetail {
                           ? Container(
                               width: 120,
                               child: item.status != 'Order Complete'
-                                  ? RaisedButton(
-                                      elevation: 10,
-                                      color: Colors.black,
-                                      child: Row(
-                                        children: [
-                                          Icon(
-                                            Icons.delivery_dining,
-                                            color: Colors.white,
-                                          ),
-                                          Text(
-                                            " Handover",
-                                            style:
-                                                TextStyle(color: Colors.white),
-                                          ),
-                                        ],
-                                      ),
+                                  ? ElevatedButton(
                                       onPressed: () {
                                         Navigator.push(
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) => Verify(
-                                                      oid: item.orderId,index: index,
+                                                      oid: item.orderId,
+                                                      index: index,
+                                                      deliveryOTP: item
+                                                          .deliveryResource.otp,
                                                     )));
                                       },
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              new BorderRadius.circular(30.0)))
+                                      child: Text(
+                                        'Handover',
+                                        style:
+                                            Theme.of(context).textTheme.button,
+                                      ))
                                   : Container(
                                       width: 600,
-                                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(10),color: Colors.white),
-                                      
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          color: Colors.white),
                                       child: Text(
-                                        
                                         'Order completed successfully!!',
                                         textAlign: TextAlign.center,
                                         style: TextStyle(

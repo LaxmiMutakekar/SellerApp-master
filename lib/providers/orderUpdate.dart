@@ -8,6 +8,7 @@ class Update extends ChangeNotifier {
   List<Orders> activeOrders=[];
   List<Orders>rejectedOrders=[];
   List<Orders>completedOrders=[];
+  DateTime time=DateTime.now();
   String chosenValue = 'All accepted orders';
   void ordersAdded() async {
     pendingOrders.clear();
@@ -15,23 +16,23 @@ class Update extends ChangeNotifier {
     rejectedOrders.clear();
     completedOrders.clear();
     ordersList = await APIServices.fetchOrders();
-    print('orderList'+ordersList.length.toString());
+    //print('orderList'+ordersList.length.toString());
     ordersList.forEach((element) {if(element.status==AppConfig.pendingStatus){
       pendingOrders.add(element);
     }});
-    print('pending   '+pendingOrders.length.toString());
+    //print('pending   '+pendingOrders.length.toString());
     ordersList.forEach((element) {if(element.status==AppConfig.acceptStatus||element.status==AppConfig.markAsDone||element.status==AppConfig.timeout){
       activeOrders.add(element);
     }});
-    print('active  '+activeOrders.length.toString());
+    //print('active  '+activeOrders.length.toString());
     ordersList.forEach((element) {if(element.status==AppConfig.rejectedStatus){
       rejectedOrders.add(element);
     }});
-    print('rejected'+rejectedOrders.length.toString());
+    //print('rejected'+rejectedOrders.length.toString());
     ordersList.forEach((element) {if(element.status==AppConfig.doneStatus){
       completedOrders.add(element);
     }});
-    print('completed'+completedOrders.length.toString());
+    //print('completed'+completedOrders.length.toString());
     notifyListeners();
   }
   void sort(String value) {
@@ -41,19 +42,19 @@ class Update extends ChangeNotifier {
   void acceptOrder(int index) {
     pendingOrders[index].status=AppConfig.acceptStatus;
     activeOrders.add(pendingOrders[index]);
-    print('active'+activeOrders.length.toString());
-    print('index'+index.toString());
+    //print('active'+activeOrders.length.toString());
+    //print('index'+index.toString());
     pendingOrders.removeAt(index);
-    print('pending'+pendingOrders.length.toString());
+    //print('pending'+pendingOrders.length.toString());
     notifyListeners();
   }
   void rejectOrder(int index){
     pendingOrders[index].status=AppConfig.rejectedStatus;
     rejectedOrders.add(pendingOrders[index]);
-    print('rejected'+activeOrders.length.toString());
-    print('index'+index.toString());
+    //print('rejected'+activeOrders.length.toString());
+    //print('index'+index.toString());
     pendingOrders.removeAt(index);
-    print('pending'+pendingOrders.length.toString());
+    //print('pending'+pendingOrders.length.toString());
     notifyListeners();
   }
   void activeOrdersUpdate(int index,String status)
@@ -62,7 +63,7 @@ class Update extends ChangeNotifier {
     notifyListeners();
   }
   void completeOrders(int index){
-    print('removed oid '+activeOrders[index].orderId.toString());
+   // print('removed oid '+activeOrders[index].orderId.toString());
     activeOrders[index].status=AppConfig.doneStatus;
     completedOrders.add(activeOrders[index]);
     activeOrders.removeAt(index);

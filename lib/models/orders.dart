@@ -26,7 +26,7 @@ class Orders {
 
     int orderId;
     Customer customer;
-    String orderPlacedDate;
+    DateTime orderPlacedDate;
     String status;
     String businessUnit;
     double totalPrice;
@@ -40,7 +40,7 @@ class Orders {
     factory Orders.fromJson(Map<String, dynamic> json) => Orders(
         orderId: json["orderId"],
         customer: Customer.fromJson(json["customer"]),
-        orderPlacedDate: json["orderPlacedDate"],
+        orderPlacedDate: DateTime.parse(json["orderPlacedDate"]),
         status: json["status"],
         businessUnit: json["businessUnit"],
         totalPrice: json["totalPrice"],
@@ -55,7 +55,7 @@ class Orders {
     Map<String, dynamic> toJson() => {
         "orderId": orderId,
         "customer": customer.toJson(),
-        "orderPlacedDate": orderPlacedDate,
+        "orderPlacedDate": orderPlacedDate.toIso8601String(),
         "status": status,
         "businessUnit": businessUnit,
         "totalPrice": totalPrice,
@@ -219,7 +219,7 @@ class OrderStatusHistory {
     });
 
     DateTime orderPlaced;
-    dynamic orderPreparing;
+    DateTime orderPreparing;
     dynamic orderReady;
     dynamic orderTimeout;
     dynamic orderHandover;
@@ -227,7 +227,7 @@ class OrderStatusHistory {
 
     factory OrderStatusHistory.fromJson(Map<String, dynamic> json) => OrderStatusHistory(
         orderPlaced: DateTime.parse(json["orderPlaced"]),
-        orderPreparing: json["orderPreparing"],
+        orderPreparing: json["orderPreparing"]==null?null:DateTime.parse(json["orderPreparing"]),
         orderReady: json["orderReady"],
         orderTimeout: json["orderTimeout"],
         orderHandover: json["orderHandover"],

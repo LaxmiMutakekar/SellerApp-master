@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'App_configs/app_configs.dart';
-import 'providers/rejection.dart';
 import 'widgets/cards.dart';
 import 'models/orders.dart';
-import 'widgets/BottomModalBar.dart';
+import 'widgets/orderDetails.dart';
 import 'APIServices/APIServices.dart';
 import 'widgets/widgets.dart';
 import 'models/rejectionReasons.dart';
 import 'package:provider/provider.dart';
 import 'providers/orderUpdate.dart';
 import 'package:intl/intl.dart';
-
+import 'widgets/rejectionAleart.dart';
 class PendingOrders extends StatefulWidget {
   @override
   _PendingOrdersState createState() => _PendingOrdersState();
@@ -20,7 +20,7 @@ class _PendingOrdersState extends State<PendingOrders> {
   OrderDetail orderItem = new OrderDetail();
   DateTime orderplacedTime;
   String time;
-
+  GlobalKey<FormState> globalFormKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     String url;
@@ -33,7 +33,7 @@ class _PendingOrdersState extends State<PendingOrders> {
               padding: const EdgeInsets.all(8.0),
               child: Text(
                 'Pending Orders',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                style: Theme.of(context).textTheme.headline6,
               ),
             ),
           ),
@@ -44,8 +44,8 @@ class _PendingOrdersState extends State<PendingOrders> {
                 shrinkWrap: true,
                 itemBuilder: (BuildContext context, int index) {
                   Orders pendings = orders.pendingOrders[index];
-                  //orderplacedTime = pendings.orderPlacedDate;
-                  //time = DateFormat.jm().format(orderplacedTime);
+                  orderplacedTime = pendings.orderPlacedDate;
+                  time = DateFormat.jm().format(orderplacedTime);
                   networkUrl = pendings.businessUnit;
                   switch (pendings.businessUnit) {
                     case 'Sodimac':
@@ -56,146 +56,113 @@ class _PendingOrdersState extends State<PendingOrders> {
                       break;
                     default:
                   }
-
                   return GestureDetector(
                     onTap: () {
                       orderItem.settingModalBottomSheet(
                           context, pendings, index);
                     },
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 2),
-                      child: Cards(
-                        radius: BorderRadius.circular(20),
-                        margin: EdgeInsets.all(3),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                    child: Cards(
+                      radius: BorderRadius.circular(20),
+                      margin: EdgeInsets.all(3),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(5.0),
+                                child: Container(
+                                  width: 70,
+                                  height: 40,
+                                  child: FittedBox(
+                                    child: Image(
+                                      image: new AssetImage(url),
+                                    ),
+                                    fit: BoxFit.fill,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 40),
+                              Column(
                                 children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(5.0),
-                                    child: Container(
-                                      width: 70,
-                                      height: 40,
-                                      child: FittedBox(
-                                        child: Image(
-                                          image: new AssetImage(url),
-                                        ),
-                                        fit: BoxFit.fill,
-                                      ),
+                                  Container(
+                                    child: Icon(
+                                      Icons.schedule_sharp,
+                                      size: 34,
                                     ),
                                   ),
-                                  SizedBox(width: 60),
-                                  Column(
-                                    children: [
-                                      Container(
-                                        child: Icon(
-                                          Icons.schedule_sharp,
-                                          size: 34,
-                                        ),
-                                      ),
-                                      // Text(
-                                      //   time,
-                                      //   style:
-                                      //       TextStyle(color: Color(0xff2248B4)),
-                                      // ),
-                                      Text(
-                                        'Order placed time',
-                                        style: TextStyle(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w300),
-                                      )
-                                    ],
+                                  Text(
+                                    time,
+                                    style:
+                                        Theme.of(context).textTheme.bodyText1,
                                   ),
+                                  Text(
+                                    'Order placed time',
+                                    style:
+                                        Theme.of(context).textTheme.bodyText2,
+                                  )
                                 ],
                               ),
-                            ),
-                            Text(
-                              '#00${pendings.orderId}',
-                              style: TextStyle(
-                                  fontSize: 18.0,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            Row(
+                            ],
+                          ),
+                          Text(
+                            '#00${pendings.orderId}',
+                            style: Theme.of(context).textTheme.headline6,
+                          ),
+                          Row(
+                            children: [
+                              Text(
+                                productName(pendings.orderItems),
+                                style: Theme.of(context).textTheme.caption,
+                              ),
+                              Text(
+                                '\$' + pendings.totalPrice.toInt().toString(),
+                                style: Theme.of(context).textTheme.caption,
+                              )
+                            ],
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 5.0),
+                            child: Container(
+                                height: 2,
+                                width: 235,
+                                color: Theme.of(context).dividerColor),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                Text(
-                                  productName(pendings.orderItems),
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.normal,
-                                      color: AppConfig.hidingText),
-                                ),
-                                Text(
-                                  '\$' + pendings.totalPrice.toInt().toString(),
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.normal,
-                                      color: AppConfig.hidingText),
-                                )
-                              ],
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 5.0),
-                              child: Container(
-                                  height: 2,
-                                  width: 140,
-                                  color: AppConfig.hidingText),
-                            ),
-                            Container(
-                              child: Row(
-                                children: [
-                                  RaisedButton(
-                                    elevation: 4,
-                                    splashColor: AppConfig.buttonSplash,
+                                ElevatedButton(
                                     onPressed: () {
                                       orders.acceptOrder(index);
-
                                       APIServices.changeOrderStatus(
                                           pendings.orderId,
                                           AppConfig.acceptStatus);
-
                                       showInSnackBar(
                                           'Order accepted succesfully!!',
                                           context);
                                     },
-                                    color: AppConfig.buttonBackgrd,
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(20)),
-                                    child: Text("Accept",
-                                        style: TextStyle(
-                                            color: AppConfig.buttonText,
-                                            fontWeight: FontWeight.bold)),
-                                  ),
-                                  SizedBox(width: 8),
-                                  RaisedButton(
-                                    elevation: 4,
-                                    splashColor: Colors.red,
-                                    onPressed: () {
-                                      setState(() {
-                                        _showRejectionchoiceDialog(
-                                            index, orders, pendings);
-                                      });
+                                    child: Text(
+                                      'Accept',
+                                      style: Theme.of(context).textTheme.button,
+                                    )),
+                                SizedBox(width: 10),
+                                ElevatedButton(
+                                    onPressed: ()async {
+                                      showReasonsDialog(context,index,pendings.orderId);
                                     },
-                                    color: AppConfig.buttonBackgrd,
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(20)),
-                                    child: Text("Reject",
-                                        style: TextStyle(
-                                            color: AppConfig.buttonText,
-                                            fontWeight: FontWeight.bold)),
-                                  ),
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
+                                    child: Text('Reject',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .button)),
+                              ],
+                            ),
+                          )
+                        ],
                       ),
                     ),
                   );
@@ -205,54 +172,6 @@ class _PendingOrdersState extends State<PendingOrders> {
       );
     });
   }
+  
 
-  _showRejectionchoiceDialog(i, orders, pending) => showDialog(
-      context: context,
-      builder: (context) {
-        final _rejectioneNotifier =
-            Provider.of<RejectionReasons>(context, listen: false);
-        return Consumer<RejectionReasons>(builder: (context, value, child) {
-          return AlertDialog(
-            title: Text('Select Rejection Reason'),
-            content: SingleChildScrollView(
-              child: Container(
-                width: double.infinity,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: reasons
-                      .map((e) => RadioListTile(
-                            title: Text(e),
-                            value: e,
-                            groupValue: _rejectioneNotifier.currentReason,
-                            selected: _rejectioneNotifier.currentReason == e,
-                            onChanged: (value) {
-                              _rejectioneNotifier.updateReason(value);
-                              // Navigator.of(context).pop();
-                            },
-                          ))
-                      .toList(),
-                ),
-              ),
-            ),
-            actions: [
-              FlatButton(
-                  child: Text('Continue'),
-                  onPressed: () {
-                    setState(() {
-                      orders.rejectOrder(i);
-                      APIServices.addRejectionStatus(pending.orderId,
-                          value.currentReason, AppConfig.rejectedStatus);
-                    });
-
-                    Navigator.of(context).pop();
-                  }),
-              FlatButton(
-                  child: Text('Cancel'),
-                  onPressed: () {
-                    Navigator.of(context, rootNavigator: true).pop();
-                  }),
-            ],
-          );
-        });
-      });
 }
