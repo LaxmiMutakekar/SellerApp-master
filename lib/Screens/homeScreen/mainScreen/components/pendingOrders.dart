@@ -1,16 +1,17 @@
+import 'package:Seller_App/App_configs/sizeConfigs.dart';
+import 'package:Seller_App/widgets/defaultButton.dart';
+import 'package:Seller_App/widgets/rejectionAleart.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'App_configs/app_configs.dart';
-import 'widgets/cards.dart';
-import 'models/orders.dart';
-import 'widgets/orderDetails.dart';
-import 'APIServices/APIServices.dart';
-import 'widgets/widgets.dart';
-import 'models/rejectionReasons.dart';
-import 'package:provider/provider.dart';
-import 'providers/orderUpdate.dart';
+import 'package:Seller_App/APIServices/APIServices.dart';
+import 'package:Seller_App/App_configs/app_configs.dart';
+import 'package:Seller_App/widgets/cards.dart';
+import 'package:Seller_App/models/orders.dart';
+import 'package:Seller_App/widgets/orderDetails.dart';
+import 'package:Seller_App/widgets/widgets.dart';
 import 'package:intl/intl.dart';
-import 'widgets/rejectionAleart.dart';
+import 'package:provider/provider.dart';
+import 'package:Seller_App/providers/orderUpdate.dart';
+
 class PendingOrders extends StatefulWidget {
   @override
   _PendingOrdersState createState() => _PendingOrdersState();
@@ -47,15 +48,7 @@ class _PendingOrdersState extends State<PendingOrders> {
                   orderplacedTime = pendings.orderPlacedDate;
                   time = DateFormat.jm().format(orderplacedTime);
                   networkUrl = pendings.businessUnit;
-                  switch (pendings.businessUnit) {
-                    case 'Sodimac':
-                      url = 'assets/$networkUrl.png';
-                      break;
-                    case 'Tottus':
-                      url = 'assets/$networkUrl.png';
-                      break;
-                    default:
-                  }
+                  url = "assets/Images/$networkUrl.png";
                   return GestureDetector(
                     onTap: () {
                       orderItem.settingModalBottomSheet(
@@ -84,7 +77,7 @@ class _PendingOrdersState extends State<PendingOrders> {
                                   ),
                                 ),
                               ),
-                              SizedBox(width: 40),
+                              SizedBox(width: getProportionateScreenWidth(40.0)),
                               Column(
                                 children: [
                                   Container(
@@ -109,7 +102,8 @@ class _PendingOrdersState extends State<PendingOrders> {
                           ),
                           Text(
                             '#00${pendings.orderId}',
-                            style: Theme.of(context).textTheme.headline6,
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 22),
                           ),
                           Row(
                             children: [
@@ -136,8 +130,10 @@ class _PendingOrdersState extends State<PendingOrders> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                ElevatedButton(
-                                    onPressed: () {
+                                DefaultButton(
+                                  text: ('Accept'),
+                                  press: () {
+                                    {
                                       orders.acceptOrder(index);
                                       APIServices.changeOrderStatus(
                                           pendings.orderId,
@@ -145,20 +141,16 @@ class _PendingOrdersState extends State<PendingOrders> {
                                       showInSnackBar(
                                           'Order accepted succesfully!!',
                                           context);
-                                    },
-                                    child: Text(
-                                      'Accept',
-                                      style: Theme.of(context).textTheme.button,
-                                    )),
+                                    }
+                                  },
+                                ),
                                 SizedBox(width: 10),
-                                ElevatedButton(
-                                    onPressed: ()async {
-                                      showReasonsDialog(context,index,pendings.orderId);
+                                DefaultButton(
+                                    press: () async {
+                                      showReasonsDialog(
+                                          context, index, pendings.orderId);
                                     },
-                                    child: Text('Reject',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .button)),
+                                    text: ('Reject')),
                               ],
                             ),
                           )
@@ -172,6 +164,5 @@ class _PendingOrdersState extends State<PendingOrders> {
       );
     });
   }
-  
-
 }
+

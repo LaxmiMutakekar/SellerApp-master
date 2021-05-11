@@ -38,140 +38,177 @@ class APIServices {
   }
 
   static Future<List<Orders>> fetchOrders() async {
-    final response = await http.get(
-        Uri.parse("http://10.0.2.2:8080/orders/seller"),
-        headers: {"Authorization": "Bearer " + Session.token});
-    List<dynamic> responseJson = json.decode(response.body);
-    List<Orders> ordersList =
-        responseJson.map((d) => new Orders.fromJson(d)).toList();
-    ordersList.sort((a, b) {
-      return a.orderFulfillmentTime.compareTo(b.orderFulfillmentTime);
-    });
-    if (response.statusCode == 200) {
-      return ordersList;
-    } else {
-      return ordersFromJson(response.body);
+    try {
+      final response = await http.get(
+          Uri.parse("http://10.0.2.2:8080/orders/seller"),
+          headers: {"Authorization": "Bearer " + Session.token});
+      List<dynamic> responseJson = json.decode(response.body);
+      List<Orders> ordersList =
+      responseJson.map((d) => new Orders.fromJson(d)).toList();
+      ordersList.sort((a, b) {
+        return a.orderFulfillmentTime.compareTo(b.orderFulfillmentTime);
+      });
+      if (response.statusCode == 200) {
+        return ordersList;
+      } else {
+        return ordersFromJson(response.body);
+      }
+    }catch (e) {
+      print(e);
     }
+
   }
 
   static Future<Seller> fetchSeller() async {
-    final response = await http.get(
-        Uri.parse("http://10.0.2.2:8080/details/seller"),
-        headers: {"Authorization": "Bearer " + Session.token});
-    if (response.statusCode == 200) {
-      return SellerFromJson(response.body);
+
+    try {
+      final response = await http.get(
+          Uri.parse("http://10.0.2.2:8080/details/seller"),
+          headers: {"Authorization": "Bearer " + Session.token});
+      if (response.statusCode == 200) {
+        return SellerFromJson(response.body);
+      }
+      if (response.statusCode == 401) {
+      }
     }
-    if (response.statusCode == 401) {
-      //print('error');
+    catch(e)
+    {
+      print(e);
     }
 
-    return SellerFromJson(response.body);
   }
 
   static Future<http.Response> updateAvailable(bool value) async {
-    final response = await http.patch(
-      Uri.parse("http://10.0.2.2:8080/update/seller/available"),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        "Authorization": "Bearer " + Session.token
-      },
-      body: jsonEncode(<String, bool>{
-        'available': value,
-      }),
-    );
-    if (response.statusCode == 200) {
-      //print("Seller availability changed!");
-    } else {
-      //print("Seller Availability update failed!");
+    try {
+      final response = await http.patch(
+        Uri.parse("http://10.0.2.2:8080/update/seller/available"),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          "Authorization": "Bearer " + Session.token
+        },
+        body: jsonEncode(<String, bool>{
+          'available': value,
+        }),
+      );
+      if (response.statusCode == 200) {
+        //print("Seller availability changed!");
+      } else {
+        //print("Seller Availability update failed!");
+      }
+    }catch(e)
+    {
+      print(e);
     }
-    return response;
   }
 
   static Future<http.Response> changeOrderStatus(int oid, String status) async {
-    final response = await http.patch(
-      Uri.parse("http://10.0.2.2:8080/orders/" + oid.toString()),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        "Authorization": "Bearer " + Session.token
-      },
-      body: jsonEncode(<String, String>{
-        "status": status,
-      }),
-    );
-    if (response.statusCode == 200) {
-      //print("Order status changed!");
-    } else {
-      //print("Seller status update failed!");
+    try {
+      final response = await http.patch(
+        Uri.parse("http://10.0.2.2:8080/orders/" + oid.toString()),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          "Authorization": "Bearer " + Session.token
+        },
+        body: jsonEncode(<String, String>{
+          "status": status,
+        }),
+      );
+      if (response.statusCode == 200) {
+        //print("Order status changed!");
+      } else {
+        //print("Seller status update failed!");
+      }
+    }catch(e)
+    {
+      print(e);
     }
-    return response;
   }
   static Future<http.Response> addRejectionStatus(int oid, String reason,String status) async {
-    final response = await http.patch(
-      Uri.parse("http://10.0.2.2:8080/orders/" + oid.toString()),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        "Authorization": "Bearer " + Session.token
-      },
-      body: jsonEncode(<String, String>{
-        "status": status,
-        "rejectionReason":reason,
-      }),
-    );
-    if (response.statusCode == 200) {
-      //print("Order status changed!");
-    } else {
-      //print("Seller status update failed!");
+    try {
+      final response = await http.patch(
+        Uri.parse("http://10.0.2.2:8080/orders/" + oid.toString()),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          "Authorization": "Bearer " + Session.token
+        },
+        body: jsonEncode(<String, String>{
+          "status": status,
+          "rejectionReason": reason,
+        }),
+      );
+      if (response.statusCode == 200) {
+        //print("Order status changed!");
+      } else {
+        //print("Seller status update failed!");
+      }
+    }catch(e)
+    {
+      print(e);
     }
-    return response;
   }
 
   static Future<List<Products>> fetchProducts() async {
-    final response = await http.get(
-        Uri.parse("http://10.0.2.2:8080/product/seller"),
-        headers: {"Authorization": "Bearer " + Session.token});
-    List<dynamic> responseJson = json.decode(response.body);
-    List<Products> products =
-        responseJson.map((d) => new Products.fromJson(d)).toList();
-    if (response.statusCode == 200) {
-      //print(products);
-      return products;
-    } else {
-      return productsFromJson(response.body);
+    try {
+      final response = await http.get(
+          Uri.parse("http://10.0.2.2:8080/product/seller"),
+          headers: {"Authorization": "Bearer " + Session.token});
+      List<dynamic> responseJson = json.decode(response.body);
+      List<Products> products =
+      responseJson.map((d) => new Products.fromJson(d)).toList();
+      if (response.statusCode == 200) {
+        //print(products);
+        return products;
+      } else {
+        return productsFromJson(response.body);
+      }
+    }
+    catch(e)
+    {
+      print(e);
     }
   }
 
   static Future<http.Response> updateProduct(int index, bool value) async {
-    final response = await http.patch(
-      Uri.parse("http://10.0.2.2:8080/product"),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        "Authorization": "Bearer " + Session.token
-      },
-      body: jsonEncode(<String, dynamic>{
-        'pid': index,
-        'available': value,
-      }),
-      
-    );
-    return response;
+    try {
+      final response = await http.patch(
+        Uri.parse("http://10.0.2.2:8080/product"),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          "Authorization": "Bearer " + Session.token
+        },
+        body: jsonEncode(<String, dynamic>{
+          'pid': index,
+          'available': value,
+        }),
+
+      );
+    }
+    catch(e)
+    {
+      print(e);
+    }
   }
   static Future<http.Response> updateSellerDevice(String token) async {
-    final response = await http.patch(
-      Uri.parse("http://10.0.2.2:8080/update/seller/device" ),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        "Authorization": "Bearer " + Session.token
-      },
-      body: jsonEncode(<String, String>{
-        "deviceId":token,
-      }),
-    );
-    if (response.statusCode == 200) {
-      print("Device token changed!");
-    } else {
-      print("Seller device token update failed!");
+    try {
+      final response = await http.patch(
+        Uri.parse("http://10.0.2.2:8080/update/seller/device"),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          "Authorization": "Bearer " + Session.token
+        },
+        body: jsonEncode(<String, String>{
+          "deviceId": token,
+        }),
+      );
+      if (response.statusCode == 200) {
+        print("Device token changed!");
+      } else {
+        print("Seller device token update failed!");
+      }
+    }catch(e)
+    {
+      print(e);
     }
-    return response;
   }
 
 }

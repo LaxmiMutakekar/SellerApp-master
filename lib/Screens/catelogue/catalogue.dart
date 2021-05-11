@@ -1,4 +1,4 @@
-import 'package:Seller_App/App_configs/app_configs.dart';
+import 'package:Seller_App/Screens/productDetail/productDetail.dart';
 import 'package:Seller_App/providers/products.dart';
 import 'package:flutter/material.dart';
 import 'package:Seller_App/models/products.dart';
@@ -8,18 +8,27 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:Seller_App/widgets/switchButton.dart';
 
 class Catalogue extends StatefulWidget {
+  static String routeName = "/catalogue";
   @override
   _CatalogueState createState() => _CatalogueState();
 }
 
 class _CatalogueState extends State<Catalogue> {
-  SwitchButton switchButton = new SwitchButton();
   @override
   Widget build(BuildContext context) {
     return Consumer<Product>(builder: (context, Product products, child) {
       return Scaffold(
-          backgroundColor: AppConfig.homeScreen,
+          backgroundColor: Colors.white,
           appBar: AppBar(
+            backgroundColor: Colors.white,
+            elevation: 1,
+            automaticallyImplyLeading: false,
+            leading: IconButton(
+              icon: Icon(Icons.arrow_back),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
             title: Text(
               "Catalogue",
               textAlign: TextAlign.center,
@@ -34,14 +43,31 @@ class _CatalogueState extends State<Catalogue> {
               itemBuilder: (BuildContext context, int index) {
                 Products item = products.productsList[index];
                 return GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ProductDetails(
+                          image: item.image,
+                          name: item.name,
+                          skuId: item.skuId,
+                          ean: item.ean,
+                          upc: item.upc,
+                          description: item.description,
+                          price: item.price,
+                          basicEta: item.basicEta,
+                        ),
+                      ),
+                    );
+                  },
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 0.0),
                     child: Cards(
-                        padding: EdgeInsets.all(5),
+                        color: Colors.white,
+                        padding: EdgeInsets.all(0),
                         margin: EdgeInsets.all(2),
                         child: Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: const EdgeInsets.only(left: 8.0, top: 8.0),
                           child: Row(
                             children: [
                               ClipRRect(
@@ -53,18 +79,22 @@ class _CatalogueState extends State<Catalogue> {
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(13)),
                                   clipBehavior: Clip.hardEdge,
-                                  child: CachedNetworkImage(
-                                    imageUrl: item.image,
-                                    fit: BoxFit.fill,
-                                    placeholder: (context, url) =>
-                                        CircularProgressIndicator(),
-                                    errorWidget: (context, url, error) =>
-                                        Icon(Icons.error),
+                                  child: Hero(
+                                    tag: item.name,
+                                    child: CachedNetworkImage(
+                                      imageUrl: item.image,
+                                      fit: BoxFit.fill,
+                                      placeholder: (context, url) =>
+                                          CircularProgressIndicator(),
+                                      errorWidget: (context, url, error) =>
+                                          Icon(Icons.error),
+                                    ),
                                   ),
                                 ),
                               ),
                               Padding(
-                                padding: const EdgeInsets.all(8.0),
+                                padding:
+                                    const EdgeInsets.only(left: 8.0, top: 8.0),
                                 child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
@@ -91,8 +121,12 @@ class _CatalogueState extends State<Catalogue> {
                                                     .width /
                                                 4,
                                           ),
-                                          switchButton.showSwitch(
-                                              context, index),
+                                          DefaultSwitch(
+                                            value: item.available,
+                                            type: 'Product',
+                                            index: index,
+                                            pid: item.pid,
+                                          )
                                         ],
                                       ),
                                       Text(
@@ -103,7 +137,6 @@ class _CatalogueState extends State<Catalogue> {
                                       Container(
                                         width: 230,
                                         child: Text(
-                                          
                                           item.description,
                                           textAlign: TextAlign.left,
                                           maxLines: 2,
@@ -116,8 +149,10 @@ class _CatalogueState extends State<Catalogue> {
                                       ),
                                       SizedBox(height: 3),
                                       Text(
-                                        item.price.toString(),
-                                        style: TextStyle(color: Colors.red),
+                                        "\$ " + item.price.toString(),
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.bold),
                                       ),
                                     ]),
                               ),

@@ -7,6 +7,7 @@ import 'package:Seller_App/APIServices/APIServices.dart';
 import 'package:Seller_App/providers/orderUpdate.dart';
 
 class Verify extends StatelessWidget {
+   static String routeName="/verify";
   final int oid;
   final int index;
   final String deliveryOTP;

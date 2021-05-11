@@ -1,16 +1,18 @@
+import 'package:Seller_App/Screens/loginScreen/loginScreen.dart';
+import 'package:Seller_App/Screens/orderHistory/orderHistory.dart';
+import 'package:Seller_App/Screens/profileScreen.dart';
 import 'package:Seller_App/providers/seller.dart';
-import 'package:Seller_App/screens/LoginScreen.dart';
-import 'package:Seller_App/screens/orderHistory.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'catalogue.dart';
-import '../session.dart';
+import 'package:Seller_App/Screens/catelogue/catalogue.dart';
+import 'package:Seller_App/session.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import '../RejectedOrders.dart';
+import 'package:Seller_App/Screens/rejectedOrder/rejectedOrders.dart';
 import 'package:provider/provider.dart';
-import '../App_configs/app_configs.dart';
+import 'package:Seller_App/App_configs/app_configs.dart';
 
 class MenuDashboard extends StatefulWidget {
+  static String routeName="/drawer";
   @override
   _MenuDashboardState createState() => _MenuDashboardState();
 }
@@ -30,7 +32,11 @@ class _MenuDashboardState extends State<MenuDashboard> {
         Row(children: [
           IconButton(
               icon: Icon(Icons.account_circle, color: Colors.white),
-              onPressed: null),
+              onPressed: (){
+                Navigator.pushNamed(
+                  context,
+                  ProfilePage.routeName);
+              }),
           SizedBox(
             width: 10,
           ),
@@ -53,10 +59,9 @@ class _MenuDashboardState extends State<MenuDashboard> {
               children: [
                 TextButton.icon(
                     onPressed: () {
-                      Navigator.push(
+                      Navigator.pushNamed(
                         context,
-                        MaterialPageRoute(
-                            builder: (context) => Catalogue()),
+                        Catalogue.routeName
                       );
                       // Catalogue();
                     },
@@ -72,10 +77,10 @@ class _MenuDashboardState extends State<MenuDashboard> {
               children: [
                 TextButton.icon(
                   onPressed: () {
-                    Navigator.push(
+                    Navigator.pushNamed(
                         context,
-                        MaterialPageRoute(
-                            builder: (context) => OrderHistory()));
+                        OrderHistory.routeName
+                        );
                   },
                   icon: Icon(
                     Icons.history,
@@ -92,10 +97,9 @@ class _MenuDashboardState extends State<MenuDashboard> {
               children: [
                 TextButton.icon(
                     onPressed: () {
-                      Navigator.push(
+                      Navigator.pushNamed(
                         context,
-                        MaterialPageRoute(
-                            builder: (context) => RejectedOrders()),
+                        RejectedOrders.routeName
                       );
                     },
                     label: Text(
@@ -129,9 +133,9 @@ class _MenuDashboardState extends State<MenuDashboard> {
           TextButton.icon(
             onPressed: () {
               Session.logout();
-              Navigator.push(
+              Navigator.pushNamed(
                 context,
-                MaterialPageRoute(builder: (context) => LoginPage()),
+                LoginPage.routeName
               );
             },
             icon: Icon(Icons.logout, color: Colors.white),

@@ -1,13 +1,14 @@
+import 'package:Seller_App/widgets/defaultButton.dart';
 import 'package:Seller_App/widgets/ribbon.dart';
 import 'package:flutter/material.dart';
-import 'APIServices/APIServices.dart';
-import 'App_configs/app_configs.dart';
-import 'widgets/cards.dart';
-import 'models/orders.dart';
-import 'widgets/orderDetails.dart';
-import 'widgets/widgets.dart';
+import 'package:Seller_App/APIServices/APIServices.dart';
+import 'package:Seller_App/App_configs/app_configs.dart';
+import 'package:Seller_App/widgets/cards.dart';
+import 'package:Seller_App/models/orders.dart';
+import 'package:Seller_App/widgets/orderDetails.dart';
+import 'package:Seller_App/widgets/widgets.dart';
 import 'package:provider/provider.dart';
-import 'providers/orderUpdate.dart';
+import 'package:Seller_App/providers/orderUpdate.dart';
 import 'package:slide_countdown_clock/slide_countdown_clock.dart';
 
 class ActiveOrders extends StatefulWidget {
@@ -44,7 +45,6 @@ class _ActiveOrdersState extends State<ActiveOrders>
           ),
           new Container(
             margin: EdgeInsets.symmetric(horizontal: 10),
-            decoration: new BoxDecoration(color: Colors.white),
             child: new TabBar(
               controller: _controller,
               tabs: [
@@ -69,10 +69,10 @@ class _ActiveOrdersState extends State<ActiveOrders>
             child: new TabBarView(
               controller: _controller,
               children: <Widget>[
-                new ContainerCard(child: listOrders('All accepted orders')),
-                new ContainerCard(child: listOrders(AppConfig.acceptStatus)),
-                new ContainerCard(child: listOrders(AppConfig.markAsDone)),
-                new ContainerCard(child: listOrders(AppConfig.timeout)),
+                new Container(child: listOrders('All accepted orders')),
+                new Container(child: listOrders(AppConfig.acceptStatus)),
+                new Container(child: listOrders(AppConfig.markAsDone)),
+                new Container(child: listOrders(AppConfig.timeout)),
               ],
             ),
           ),
@@ -93,10 +93,10 @@ class _ActiveOrdersState extends State<ActiveOrders>
             Orders active = orders.activeOrders[index];
             switch (active.businessUnit) {
               case 'Sodimac':
-                url = 'assets/sodimacLogo.jpeg';
+                url = 'assets/Images/SodimacLogo.jpeg';
                 break;
               case 'Tottus':
-                url = 'assets/tottusLogo.jpeg';
+                url = 'assets/Images/tottusLogo.jpeg';
                 break;
               default:
             }
@@ -114,10 +114,9 @@ class _ActiveOrdersState extends State<ActiveOrders>
   }
 
   activeOrders(Orders active, url, orders, index) {
-    DateTime currDt = DateTime.now().toUtc();
+    DateTime currDt = DateTime.now();
     subDt = active.orderStatusHistory.orderPreparing ?? currDt;
-    int diffDt =
-        currDt.difference(subDt.add(DateTime.now().timeZoneOffset)).inSeconds;
+    int diffDt = currDt.difference(subDt).inSeconds;
     bool done = false;
     double dur;
     if (active.orderPreparationTime * 60 >= diffDt.toDouble()) {
@@ -152,7 +151,6 @@ class _ActiveOrdersState extends State<ActiveOrders>
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-
                                 Container(
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(10)),
@@ -168,32 +166,43 @@ class _ActiveOrdersState extends State<ActiveOrders>
                                 ),
                                 Text('#00${active.orderId}',
                                     style:
-                                    Theme.of(context).textTheme.headline6),
+                                        Theme.of(context).textTheme.headline6),
                                 (active.status == 'Order Preparing')
                                     ? Padding(
-                                  padding:
-                                  const EdgeInsets.only(left: 30.0),
-                                  child: SlideCountdownClock(
-                                    duration:
-                                    Duration(seconds: dur.toInt()),
-                                    slideDirection: SlideDirection.Up,
-                                    separator: ":",
-                                    textStyle: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.normal,
-                                    ),
-                                    shouldShowDays: false,
-                                    onDone: () {
-                                      setState(() {
-                                        done = true;
-                                      });
-                                      // orders.updateOrderStatus(
-                                      //     AppConfig.timeout, index);
-                                      // APIServices.changeOrderStatus(
-                                      //     active.orderId, AppConfig.timeout);
-                                    },
-                                  ),
-                                )
+                                        padding:
+                                            const EdgeInsets.only(left: 30.0),
+                                        child: Column(
+                                          children: [
+                                            SlideCountdownClock(
+                                              duration: Duration(
+                                                  seconds: dur.toInt()),
+                                              slideDirection: SlideDirection.Up,
+                                              separator: ":",
+                                              textStyle: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.normal,
+                                              ),
+                                              shouldShowDays: false,
+                                              onDone: () {
+                                                setState(() {
+                                                  done = true;
+                                                });
+                                                orders.activeOrdersUpdate(
+                                                    index, AppConfig.timeout);
+                                                APIServices.changeOrderStatus(
+                                                    active.orderId,
+                                                    AppConfig.timeout);
+                                              },
+                                            ),
+                                            Text(
+                                              "HH    MM    SS",
+                                              style: TextStyle(
+                                                  fontSize: 10,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ],
+                                        ),
+                                      )
                                     : Container()
                               ],
                             ),
@@ -202,7 +211,6 @@ class _ActiveOrdersState extends State<ActiveOrders>
                         ],
                       ),
                     ),
-
                     Row(
                       children: [
                         Text(
@@ -229,34 +237,24 @@ class _ActiveOrdersState extends State<ActiveOrders>
                           children: [
                             active.status == 'Order Preparing'
                                 ? Expanded(
-                              child: ElevatedButton(
-                                  onPressed: () {
-                                    orders.activeOrdersUpdate(
-                                        index, AppConfig.markAsDone);
-                                    APIServices.changeOrderStatus(
-                                        active.orderId,
-                                        AppConfig.markAsDone);
-                                  },
-                                  child: Text(
-                                    'Mark ready',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .button,
-                                  )),
-                            )
+                                    child: DefaultButton(
+                                      press: () {
+                                        orders.activeOrdersUpdate(
+                                            index, AppConfig.markAsDone);
+                                        APIServices.changeOrderStatus(
+                                            active.orderId,
+                                            AppConfig.markAsDone);
+                                      },
+                                      text: ('Mark ready'),
+                                    ),
+                                  )
                                 : SizedBox(width: 0),
                             SizedBox(width: 8),
                             active.status != 'Order Complete'
                                 ? Expanded(
-                              child: ElevatedButton(
-                                  onPressed: () {},
-                                  child: Text(
-                                    'Update ETC',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .button,
-                                  )),
-                            )
+                                    child: DefaultButton(
+                                        press: () {}, text: ('Update ETC')),
+                                  )
                                 : Container(),
                           ],
                         ),
@@ -277,8 +275,8 @@ class _ActiveOrdersState extends State<ActiveOrders>
                   color: active.status == 'Order Ready'
                       ? AppConfig.readyColor
                       : active.status == 'Order Complete'
-                      ? AppConfig.completedColor
-                      : AppConfig.preparingColor,
+                          ? AppConfig.completedColor
+                          : AppConfig.preparingColor,
                 ))
           ]),
         ),

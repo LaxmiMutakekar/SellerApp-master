@@ -19,9 +19,6 @@ class Cards extends StatelessWidget {
       padding: padding ?? EdgeInsets.all(10),
       decoration: BoxDecoration(
         color: color ?? Theme.of(context).canvasColor,
-        // border: Border.all(
-        //   color: Theme.of(context).dividerColor.withOpacity(0.8),
-        // ),
         boxShadow: [
           BoxShadow(
             color: Theme.of(context).dividerColor.withOpacity(0.2),

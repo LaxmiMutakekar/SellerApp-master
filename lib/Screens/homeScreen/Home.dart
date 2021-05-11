@@ -1,12 +1,13 @@
 import 'package:Seller_App/providers/seller.dart';
 import 'package:flutter/material.dart';
-import 'providers/products.dart';
-import 'screens/mainScreen.dart';
-import 'screens/drawer.dart';
+import 'package:Seller_App/providers/products.dart';
+import 'package:Seller_App/Screens/HomeScreen/mainScreen/mainScreen.dart';
+import 'package:Seller_App/Screens/HomeScreen/drawerScreen/drawer.dart';
 import 'package:provider/provider.dart';
-import 'providers/orderUpdate.dart';
+import 'package:Seller_App/providers/orderUpdate.dart';
 
 class HomeScreen extends StatefulWidget {
+  static String routeName="/home";
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }

@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:Seller_App/widgets/cards.dart';
 
 class OrderHistory extends StatefulWidget {
+  static String routeName="/orderHistory";
   @override
   _OrderHistoryState createState() => _OrderHistoryState();
 }

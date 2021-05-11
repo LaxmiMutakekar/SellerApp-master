@@ -1,10 +1,11 @@
 
 import 'package:flutter/material.dart';
-import 'package:Seller_App/Home.dart';
+import 'package:Seller_App/Screens/HomeScreen/Home.dart';
 
 import 'package:animated_check/animated_check.dart';
 
 class SubmitPage extends StatefulWidget {
+   static String routeName="/submitted";
   final int oid;
   const SubmitPage({Key key, this.oid,}) : super(key: key);
 
@@ -46,8 +47,8 @@ class _SubmitPageState extends State<SubmitPage>
             ),
             onPressed: () {
               
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => HomeScreen()));
+              Navigator.pushNamed(context,
+                  HomeScreen.routeName);
             },
           ),
         ),
