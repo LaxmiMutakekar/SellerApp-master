@@ -52,7 +52,7 @@ class _PendingOrdersState extends State<PendingOrders> {
                   return GestureDetector(
                     onTap: () {
                       orderItem.settingModalBottomSheet(
-                          context, pendings, index);
+                          context, pendings);
                     },
                     child: Cards(
                       radius: BorderRadius.circular(20),
@@ -135,12 +135,14 @@ class _PendingOrdersState extends State<PendingOrders> {
                                   press: () {
                                     {
                                       orders.acceptOrder(index);
+                                      orders.updateAcceptTimings(pendings, DateTime.now());
                                       APIServices.changeOrderStatus(
-                                          pendings.orderId,
+                                          pendings,
                                           AppConfig.acceptStatus);
                                       showInSnackBar(
                                           'Order accepted succesfully!!',
                                           context);
+                                         // pendings.orderPre=DateTime.now();
                                     }
                                   },
                                 ),

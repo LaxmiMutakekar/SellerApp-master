@@ -1,12 +1,13 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:Seller_App/Screens/orderHistory/orderHistory.dart';
 import 'package:Seller_App/models/orders.dart';
 import 'package:Seller_App/models/sellerDetails.dart';
 import 'package:http/http.dart' as http;
 import 'package:Seller_App/session.dart';
 import 'package:Seller_App/models/loginModel.dart';
 import 'package:Seller_App/models/products.dart';
-
+import 'package:Seller_App/models/statusUpd.dart';
 class APIServices {
   static Future<LoginResponseModel> login(
       LoginRequestModel requestModel) async {
@@ -39,15 +40,19 @@ class APIServices {
 
   static Future<List<Orders>> fetchOrders() async {
     try {
+     
       final response = await http.get(
           Uri.parse("http://10.0.2.2:8080/orders/seller"),
           headers: {"Authorization": "Bearer " + Session.token});
+           
       List<dynamic> responseJson = json.decode(response.body);
       List<Orders> ordersList =
-      responseJson.map((d) => new Orders.fromJson(d)).toList();
+      responseJson.map((d) =>  Orders.fromJson(d)).toList();
+      
       ordersList.sort((a, b) {
         return a.orderFulfillmentTime.compareTo(b.orderFulfillmentTime);
       });
+      
       if (response.statusCode == 200) {
         return ordersList;
       } else {
@@ -101,20 +106,27 @@ class APIServices {
     }
   }
 
-  static Future<http.Response> changeOrderStatus(int oid, String status) async {
+  static Future<http.Response> changeOrderStatus(Orders order, String status) async {
+
     try {
       final response = await http.patch(
-        Uri.parse("http://10.0.2.2:8080/orders/" + oid.toString()),
+        Uri.parse("http://10.0.2.2:8080/orders/" + order.orderId.toString()),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           "Authorization": "Bearer " + Session.token
         },
+
+
         body: jsonEncode(<String, String>{
           "status": status,
         }),
       );
+      dynamic responseJson = json.decode(response.body);
+      UpdateResponse updateResponse=updateResponseFromJson(response.body);
       if (response.statusCode == 200) {
-        //print("Order status changed!");
+        order.orderPre=updateResponseFromJson(response.body).localDateTime;
+    
+        //return updateResponse.localDateTime;
       } else {
         //print("Seller status update failed!");
       }

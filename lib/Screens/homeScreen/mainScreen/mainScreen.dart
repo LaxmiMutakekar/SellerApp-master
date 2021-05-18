@@ -1,4 +1,5 @@
 import 'package:Seller_App/App_configs/app_configs.dart';
+import 'package:Seller_App/providers/notification.dart';
 import 'package:Seller_App/providers/orderUpdate.dart';
 import 'package:Seller_App/providers/seller.dart';
 import 'package:Seller_App/widgets/switchButton.dart';
@@ -7,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'components/activeOrders.dart';
 import 'components/pendingOrders.dart';
+import 'package:avatar_glow/avatar_glow.dart';
 class MainScreen extends StatefulWidget {
   @override
   _MainScreenState createState() => _MainScreenState();
@@ -21,6 +23,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
   AnimationController controllerOne;
   Animation<Color> animationOne;
   Animation<Color> animationTwo;
+  
   @override
   void initState() {
     super.initState();
@@ -35,7 +38,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
     super.dispose();
     _controller.dispose();
   }
-
+ 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -136,13 +139,81 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                           DefaultSwitch(value: seller.seller.available,type: ('Seller'),)
                         ],
                       ),
-                      Icon(
-                        Icons.notifications_active,
-                        color: AppConfig.iconColor,
+                      Container(
+                        width: 60,
+                        height: 60,
+                        child: Stack(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: IconButton(
+                                onPressed:(){},
+                                
+                                  icon:Icon(Icons.notifications_active,size: 25,),
+                                  color: AppConfig.iconColor,
+
+                                ),
+                            ),
+                            Positioned(
+                              top: 16,
+                              // top: 10,
+                              // right: 10,
+                              child: PlayButton(),
+                                //     child: Container(
+                                //       height: 15,
+                                //       width: 15,
+                                //   decoration: BoxDecoration(
+              
+                                //     borderRadius: BorderRadius.circular(20),
+                                //     color: Colors.red
+                                //   ),
+                                // ),
+                            ),
+                            
+                          ],
+                        ),
                       )
                     ]),
               );
             }),
           );
+  }
+}
+class PlayButton extends StatefulWidget {
+  @override
+  _PlayButtonState createState() => _PlayButtonState();
+}
+
+class _PlayButtonState extends State<PlayButton> {
+ 
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<NotificationCount>(builder: (context, NotificationCount count, child) {
+  return AvatarGlow(
+    startDelay: Duration(milliseconds: 1000),
+    glowColor: Colors.red,
+    endRadius: 20.0,
+    duration: Duration(milliseconds: 2000),
+    showTwoGlows: true,
+    repeatPauseDuration: Duration(milliseconds: 100),
+    repeat: true,
+    child: Container(
+      height:16,
+      width: 16,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        ),
+      child: Text(
+        count.count.toString(),
+        style: TextStyle(
+          fontSize: 10.0,
+          fontWeight: FontWeight.w800,
+          color: Color(0xFF7557D6)),
+        ),
+      ),
+    );
+    });
   }
 }

@@ -1,3 +1,4 @@
+import 'package:Seller_App/models/orders.dart';
 import 'package:flutter/material.dart';
 import 'submittedScreen.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
@@ -8,10 +9,9 @@ import 'package:Seller_App/providers/orderUpdate.dart';
 
 class Verify extends StatelessWidget {
    static String routeName="/verify";
-  final int oid;
-  final int index;
+  final Orders order;
   final String deliveryOTP;
-  Verify({Key key, this.oid, this.index,this.deliveryOTP}) : super(key: key);
+  Verify({Key key, this.order,this.deliveryOTP}) : super(key: key);
   var  otp;
   @override
   Widget build(BuildContext context) {
@@ -46,6 +46,7 @@ class Verify extends StatelessWidget {
                     //padding: const EdgeInsets.all(10.0),
                     child: PinCodeTextField(
                       cursorColor: Colors.green[400],
+                      keyboardType: TextInputType.number,
                       boxShadows: [
                         BoxShadow(
                           color: Colors.white.withOpacity(0.4),
@@ -82,15 +83,15 @@ class Verify extends StatelessWidget {
                           if (otp == null) {
                             showOTP(context);
                           } else if (otp == deliveryOTP) {
-                            orders.completeOrders(index);
+                            orders.completeOrders(order);
                             APIServices.changeOrderStatus(
-                                oid, AppConfig.doneStatus);
+                                order, AppConfig.doneStatus);
                             showSnackBar(context);
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => SubmitPage(
-                                          oid: oid,
+                                          order: order,
                                         )));
                           } else {
                             showError(context);

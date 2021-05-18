@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:Seller_App/APIServices/APIServices.dart';
 import 'package:Seller_App/providers/orderUpdate.dart';
-import 'package:Seller_App/models/orders.dart';
 import 'package:provider/provider.dart';
 import 'package:Seller_App/App_configs/app_configs.dart';
 import 'package:Seller_App/models/rejectionReasons.dart';
@@ -112,15 +111,22 @@ Future<void> showReasonsDialog(BuildContext context,int i,int oid) async {
               TextButton(
                 child: Text('Continue'),
                 onPressed: (){
-                  if(_formKey.currentState.validate()){
-                    reason=_textEditingController.text;
-                    print(reason);
-                    orders.rejectOrder(i);
-                    APIServices.addRejectionStatus(oid,
-                        reason, AppConfig.rejectedStatus);
-                    // Do something like updating SharedPreferences or User Settings etc.
-                    Navigator.of(context).pop();
+                  if(isVisible) {
+                    if (_formKey.currentState.validate()) {
+                      reason = _textEditingController.text;
+                      print(reason);
+                      orders.rejectOrder(i);
+                      APIServices.addRejectionStatus(oid,
+                          reason, AppConfig.rejectedStatus);
+                      // Do something like updating SharedPreferences or User Settings etc.
+                      Navigator.of(context).pop();
+                    }
                   }
+                  orders.rejectOrder(i);
+                  APIServices.addRejectionStatus(oid,
+                      reason, AppConfig.rejectedStatus);
+                  // Do something like updating SharedPreferences or User Settings etc.
+                  Navigator.of(context).pop();
                 },
               ),
             ],

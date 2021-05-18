@@ -24,4 +24,11 @@ class AppConfig {
   static Color readyColor=Colors.blue[300];
   static Color preparingColor=Colors.pink[300];
   static Color completedColor=Colors.green[300];
+  int count=0;
+    set notifyCount(int value) { 
+      this.count += value; 
+   } 
+   int get notifyCount{
+     return count;
+   }
 }

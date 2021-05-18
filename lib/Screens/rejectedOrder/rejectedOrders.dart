@@ -144,7 +144,7 @@ class _RejectedOrdersState extends State<RejectedOrders> {
                       return GestureDetector(
                         onTap: () {
                           orderItem.settingModalBottomSheet(
-                              context,item, index);
+                              context,item);
                         },
                         child: Cards(
                           margin: EdgeInsets.symmetric(vertical: 10, horizontal: 25),

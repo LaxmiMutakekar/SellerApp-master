@@ -4,40 +4,69 @@
 
 import 'dart:convert';
 
-List<Orders> ordersFromJson(String str) => List<Orders>.from(json.decode(str).map((x) => Orders.fromJson(x)));
+List<Orders> ordersFromJson(String str) =>
+    List<Orders>.from(json.decode(str).map((x) => Orders.fromJson(x)));
 
-String ordersToJson(List<Orders> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String ordersToJson(List<Orders> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class Orders {
-    Orders({
-        this.orderId,
-        this.customer,
-        this.orderPlacedDate,
-        this.status,
-        this.businessUnit,
-        this.totalPrice,
-        this.totalQuantity,
-        this.orderFulfillmentTime,
-        this.orderPreparationTime,
-        this.orderItems,
-        this.deliveryResource,
-        this.orderStatusHistory,
-    });
+  Orders({
+    this.orderId,
+    this.customer,
+    this.orderPlacedDate,
+    this.status,
+    this.businessUnit,
+    this.totalPrice,
+    this.totalQuantity,
+    this.orderFulfillmentTime,
+    this.orderPreparationTime,
+    this.orderItems,
+    this.deliveryResource,
+    this.orderStatusHistory,
+    this.updateFlag,
+  });
+  
+   
+  String get businessLogo {
+    switch (this.businessUnit) {
+      case 'Sodimac':
+        return 'assets/Images/SodimacLogo.jpeg';
+      case 'Tottus':
+        return 'assets/Images/tottusLogo.jpeg';
+      default:
+        return "";
+    }
+  }
+  int get updateDelay { 
+    return(this.orderPreparationTime*60~/2);
+  }
+  set orderPre(DateTime orderprep)=>this.orderStatusHistory.orderPreparing=orderprep;
+  int orderId;
+  Customer customer;
+  DateTime orderPlacedDate;
+  String status;
+  String businessUnit;
+  double totalPrice;
+  int totalQuantity;
+  double orderFulfillmentTime;
+  double orderPreparationTime;
+  List<OrderItem> orderItems;
+  DeliveryResource deliveryResource;
+  OrderStatusHistory orderStatusHistory;
+  bool updateFlag=true;
+  
 
-    int orderId;
-    Customer customer;
-    DateTime orderPlacedDate;
-    String status;
-    String businessUnit;
-    double totalPrice;
-    int totalQuantity;
-    double orderFulfillmentTime;
-    double orderPreparationTime;
-    List<OrderItem> orderItems;
-    DeliveryResource deliveryResource;
-    OrderStatusHistory orderStatusHistory;
-
-    factory Orders.fromJson(Map<String, dynamic> json) => Orders(
+  int get remSeconds  {
+    //print(orderStatusHistory.orderPreparing);
+    var time =  DateTime.parse(this.orderStatusHistory.orderPreparing.toString());
+   // print(time.runtimeType);
+    var offset = time.add(Duration(minutes: (this.orderPreparationTime).toInt() ?? 0));
+    var now = DateTime.now();
+   // print(this.orderId.toString()+' '+((offset.millisecondsSinceEpoch - now.millisecondsSinceEpoch) ~/ 1000).toString());
+    return (offset.millisecondsSinceEpoch - now.millisecondsSinceEpoch) ~/ 1000;
+  }
+  factory Orders.fromJson(Map<String, dynamic> json) => Orders(
         orderId: json["orderId"],
         customer: Customer.fromJson(json["customer"]),
         orderPlacedDate: DateTime.parse(json["orderPlacedDate"]),
@@ -47,12 +76,14 @@ class Orders {
         totalQuantity: json["totalQuantity"],
         orderFulfillmentTime: json["orderFulfillmentTime"],
         orderPreparationTime: json["orderPreparationTime"],
-        orderItems: List<OrderItem>.from(json["orderItems"].map((x) => OrderItem.fromJson(x))),
+        orderItems: List<OrderItem>.from(
+            json["orderItems"].map((x) => OrderItem.fromJson(x))),
         deliveryResource: DeliveryResource.fromJson(json["deliveryResource"]),
-        orderStatusHistory: OrderStatusHistory.fromJson(json["orderStatusHistory"]),
-    );
+        orderStatusHistory:
+            OrderStatusHistory.fromJson(json["orderStatusHistory"]),
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "orderId": orderId,
         "customer": customer.toJson(),
         "orderPlacedDate": orderPlacedDate.toIso8601String(),
@@ -65,81 +96,82 @@ class Orders {
         "orderItems": List<dynamic>.from(orderItems.map((x) => x.toJson())),
         "deliveryResource": deliveryResource.toJson(),
         "orderStatusHistory": orderStatusHistory.toJson(),
-    };
+      };
 }
 
 class Customer {
-    Customer({
-        this.name,
-        this.email,
-        this.phone,
-        this.address,
-        this.location,
-    });
+  Customer({
+    this.name,
+    this.email,
+    this.phone,
+    this.address,
+    this.location,
+  });
 
-    String name;
-    String email;
-    int phone;
-    String address;
-    Location location;
+  String name;
+  String email;
+  int phone;
+  String address;
+  Location location;
 
-    factory Customer.fromJson(Map<String, dynamic> json) => Customer(
+  factory Customer.fromJson(Map<String, dynamic> json) => Customer(
         name: json["name"],
         email: json["email"],
         phone: json["phone"],
         address: json["address"],
         location: Location.fromJson(json["location"]),
-    );
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "name": name,
         "email": email,
         "phone": phone,
         "address": address,
         "location": location.toJson(),
-    };
+      };
 }
 
 class Location {
-    Location({
-        this.latitude,
-        this.longitude,
-    });
+  Location({
+    this.latitude,
+    this.longitude,
+  });
 
-    double latitude;
-    double longitude;
+  double latitude;
+  double longitude;
 
-    factory Location.fromJson(Map<String, dynamic> json) => Location(
+  factory Location.fromJson(Map<String, dynamic> json) => Location(
         latitude: json["latitude"].toDouble(),
         longitude: json["longitude"].toDouble(),
-    );
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "latitude": latitude,
         "longitude": longitude,
-    };
+      };
 }
 
 class DeliveryResource {
-    DeliveryResource({
-        this.driverName,
-        this.phone,
-        this.image,
-        this.otp,
-        this.licenseNumber,
-        this.threePlName,
-        this.vehicleNumber,
-    });
+  DeliveryResource({
+    this.driverName,
+    this.phone,
+    this.image,
+    this.otp,
+    this.licenseNumber,
+    this.threePlName,
+    this.vehicleNumber,
+  });
 
-    dynamic driverName;
-    int phone;
-    dynamic image;
-    dynamic otp;
-    dynamic licenseNumber;
-    dynamic threePlName;
-    dynamic vehicleNumber;
+  dynamic driverName;
+  int phone;
+  dynamic image;
+  dynamic otp;
+  dynamic licenseNumber;
+  dynamic threePlName;
+  dynamic vehicleNumber;
 
-    factory DeliveryResource.fromJson(Map<String, dynamic> json) => DeliveryResource(
+  factory DeliveryResource.fromJson(Map<String, dynamic> json) =>
+      DeliveryResource(
         driverName: json["driverName"],
         phone: json["phone"],
         image: json["image"],
@@ -147,9 +179,9 @@ class DeliveryResource {
         licenseNumber: json["licenseNumber"],
         threePlName: json["threePLName"],
         vehicleNumber: json["vehicleNumber"],
-    );
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "driverName": driverName,
         "phone": phone,
         "image": image,
@@ -157,33 +189,33 @@ class DeliveryResource {
         "licenseNumber": licenseNumber,
         "threePLName": threePlName,
         "vehicleNumber": vehicleNumber,
-    };
+      };
 }
 
 class OrderItem {
-    OrderItem({
-        this.upc,
-        this.image,
-        this.price,
-        this.skuId,
-        this.itemId,
-        this.quantity,
-        this.basicEtc,
-        this.description,
-        this.productName,
-    });
+  OrderItem({
+    this.upc,
+    this.image,
+    this.price,
+    this.skuId,
+    this.itemId,
+    this.quantity,
+    this.basicEtc,
+    this.description,
+    this.productName,
+  });
 
-    String upc;
-    String image;
-    double price;
-    String skuId;
-    int itemId;
-    int quantity;
-    int basicEtc;
-    String description;
-    String productName;
+  String upc;
+  String image;
+  double price;
+  String skuId;
+  int itemId;
+  int quantity;
+  int basicEtc;
+  String description;
+  String productName;
 
-    factory OrderItem.fromJson(Map<String, dynamic> json) => OrderItem(
+  factory OrderItem.fromJson(Map<String, dynamic> json) => OrderItem(
         upc: json["upc"],
         image: json["image"],
         price: json["price"],
@@ -193,9 +225,9 @@ class OrderItem {
         basicEtc: json["basic_etc"],
         description: json["description"],
         productName: json["productName"],
-    );
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "upc": upc,
         "image": image,
         "price": price,
@@ -205,41 +237,39 @@ class OrderItem {
         "basic_etc": basicEtc,
         "description": description,
         "productName": productName,
-    };
+      };
 }
 
 class OrderStatusHistory {
-    OrderStatusHistory({
-        this.orderPlaced,
-        this.orderPreparing,
-        this.orderReady,
-        this.orderTimeout,
-        this.orderHandover,
-        this.orderFulfilled,
-    });
+  OrderStatusHistory({
+     this.orderPreparing,
+    this.orderReady,
+    this.orderTimeout,
+    this.orderHandover,
+    this.orderFulfilled,
+  });
+  
+  dynamic orderPreparing;
+  dynamic orderReady;
+  dynamic orderTimeout;
+  dynamic orderHandover;
+  dynamic orderFulfilled;
+  
+  factory OrderStatusHistory.fromJson(Map<String, dynamic> json) =>
+      OrderStatusHistory(
+        orderPreparing: (json["orderPreparing"]),
+        orderReady: (json["orderPreparing"]),
+        orderTimeout:(json["orderPreparing"]),
+        orderHandover:(json["orderPreparing"]),
+        orderFulfilled: (json["orderPreparing"]),
+      );
 
-    DateTime orderPlaced;
-    DateTime orderPreparing;
-    dynamic orderReady;
-    dynamic orderTimeout;
-    dynamic orderHandover;
-    dynamic orderFulfilled;
-
-    factory OrderStatusHistory.fromJson(Map<String, dynamic> json) => OrderStatusHistory(
-        orderPlaced: DateTime.parse(json["orderPlaced"]),
-        orderPreparing: json["orderPreparing"]==null?null:DateTime.parse(json["orderPreparing"]),
-        orderReady: json["orderReady"],
-        orderTimeout: json["orderTimeout"],
-        orderHandover: json["orderHandover"],
-        orderFulfilled: json["orderFulfilled"],
-    );
-
-    Map<String, dynamic> toJson() => {
-        "orderPlaced": orderPlaced.toIso8601String(),
+  Map<String, dynamic> toJson() => {
         "orderPreparing": orderPreparing,
         "orderReady": orderReady,
         "orderTimeout": orderTimeout,
         "orderHandover": orderHandover,
         "orderFulfilled": orderFulfilled,
-    };
+      };
+
 }

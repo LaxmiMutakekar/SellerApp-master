@@ -1,4 +1,5 @@
 
+import 'package:Seller_App/models/orders.dart';
 import 'package:flutter/material.dart';
 import 'package:Seller_App/Screens/HomeScreen/Home.dart';
 
@@ -6,8 +7,8 @@ import 'package:animated_check/animated_check.dart';
 
 class SubmitPage extends StatefulWidget {
    static String routeName="/submitted";
-  final int oid;
-  const SubmitPage({Key key, this.oid,}) : super(key: key);
+  final Orders order;
+  const SubmitPage({Key key, this.order,}) : super(key: key);
 
   @override
   _SubmitPageState createState() => _SubmitPageState();
@@ -66,7 +67,7 @@ class _SubmitPageState extends State<SubmitPage>
               ),
               Container(
                   child: Text(
-                '#00' + widget.oid.toString(),
+                '#00' + widget.order.orderId.toString(),
                 style: TextStyle(
                     fontSize: 54,
                     fontWeight: FontWeight.bold,
@@ -75,10 +76,10 @@ class _SubmitPageState extends State<SubmitPage>
               SizedBox(
                 height: 45,
               ),
-              Container(
-                  child: Text('Order Handover Successful',
-                      style: TextStyle(
-                          fontSize: 30, fontWeight: FontWeight.bold))),
+              Text('Order Handover Successful',
+              textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontSize: 30, fontWeight: FontWeight.bold)),
               Container(
                   child: AnimatedCheck(
                 progress: _animation,
