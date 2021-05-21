@@ -142,7 +142,7 @@ class _PendingOrdersState extends State<PendingOrders> {
                                       showInSnackBar(
                                           'Order accepted succesfully!!',
                                           context);
-                                         // pendings.orderPre=DateTime.now();
+                                         pendings.orderPre=DateTime.now();
                                     }
                                   },
                                 ),

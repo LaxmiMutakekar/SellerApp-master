@@ -24,7 +24,8 @@ class Orders {
     this.orderItems,
     this.deliveryResource,
     this.orderStatusHistory,
-    this.updateFlag,
+    this.orderUpdateEtc,
+    this.isOrderUpdateEtc,
   });
   
    
@@ -54,16 +55,14 @@ class Orders {
   List<OrderItem> orderItems;
   DeliveryResource deliveryResource;
   OrderStatusHistory orderStatusHistory;
-  bool updateFlag=true;
+  double orderUpdateEtc;
+  bool isOrderUpdateEtc;
   
 
   int get remSeconds  {
-    //print(orderStatusHistory.orderPreparing);
     var time =  DateTime.parse(this.orderStatusHistory.orderPreparing.toString());
-   // print(time.runtimeType);
-    var offset = time.add(Duration(minutes: (this.orderPreparationTime).toInt() ?? 0));
+    var offset = time.add(Duration(seconds: ((this.orderPreparationTime+this.orderUpdateEtc)*60).toInt() ?? 0));
     var now = DateTime.now();
-   // print(this.orderId.toString()+' '+((offset.millisecondsSinceEpoch - now.millisecondsSinceEpoch) ~/ 1000).toString());
     return (offset.millisecondsSinceEpoch - now.millisecondsSinceEpoch) ~/ 1000;
   }
   factory Orders.fromJson(Map<String, dynamic> json) => Orders(
@@ -76,11 +75,13 @@ class Orders {
         totalQuantity: json["totalQuantity"],
         orderFulfillmentTime: json["orderFulfillmentTime"],
         orderPreparationTime: json["orderPreparationTime"],
+        orderUpdateEtc: json["orderUpdateEtc"],
         orderItems: List<OrderItem>.from(
             json["orderItems"].map((x) => OrderItem.fromJson(x))),
         deliveryResource: DeliveryResource.fromJson(json["deliveryResource"]),
         orderStatusHistory:
             OrderStatusHistory.fromJson(json["orderStatusHistory"]),
+            isOrderUpdateEtc: json["isOrderUpdateEtc"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -211,7 +212,7 @@ class OrderItem {
   String skuId;
   int itemId;
   int quantity;
-  int basicEtc;
+  double basicEtc;
   String description;
   String productName;
 

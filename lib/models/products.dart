@@ -33,7 +33,7 @@ class Products {
     String description;
     double price;
     bool available;
-    int basicEta;
+    double basicEta;
 
     factory Products.fromJson(Map<String, dynamic> json) => Products(
         pid: json["pid"],

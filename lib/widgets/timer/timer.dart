@@ -1,9 +1,7 @@
 import 'dart:async';
-
 import 'sliding_text.dart';
 import 'swipe_direction.dart';
 import 'package:flutter/material.dart';
-
 class TimerBoxSize {
   final Size uniformBoxSize;
   Size hourBoxSize;

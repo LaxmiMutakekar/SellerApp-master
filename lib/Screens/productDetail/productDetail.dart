@@ -10,7 +10,7 @@ class ProductDetails extends StatefulWidget {
   final String upc;
   final String description;
   final double price;
-  final int basicEta;
+  final double basicEta;
   const ProductDetails({
     Key key,
     this.image,

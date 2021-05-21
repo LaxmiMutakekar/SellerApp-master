@@ -68,9 +68,8 @@ class _ActiveOrdersState extends State<ActiveOrders>
               ],
             ),
           ),
-          Container(
-            height: 500,
-            padding: EdgeInsets.only(top: 10),
+           ConstrainedBox(
+            constraints: BoxConstraints(minHeight: 0,maxHeight: 240*orders.activeOrders.length.toDouble()??0),
             child: new TabBarView(
               controller: _controller,
               children: <Widget>[
@@ -92,10 +91,10 @@ class _ActiveOrdersState extends State<ActiveOrders>
     return ListView.builder(
         scrollDirection: Axis.vertical,
         itemCount: provider.activeOrders.length,
+        physics: NeverScrollableScrollPhysics(),
         shrinkWrap: true,
         itemBuilder: (BuildContext context, int index) {
           Orders active = provider.activeOrders[index];
-
           if (chosenValue == 'All accepted orders') {
             return activeOrders(provider, active);
           } else {
@@ -112,7 +111,7 @@ class _ActiveOrdersState extends State<ActiveOrders>
   }
 
   activeOrders(Update provider, Orders order) {
-   
+   bool visibility=order.isOrderUpdateEtc;
     return GestureDetector(
       onTap: () {
          orderItem.settingModalBottomSheet(context, order);
@@ -163,7 +162,6 @@ class _ActiveOrdersState extends State<ActiveOrders>
                                           children: [
                                             DownTimer(
                                               timerController: _timerController,
-                                              // showLabels: true,
                                               timerTextStyle: TimerTextStyle(
                                                 uniformTextStyle: TextStyle(
                                                   fontWeight: FontWeight.bold,
@@ -173,7 +171,9 @@ class _ActiveOrdersState extends State<ActiveOrders>
                                               onComplete: () {
                                                 APIServices.changeOrderStatus(order, AppConfig.timeout);
                                                 //print('completed');
+                                                //print('timer called');
                                                 provider.activeOrdersUpdate(order, AppConfig.timeout);
+                                                //_timerController.updateDuration(Duration(seconds:0));
                                               },
                                             ),
                                             Text(
@@ -233,9 +233,9 @@ class _ActiveOrdersState extends State<ActiveOrders>
                                   ),
                               ),
                           SizedBox(width: 8),
-                          order.status != 'Order Complete'
+                          order.status !='Order Timeout'
                               ? Visibility(
-                                  visible: order.updateFlag ?? true,
+                                  visible: visibility,
                                   child: Expanded(
                                     child: DefaultButton(
                                         press: () async {
@@ -243,8 +243,10 @@ class _ActiveOrdersState extends State<ActiveOrders>
                                             if (res is double) {
                                               //print('res value $res');
                                               _timerController.updateDuration(Duration(seconds: order.remSeconds+res.toInt()*60));
+                                              APIServices.updateETC(order.orderId, res.toInt());
                                               provider.updateETC(order, res);
-                                              provider.updateButton(order);
+                                              APIServices.updateButton(order.orderId);
+                                              provider.updateButton(order.orderId);
                                             }
                                           });
                                         },

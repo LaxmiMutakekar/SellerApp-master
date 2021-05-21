@@ -76,9 +76,9 @@ class Update extends ChangeNotifier {
     order.orderStatusHistory.orderPreparing = value;
     notifyListeners();
   }
-  void updateButton(Orders order)
+  void updateButton(int oid)
   {
-    order.updateFlag=false;
+    activeOrders.firstWhere((element) => element.orderId==oid).isOrderUpdateEtc=false;
     notifyListeners();
   }
 }
