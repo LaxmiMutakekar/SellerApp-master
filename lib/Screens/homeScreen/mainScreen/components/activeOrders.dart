@@ -9,7 +9,6 @@ import 'package:Seller_App/widgets/cards.dart';
 import 'package:Seller_App/models/orders.dart';
 import 'package:Seller_App/widgets/orderDetails.dart';
 import 'package:Seller_App/widgets/widgets.dart';
-import 'package:flutter_countdown_timer/countdown_timer_controller.dart';
 import 'package:provider/provider.dart';
 import 'package:Seller_App/providers/orderUpdate.dart';
 
@@ -124,74 +123,64 @@ class _ActiveOrdersState extends State<ActiveOrders>
             child: Cards(
               radius: BorderRadius.circular(20),
               margin: EdgeInsets.all(3),
-              padding: EdgeInsets.all(10),
+              padding: EdgeInsets.all(15),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                
                 children: [
-                  Container(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 10.0, top: 50),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10)),
-                                clipBehavior: Clip.hardEdge,
-                                width: 60,
-                                height: 60,
-                                child: Image(
-                                  image: new AssetImage(order.businessLogo),
-                                ),
-                              ),
-                              SizedBox(
-                                width: 15,
-                              ),
-                              Text('#00${order.orderId}',
-                                  style: Theme.of(context).textTheme.headline6),
-                                   Visibility(
-                                    visible: (order.status == 'Order Preparing'),
-                                                                      child: Padding(
-                                        padding:
-                                            const EdgeInsets.only(left: 30.0),
-                                        child: Column(
-                                          children: [
-                                            DownTimer(
-                                              timerController: _timerController,
-                                              timerTextStyle: TimerTextStyle(
-                                                uniformTextStyle: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                              duration: Duration(seconds: order.remSeconds??0),
-                                              onComplete: () {
-                                                APIServices.changeOrderStatus(order, AppConfig.timeout);
-                                                //print('completed');
-                                                //print('timer called');
-                                                provider.activeOrdersUpdate(order, AppConfig.timeout);
-                                                //_timerController.updateDuration(Duration(seconds:0));
-                                              },
-                                            ),
-                                            Text(
-                                              "MM  SS",
-                                              style: TextStyle(
-                                                  fontSize: 10,
-                                                  fontWeight: FontWeight.w500),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                  )
-                            ],
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Container(
+                        alignment: Alignment.topLeft,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10)),
+                                    clipBehavior: Clip.hardEdge,
+                                    width: 50,
+                                    height: 50,
+                                    child: Image(
+                                      image: new AssetImage(order.businessLogo),
+                                    ),
+                                  ),
+                    ],
+                  ),
+                  Row(
+                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text('#00${order.orderId}',
+                          style: Theme.of(context).textTheme.headline6),
+                           Visibility(
+                            visible: (order.status == 'Order Preparing'),
+                                                              child: Column(
+                                                                children: [
+                                                                  DownTimer(
+                                                                    timerController: _timerController,
+                                                                    timerTextStyle: TimerTextStyle(
+                                                                      uniformTextStyle: TextStyle(
+                                                                        fontSize: 20,
+                                                                        fontWeight: FontWeight.w500,
+                                                                      ),
+                                                                    ),
+                                                                    duration: Duration(seconds: order.remSeconds??0),
+                                                                    onComplete: () {
+                                                                      APIServices.changeOrderStatus(order, AppConfig.timeout);
+                                                                      //print('completed');
+                                                                      //print('timer called');
+                                                                      provider.activeOrdersUpdate(order, AppConfig.timeout);
+                                                                      //_timerController.updateDuration(Duration(seconds:0));
+                                                                    },
+                                                                  ),
+                                                                  Text(
+                                                                    "MM  SS",
+                                                                    style: TextStyle(
+                                                                        fontSize: 10,
+                                                                        fontWeight: FontWeight.w500),
+                                                                  ),
+                                                                ],
+                                                              ),
                           ),
-                        ),
-                        SizedBox(width: 20),
-                      ],
-                    ),
+                      SizedBox(width: 0),
+                    ],
                   ),
                   Row(
                     children: [
@@ -205,13 +194,13 @@ class _ActiveOrdersState extends State<ActiveOrders>
                       )
                     ],
                   ),
-                  Padding(
+                  (order.status=='Order Preparing')?Padding(
                     padding: const EdgeInsets.only(top: 5.0),
                     child: Container(
                         height: 2,
                         width: MediaQuery.of(context).size.width,
                         color: Theme.of(context).dividerColor),
-                  ),
+                  ):Container(),
                   Container(
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -233,7 +222,7 @@ class _ActiveOrdersState extends State<ActiveOrders>
                                   ),
                               ),
                           SizedBox(width: 8),
-                          order.status !='Order Timeout'
+                          order.status =='Order Preparing'
                               ? Visibility(
                                   visible: visibility,
                                   child: Expanded(

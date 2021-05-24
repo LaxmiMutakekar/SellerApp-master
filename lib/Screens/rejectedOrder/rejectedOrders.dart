@@ -54,7 +54,7 @@ class _RejectedOrdersState extends State<RejectedOrders> {
     return Consumer<Update>(builder: (context, Update orders, child) {
       return Scaffold(
           appBar: AppBar(
-            backgroundColor: Color(0xffCCCCCD),
+            backgroundColor: Colors.transparent,
             title: Text(
               'Rejected Orders',
               style: TextStyle(
@@ -62,23 +62,10 @@ class _RejectedOrdersState extends State<RejectedOrders> {
                   fontWeight: FontWeight.bold,
                   color: Colors.black),
             ),
-          ),
-          backgroundColor: Colors.grey[300],
-          body: SingleChildScrollView(
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children:[ Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 25),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Colors.white60,
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.only(left:5.0),
-                        child: DropdownButton(
+            elevation: 0,
+            actions: [
+              DropdownButton(
+                iconEnabledColor: Colors.black,
                           focusColor: Colors.white,
                             value: selectedValue,
                             items: [
@@ -88,7 +75,7 @@ class _RejectedOrdersState extends State<RejectedOrders> {
                                     days=0;
                                   });
                                 },
-                                child: Text("Today"),
+                                child: Text("Today",textAlign: TextAlign.center,),
                                 value: 1,
                               ),
                               DropdownMenuItem(
@@ -128,11 +115,29 @@ class _RejectedOrdersState extends State<RejectedOrders> {
                               });
                             fetchOrders(days);
                             }),
-                      ),
-                    ),
-                  ),
-      ]
-                ),
+            ],
+          ),
+          backgroundColor: Colors.grey[300],
+          body: SingleChildScrollView(
+            child: Column(
+              children: [
+      //           Row(
+      //             mainAxisAlignment: MainAxisAlignment.end,
+      //             children:[ Padding(
+      //               padding: const EdgeInsets.symmetric(horizontal: 25),
+      //               child: Container(
+      //                 decoration: BoxDecoration(
+      //                   borderRadius: BorderRadius.circular(10),
+      //                   color: Colors.white60,
+      //                 ),
+      //                 child: Padding(
+      //                   padding: const EdgeInsets.only(left:5.0),
+      //                   child: 
+      //                 ),
+      //               ),
+      //             ),
+      // ]
+      //           ),
                 ListView.builder(
                   scrollDirection: Axis.vertical,
                   itemCount: (selectedValue!=1)?lastRejected.length:orders.rejectedOrders.length,

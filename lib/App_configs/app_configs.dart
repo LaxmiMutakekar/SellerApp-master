@@ -24,5 +24,5 @@ class AppConfig {
   static Color readyColor=Colors.blue[300];
   static Color preparingColor=Colors.pink[300];
   static Color completedColor=Colors.green[300];
-  static String baseUrl='http://52a4098ec25a.ngrok.io';
+  static String baseUrl='http://10.0.2.2:8080';
 }

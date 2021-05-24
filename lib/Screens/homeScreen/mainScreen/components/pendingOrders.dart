@@ -45,14 +45,11 @@ class _PendingOrdersState extends State<PendingOrders> {
                 shrinkWrap: true,
                 itemBuilder: (BuildContext context, int index) {
                   Orders pendings = orders.pendingOrders[index];
-                  orderplacedTime = pendings.orderPlacedDate;
-                  time = DateFormat.jm().format(orderplacedTime);
                   networkUrl = pendings.businessUnit;
                   url = "assets/Images/$networkUrl.png";
                   return GestureDetector(
                     onTap: () {
-                      orderItem.settingModalBottomSheet(
-                          context, pendings);
+                      orderItem.settingModalBottomSheet(context, pendings);
                     },
                     child: Cards(
                       radius: BorderRadius.circular(20),
@@ -64,20 +61,30 @@ class _PendingOrdersState extends State<PendingOrders> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Padding(
-                                padding: const EdgeInsets.all(5.0),
-                                child: Container(
-                                  width: 70,
-                                  height: 40,
-                                  child: FittedBox(
-                                    child: Image(
-                                      image: new AssetImage(url),
+                              Column(
+                                children: [
+                                  Container(
+                                    padding: EdgeInsets.all(5),
+                                    width: 70,
+                                    height: 40,
+                                    child: FittedBox(
+                                      child: Image(
+                                        image: new AssetImage(url),
+                                      ),
+                                      fit: BoxFit.fill,
                                     ),
-                                    fit: BoxFit.fill,
                                   ),
-                                ),
+                                  Text(
+                                    '#00${pendings.orderId}',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 22),
+                                  ),
+                                   SizedBox(height:getProportionateScreenHeight(8)),
+                                ],
                               ),
-                              SizedBox(width: getProportionateScreenWidth(40.0)),
+                              SizedBox(
+                                  width: getProportionateScreenWidth(70.0)),
                               Column(
                                 children: [
                                   Container(
@@ -87,23 +94,18 @@ class _PendingOrdersState extends State<PendingOrders> {
                                     ),
                                   ),
                                   Text(
-                                    time,
+                                    'Placed at',
+                                    style: TextStyle(color: Colors.grey[700]),
+                                  ),
+                                  Text(
+                                    pendings.placedTime,
                                     style:
                                         Theme.of(context).textTheme.bodyText1,
                                   ),
-                                  Text(
-                                    'Order placed time',
-                                    style:
-                                        Theme.of(context).textTheme.bodyText2,
-                                  )
+                                  
                                 ],
                               ),
                             ],
-                          ),
-                          Text(
-                            '#00${pendings.orderId}',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 22),
                           ),
                           Row(
                             children: [
@@ -112,7 +114,7 @@ class _PendingOrdersState extends State<PendingOrders> {
                                 style: Theme.of(context).textTheme.caption,
                               ),
                               Text(
-                                '\$' + pendings.totalPrice.toInt().toString(),
+                                ' \$' + pendings.totalPrice.toInt().toString(),
                                 style: Theme.of(context).textTheme.caption,
                               )
                             ],
@@ -125,34 +127,42 @@ class _PendingOrdersState extends State<PendingOrders> {
                                 color: Theme.of(context).dividerColor),
                           ),
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 2),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
+                                FlatButton(
+                                    minWidth: 100,
+                                    color: Colors.grey.shade200,
+                                    //padding: EdgeInsets.symmetric(vertical:16),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(15),
+                                      side: BorderSide(
+                                          color: Colors.grey, width: 1.1),
+                                    ),
+                                    onPressed: () async {
+                                      showReasonsDialog(
+                                          context, pendings);
+                                    },
+                                    child: Text('Reject')),
+                                SizedBox(width: 10),
                                 DefaultButton(
                                   text: ('Accept'),
                                   press: () {
                                     {
-                                      orders.acceptOrder(index);
-                                      orders.updateAcceptTimings(pendings, DateTime.now());
+                                      orders.acceptOrder(pendings);
+                                      orders.updateAcceptTimings(
+                                          pendings, DateTime.now());
                                       APIServices.changeOrderStatus(
-                                          pendings,
-                                          AppConfig.acceptStatus);
+                                          pendings, AppConfig.acceptStatus);
                                       showInSnackBar(
                                           'Order accepted succesfully!!',
                                           context);
-                                         pendings.orderPre=DateTime.now();
+                                      pendings.orderPre = DateTime.now();
                                     }
                                   },
                                 ),
-                                SizedBox(width: 10),
-                                DefaultButton(
-                                    press: () async {
-                                      showReasonsDialog(
-                                          context, index, pendings.orderId);
-                                    },
-                                    text: ('Reject')),
                               ],
                             ),
                           )
@@ -167,4 +177,3 @@ class _PendingOrdersState extends State<PendingOrders> {
     });
   }
 }
-

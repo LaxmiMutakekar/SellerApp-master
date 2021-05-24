@@ -40,17 +40,17 @@ class Update extends ChangeNotifier {
     notifyListeners();
   }
 
-  void acceptOrder(int index) {
-    pendingOrders[index].status = AppConfig.acceptStatus;
-    activeOrders.add(pendingOrders[index]);
-    pendingOrders.removeAt(index);
+  void acceptOrder(Orders order) {
+    order.status = AppConfig.acceptStatus;
+    activeOrders.add(order);
+    pendingOrders.remove(order);
     notifyListeners();
   }
 
-  void rejectOrder(int index) {
-    pendingOrders[index].status = AppConfig.rejectedStatus;
-    rejectedOrders.add(pendingOrders[index]);
-    pendingOrders.removeAt(index);
+  void rejectOrder(Orders order) {
+    order.status = AppConfig.rejectedStatus;
+    rejectedOrders.add(order);
+    pendingOrders.remove(order);
     notifyListeners();
   }
 

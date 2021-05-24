@@ -1,3 +1,8 @@
+import 'package:Seller_App/APIServices/APIServices.dart';
+import 'package:Seller_App/App_configs/app_configs.dart';
+import 'package:Seller_App/widgets/defaultButton.dart';
+import 'package:Seller_App/widgets/rejectionAleart.dart';
+import 'package:Seller_App/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:Seller_App/models/orders.dart';
@@ -31,409 +36,377 @@ class OrderDetail {
     time = DateFormat.jm().format(fulfillmentTime
         .add(Duration(minutes: item.orderFulfillmentTime.toInt())));
     return SingleChildScrollView(
-      child: Column(
-        children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 10.0),
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      Text(
-                        'Order Details',
-                        style: Theme.of(context).textTheme.headline6,
-                      ),
-                      const Divider(
-                        height: 17,
-                        thickness: 4,
-                        indent: 130,
-                        endIndent: 130,
-                        //color: Color(0xff393E43),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 10),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+               children: [
               Row(
                 children: [
-                  Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 16.0),
-                      child: Icon(
-                        Icons.account_circle_sharp,
-                        size: 60,
-                      ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            GestureDetector(
-                                onTap: () {
-                                  showAlertDialog(item.customer, context);
-                                },
-                                child: Row(
-                                  children: [
-                                    Text(item.customer.name,
-                                        style: Theme.of(context).textTheme.subtitle2),
-                                    Icon(Icons.expand_more),
-                                  ],
-                                )),
-                            Text(
-                              'Customer Name',
-                              
-                            ),
-                          ],
-                        ),
-                        SizedBox(width: 40),
-                        Column(
-                          children: [
-                            Text(
-                              time,
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  color: Color(0xff9E545E),
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            Text(
-                              'Order Fulfillment Time',
-                            ),
-                          ],
-                        ),
-                      ],
-                    )
-                  ]),
+                  Icon(
+                    Icons.account_circle_sharp,
+                    size: 60,
+                  ),
+                  GestureDetector(
+                          onTap: () {
+                            showAlertDialog(item.customer, context);
+                          },
+                          child: Row(
+                            children: [
+                              Text(item.customer.name,
+                                  style: Theme.of(context).textTheme.subtitle2),
+                              Icon(Icons.expand_more),
+                            ],
+                          )),
                 ],
-              ),
-              const Divider(
-                height: 17,
-                thickness: 2,
-                indent: 15,
-                endIndent: 15,
-                //color: Colors.white,
-              ),
-              item.deliveryResource.driverName != null
-                  ? Container(
-                      child: Column(
+              ),   
+              Column(
+                    children: [
+                      Text('Expected By', style: Theme.of(context)
+                                    .textTheme
+                                    .bodyText1,),
+                      Text(
+                        time,
+                        style: TextStyle(
+                            fontSize: 20,
+                            color: Color(0xff9E545E),
+                            fontWeight: FontWeight.bold),
+                      ),
+                    
+                    ],
+                  ),
+            ]),
+            const Divider(
+              height: 17,
+              thickness: 2,
+            ),
+            item.deliveryResource.driverName != null
+                ? Column(
+                  children: [
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  children: [
-                                    Padding(
-                                      padding:
-                                          const EdgeInsets.only(left: 16.0),
-                                      child: Icon(
-                                        Icons.account_circle_sharp,
-                                        size: 60,
-                                      ),
-                                    ),
-                                    Column(
-                                      //mainAxisAlignment: MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        GestureDetector(
-                                            onTap: () {
-                                              showDriver(
-                                                item.deliveryResource,
-                                                context,
-                                              );
-                                            },
-                                            child: Row(
-                                              children: [
-                                                Text(
-                                                  item.deliveryResource
-                                                      .driverName,
-                                                  style: Theme.of(context).textTheme.subtitle2
-                                                ),
-                                                Icon(Icons.expand_more),
-                                              ],
-                                            )),
-                                        Text(
-                                          'Driver Name',
-                  
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(16.0),
+                            children: [
+                              Icon(
+                                Icons.account_circle_sharp,
+                                size: 60,
+                              ),
+                              GestureDetector(
+                              onTap: () {
+                                showDriver(
+                                  item.deliveryResource,
+                                  context,
+                                );
+                              },
+                              child: Row(
+                                children: [
+                                  Text(
+                                    item.deliveryResource
+                                        .driverName,
+                                    style: Theme.of(context).textTheme.subtitle2
+                                  ),
+                                  Icon(Icons.expand_more),
+                                ],
+                              )),
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              Text(
+                                'Vehicle Number',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyText1,
+                              ),
+                              Text(
+                                item.deliveryResource.vehicleNumber,
+                                style:
+                                    Theme.of(context).textTheme.caption,
+                              ),
+                            ],
+                          ),
+                        ]),
+                    const Divider(
+                      height: 17,
+                      thickness: 2,
+                      //color: Colors.white,
+                    ),
+                  ],
+                )
+                : Container(),
+             ConstrainedBox(
+          constraints: BoxConstraints(minHeight: 100,maxHeight: 270),
+                            child: Container(
+                child: RawScrollbar(
+                  thumbColor: Colors.black,
+                  isAlwaysShown: true,
+                  controller: scrollController,
+                  thickness: 4,
+                  child: ListView.builder(
+                      shrinkWrap: true,
+                      controller: scrollController,
+                      itemCount: item.orderItems.length,
+                      itemBuilder: (context, int index) {
+                        return Container(
+                          child: Row(
+                            mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container( 
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8),
+                                    //color: Colors.white,
+                                  ),
                                   child: Column(
                                     children: [
                                       Text(
-                                        'Vehicle Number',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyText1,
-                                      ),
-                                      Text(
-                                        item.deliveryResource.vehicleNumber,
-                                        style:
-                                            Theme.of(context).textTheme.caption,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ]),
-                          const Divider(
-                            height: 17,
-                            thickness: 2,
-                            indent: 15,
-                            endIndent: 15,
-                            //color: Colors.white,
-                          ),
-                        ],
-                      ),
-                    )
-                  : Container(),
-               ConstrainedBox(
-            constraints: BoxConstraints(minHeight: 100,maxHeight: 270),
-                              child: Container(
-                  padding: EdgeInsets.all(8),
-                  child: RawScrollbar(
-                    thumbColor: Colors.black,
-                    isAlwaysShown: true,
-                    controller: scrollController,
-                    thickness: 4,
-                    child: ListView.builder(
-                        shrinkWrap: true,
-                        controller: scrollController,
-                        itemCount: item.orderItems.length,
-                        itemBuilder: (context, int index) {
-                          return Padding(
-                            padding: const EdgeInsets.only(left: 10, right: 10),
-                            child: Container(
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Container(
-                                        height: 90,
-                                        width: 87,
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(8),
-                                          //color: Colors.white,
-                                        ),
-                                        child: Column(
-                                          children: [
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.only(top: 2.0),
-                                              child: Text(
-                                                item.orderItems[index].skuId,
-                                                style: TextStyle(
-                                                    fontSize: 10,
-                                                    fontWeight: FontWeight.bold),
-                                              ),
-                                            ),
-                                            Center(
-                                              child: Container(
-                                                height: 60,
-                                                width: 70,
-                                                child: ClipRRect(
-                                                  borderRadius:
-                                                      BorderRadius.circular(13),
-                                                  child: CachedNetworkImage(
-                                                    fit: BoxFit.fill,
-                                                    imageUrl: item
-                                                        .orderItems[index].image,
-                                                    placeholder: (context, url) =>
-                                                        CircularProgressIndicator(),
-                                                    errorWidget:
-                                                        (context, url, error) =>
-                                                            Icon(Icons.error),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            Text(
-                                              '\$' +
-                                                  item.orderItems[index].price
-                                                      .toString(),
-                                              style: TextStyle(
-                                                  fontSize: 13,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Color(0xff0D2F36)),
-                                            ),
-                                          ],
-                                        )),
-                                    Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            item.orderItems[index].productName,
-                                            style: TextStyle(
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                          SizedBox(width: 5),
-                                          Container(
-                                              child: Text(
-                                            'X ' +
-                                                item.orderItems[index].quantity
-                                                    .toString(),
-                                            style: TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w200,
-                                                color: Colors.black),
-                                          )),
-                                        ]),
-                                    Text(
-                                      '\$' +
-                                          (item.orderItems[index].quantity *
-                                                  item.orderItems[index].price)
-                                              .toString(),
-                                      style: TextStyle(
-                                          fontSize: 22,
-                                          color: Color(0xff0D2F36),
-                                          fontWeight: FontWeight.bold),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ),
-                          );
-                        }),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(
-                    left: 16.0, right: 16, top: 16, bottom: 8),
-                child: Stack(
-                  children: [
-                    ClipPath(
-                      child: Container(
-                          width: 470,
-                          height: 70,
-                          color: Colors.white,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(10.0),
-                                child: Column(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 8.0),
-                                      child: Text(
-                                        'Items',
-                                        style: TextStyle(fontSize: 20),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(10),
-                                child: Column(
-                                  children: [
-                                    Text(
-                                      item.totalQuantity.toString(),
-                                      style: TextStyle(
-                                          fontSize: 24,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Column(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        top: 12.0, right: 10),
-                                    child: Column(children: [
-                                      Text(
-                                        '\$' + item.totalPrice.toString(),
+                                        item.orderItems[index].skuId,
                                         style: TextStyle(
-                                            fontSize: 24,
+                                            fontSize: 10,
                                             fontWeight: FontWeight.bold),
                                       ),
                                       Center(
-                                          child: Text(
-                                        'Total',
+                                        child: Container(
+                                          height: 60,
+                                          width: 70,
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(13),
+                                            child: CachedNetworkImage(
+                                              fit: BoxFit.fill,
+                                              imageUrl: item
+                                                  .orderItems[index].image,
+                                              placeholder: (context, url) =>
+                                                  CircularProgressIndicator(),
+                                              errorWidget:
+                                                  (context, url, error) =>
+                                                      Icon(Icons.error),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Text(
+                                        '\$' +
+                                            item.orderItems[index].price
+                                                .toString(),
                                         style: TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.w300),
-                                      )),
-                                    ]),
-                                  ),
-                                ],
+                                            fontSize: 13,
+                                            fontWeight: FontWeight.bold,
+                                            color: Color(0xff0D2F36)),
+                                      ),
+                                    ],
+                                  )),
+                              Column(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      item.orderItems[index].productName,
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox(width: 5),
+                                    Container(
+                                        child: Text(
+                                      'X ' +
+                                          item.orderItems[index].quantity
+                                              .toString(),
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w200,
+                                          color: Colors.black),
+                                    )),
+                                  ]),
+                              Text(
+                                '\$' +
+                                    (item.orderItems[index].quantity *
+                                            item.orderItems[index].price)
+                                        .toString(),
+                                style: TextStyle(
+                                    fontSize: 22,
+                                    color: Color(0xff0D2F36),
+                                    fontWeight: FontWeight.bold),
                               )
+
                             ],
-                          )),
-                      clipper: CustomClipPath(),
-                    ),
-                    CustomPaint(
-                        painter: BorderPainter(),
-                        child: Container(
-                          height: 70.0,
-                          width: 470,
-                        )),
-                  ],
+                          ),
+                        );
+                      }),
                 ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(right: 8.0),
-                    child: Consumer<Update>(
-                        builder: (context, Update orders, child) {
-                      return item.deliveryResource.driverName != null
-                          ? Container(
-                              width: 120,
-                              child: item.status != 'Order Complete'
-                                  ? ElevatedButton(
-                                      onPressed: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) => Verify(
-                                                      order: item,
-                                                      deliveryOTP: item
-                                                          .deliveryResource.otp,
-                                                    )));
-                                      },
+            ),
+            Stack(
+              children: [
+                ClipPath(
+                  child: Container(
+                      width: 470,
+                      height: 70,
+                      color: Colors.white,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 8.0),
+                                  child: Text(
+                                    'Items',
+                                    style: TextStyle(fontSize: 20),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: Column(
+                              children: [
+                                Text(
+                                  item.totalQuantity.toString(),
+                                  style: TextStyle(
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    top: 12.0, right: 10),
+                                child: Column(children: [
+                                  Text(
+                                    '\$' + item.totalPrice.toString(),
+                                    style: TextStyle(
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Center(
                                       child: Text(
-                                        'Handover',
-                                        style:
-                                            Theme.of(context).textTheme.button,
-                                      ))
-                                  : Container(
-                                      width: 600,
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          color: Colors.white),
-                                      child: Text(
-                                        'Order completed successfully!!',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.bold),
-                                      )),
-                            )
-                          : Container();
-                    }),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ],
+                                    'Total',
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w300),
+                                  )),
+                                ]),
+                              ),
+                            ],
+                          )
+                        ],
+                      )),
+                  clipper: CustomClipPath(),
+                ),
+                CustomPaint(
+                    painter: BorderPainter(),
+                    child: Container(
+                      height: 70.0,
+                      width: 470,
+                    )),
+              ],
+            ),
+            SizedBox(height:20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 8.0),
+                  child: Consumer<Update>(
+                      builder: (context, Update orders, child) {
+                    return (item.deliveryResource.driverName != null && item.status!='Order Placed')
+                        ? Container(
+                            width: 120,
+                            child: item.status != 'Order Complete'
+                                ? ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => Verify(
+                                                    order: item,
+                                                    deliveryOTP: item
+                                                        .deliveryResource.otp,
+                                                  )));
+                                    },
+                                    child: Text(
+                                      'Handover',
+                                      style:
+                                          Theme.of(context).textTheme.button,
+                                    ))
+                                : Container(
+                                    width: 600,
+                                    decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(10),
+                                        color: Colors.white),
+                                    child: Text(
+                                      'Order completed successfully!!',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold),
+                                    )),
+                          )
+                        : (item.status=='Order Placed')?
+                         Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            //crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              FlatButton(
+                                  minWidth: 150,
+                                  color: Colors.grey.shade200,
+                                  //padding: EdgeInsets.symmetric(vertical:16),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15),
+                                    side: BorderSide(
+                                        color: Colors.grey, width: 1.1),
+                                  ),
+                                  onPressed: () async {
+                                    showReasonsDialog(
+                                        context, item).then((res) {
+                                          if(res is String)
+                                          {
+                                            
+                                          }
+                                        });
+                                  },
+                                  child: Text('Reject')),
+                             SizedBox(width: 40),
+                              Container(
+                                width: 150,
+                                child: DefaultButton(
+                                
+                                  text: ('Accept'),
+                                  press: () {
+                                    {
+                                      orders.acceptOrder(item);
+                                      orders.updateAcceptTimings(
+                                          item, DateTime.now());
+                                      APIServices.changeOrderStatus(
+                                          item, AppConfig.acceptStatus);
+                                          Navigator.pop(context);
+                                      
+                                      item.orderPre = DateTime.now();
+                                    }
+                                  },
+                                ),
+                              ),
+                            ],
+                          ):Container();
+                  }),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

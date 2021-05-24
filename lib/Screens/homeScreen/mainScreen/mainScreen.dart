@@ -1,6 +1,7 @@
 import 'package:Seller_App/App_configs/app_configs.dart';
 import 'package:Seller_App/App_configs/sizeConfigs.dart';
 import 'package:Seller_App/Screens/homeScreen/mainScreen/components/notificationDrawer.dart';
+import 'package:Seller_App/Screens/splashScreen.dart';
 import 'package:Seller_App/providers/notification.dart';
 import 'package:Seller_App/providers/orderUpdate.dart';
 import 'package:Seller_App/providers/seller.dart';
@@ -43,6 +44,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    final message= Provider.of<Messages>(context, listen: false);
     Size size = MediaQuery.of(context).size;
     screenheight = size.height;
     screenwidth = size.width;
@@ -109,8 +111,11 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                                       IconButton(
                                         icon: Icon(Icons.notifications_active,
                                             size: 25,color: Colors.black54,),
-                                        onPressed: () => Scaffold.of(context)
-                                            .openEndDrawer(),
+                                        onPressed: () {
+                                          Scaffold.of(context)
+                                            .openEndDrawer();
+                                            message.messageRead();
+                                        }
                                       ),
                                       Positioned(
                                         top: 10,
@@ -132,7 +137,11 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
               ),
               body: Consumer2<Update, SellerDetail>(
                   builder: (context, Update orders, seller, child) {
-                bool status = seller.seller.available ?? true;
+                bool status = seller.seller.available;
+                if(seller.seller.available==null)
+                {
+                  return Splash();
+                }
                 if (orders.pendingOrders.isEmpty &&
                     orders.activeOrders.isEmpty) {
                   return currentlyNoOrders(context);
@@ -153,7 +162,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                         physics: ClampingScrollPhysics(),
                         child: Column(
                           children: [
-                            SizedBox(height: 236, child: PendingOrders()),
+                            SizedBox(height: 220, child: PendingOrders()),
                             ActiveOrders(),
                           ],
                         ));
@@ -189,12 +198,11 @@ class PlayButton extends StatefulWidget {
 class _PlayButtonState extends State<PlayButton> {
   @override
   Widget build(BuildContext context) {
-    return Consumer<NotificationCount>(
-        builder: (context, NotificationCount count, child) {
-      // if(coucountnt.==0)
-      // {
-      //   return Container();
-      // }
+   return Consumer<Messages>(builder: (context, Messages msg, child) {
+      if(msg.messagesList.length==0||msg.isRead)
+      {
+        return Container();
+      }
       return AvatarGlow(
         startDelay: Duration(milliseconds: 1000),
         glowColor: Colors.red,
@@ -212,7 +220,7 @@ class _PlayButtonState extends State<PlayButton> {
             borderRadius: BorderRadius.circular(20),
           ),
           child: Text(
-            Count.getIntFromSharedPref().toString(),
+            msg.unreadCount.toString(),
             style: TextStyle(
                 fontSize: 10.0,
                 fontWeight: FontWeight.w800,
@@ -220,6 +228,6 @@ class _PlayButtonState extends State<PlayButton> {
           ),
         ),
       );
-    });
+   });
   }
 }

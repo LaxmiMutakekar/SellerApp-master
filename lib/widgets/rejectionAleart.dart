@@ -1,3 +1,4 @@
+import 'package:Seller_App/models/orders.dart';
 import 'package:flutter/material.dart';
 import 'package:Seller_App/APIServices/APIServices.dart';
 import 'package:Seller_App/providers/orderUpdate.dart';
@@ -9,7 +10,7 @@ enum SingingCharacter { reason1, reason2 ,reason3,reason4}
 bool isVisible=false;
 
 String reason="";
-Future<void> showReasonsDialog(BuildContext context,int i,int oid) async {
+Future<String> showReasonsDialog(BuildContext context,Orders order) async {
   final orders = Provider.of<Update>(context, listen: false);
   return await showDialog(context: context,
       builder: (context){
@@ -115,18 +116,22 @@ Future<void> showReasonsDialog(BuildContext context,int i,int oid) async {
                     if (_formKey.currentState.validate()) {
                       reason = _textEditingController.text;
                       print(reason);
-                      orders.rejectOrder(i);
-                      APIServices.addRejectionStatus(oid,
+                      orders.rejectOrder(order);
+                      APIServices.addRejectionStatus(order.orderId,
                           reason, AppConfig.rejectedStatus);
                       // Do something like updating SharedPreferences or User Settings etc.
                       Navigator.of(context).pop();
                     }
                   }
-                  orders.rejectOrder(i);
-                  APIServices.addRejectionStatus(oid,
+                  else
+                  {
+                      orders.rejectOrder(order);
+                  APIServices.addRejectionStatus(order.orderId,
                       reason, AppConfig.rejectedStatus);
                   // Do something like updating SharedPreferences or User Settings etc.
                   Navigator.of(context).pop();
+                  }
+                  
                 },
               ),
             ],

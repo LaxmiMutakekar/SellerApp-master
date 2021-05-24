@@ -16,7 +16,8 @@ class _OrderHistoryState extends State<OrderHistory> {
     return Consumer<Update>(builder: (context, Update orders, child) {
       return Scaffold(
           appBar: AppBar(
-            //backgroundColor: Color(0xffCCCCCD),
+            elevation: 0,
+            backgroundColor: Colors.transparent,
             title: Text(
               'Orders History',
               style: TextStyle(
@@ -25,7 +26,6 @@ class _OrderHistoryState extends State<OrderHistory> {
                   color: Colors.black),
             ),
           ),
-          //backgroundColor: Colors.grey[300],
           body: ListView.builder(
             scrollDirection: Axis.vertical,
             itemCount: orders.completedOrders.length,
@@ -34,7 +34,7 @@ class _OrderHistoryState extends State<OrderHistory> {
               Orders item = orders.completedOrders[index];
               if (item.status == 'Order Complete') {
                 return Cards(
-                  margin: EdgeInsets.symmetric(vertical: 10, horizontal: 25),
+                  margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [

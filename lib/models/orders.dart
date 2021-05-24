@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:intl/intl.dart';
+
 List<Orders> ordersFromJson(String str) =>
     List<Orders>.from(json.decode(str).map((x) => Orders.fromJson(x)));
 
@@ -64,6 +66,10 @@ class Orders {
     var offset = time.add(Duration(seconds: ((this.orderPreparationTime+this.orderUpdateEtc)*60).toInt() ?? 0));
     var now = DateTime.now();
     return (offset.millisecondsSinceEpoch - now.millisecondsSinceEpoch) ~/ 1000;
+  }
+  String get placedTime{
+    
+    return(DateFormat.jm().format(this.orderPlacedDate));
   }
   factory Orders.fromJson(Map<String, dynamic> json) => Orders(
         orderId: json["orderId"],

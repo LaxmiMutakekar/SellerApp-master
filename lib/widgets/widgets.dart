@@ -72,7 +72,7 @@ Container noPendingOrders() {
             Text(
       'No new orders are received',
       textAlign: TextAlign.center,
-      style: GoogleFonts.poppins(textStyle: TextStyle(fontSize: 14)),
+      
     ),
           ],
         )),

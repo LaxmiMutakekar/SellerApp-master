@@ -69,8 +69,8 @@ class _DefaultSwitchState extends State<DefaultSwitch> {
     AlertDialog alert = AlertDialog(
       title: Text("Warning!"),
       content: val
-          ? Text("Are you sure you want to go online")
-          : Text("Are you sure you want to go Offline"),
+          ? Text("Are you sure you want to go online",textAlign: TextAlign.center,)
+          : Text("Are you sure you want to go Offline",textAlign: TextAlign.center),
       actions: [
         cancelButton,
         continueButton

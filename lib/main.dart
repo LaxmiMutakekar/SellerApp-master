@@ -13,7 +13,6 @@ import 'providers/notification.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Session.init();
-  await Count.init();
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider<Product>(
@@ -25,8 +24,8 @@ void main() async {
       ChangeNotifierProvider<SellerDetail>(
         create: (_) => SellerDetail(),
       ),
-      ChangeNotifierProvider<NotificationCount>(
-        create: (_) => NotificationCount(),
+      ChangeNotifierProvider<Messages>(
+        create: (_) => Messages(),
       ),
     ],
     child: MyApp(),

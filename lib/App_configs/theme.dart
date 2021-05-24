@@ -59,7 +59,6 @@ import 'package:google_fonts/google_fonts.dart';
       ),
       bodyText2:  TextStyle(
         fontSize: 14.0,
-        fontWeight: FontWeight.w400,
       ),
       caption:  TextStyle(
         fontSize: 16,
