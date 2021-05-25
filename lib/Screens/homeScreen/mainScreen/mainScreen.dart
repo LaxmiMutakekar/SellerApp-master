@@ -32,6 +32,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+     Provider.of<Update>(context, listen: false).ordersAdded();
     _controller = AnimationController(vsync: this, duration: duration);
     _scaleAnimation = Tween<double>(begin: 1, end: 0.8).animate(_controller);
   }
@@ -44,10 +45,15 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+
     final message= Provider.of<Messages>(context, listen: false);
     Size size = MediaQuery.of(context).size;
     screenheight = size.height;
     screenwidth = size.width;
+    return Consumer2<Update, SellerDetail>(
+                    builder: (context, Update orders, seller, child) {
+                      bool status=seller.seller.available;
+                      
     return AnimatedPositioned(
       duration: duration,
       top: 0,
@@ -67,9 +73,8 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
               appBar: AppBar(
                 automaticallyImplyLeading: false,
                 elevation: 0,
-                title: Consumer2<Update, SellerDetail>(
-                    builder: (context, Update orders, seller, child) {
-                  return Center(
+                title: 
+         Center(
                     child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -129,16 +134,17 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                           //   child:
                           // )
                         ]),
-                  );
-                }),
+                  ),
+              
                 actions: [
                   Text(''),
                 ],
               ),
-              body: Consumer2<Update, SellerDetail>(
-                  builder: (context, Update orders, seller, child) {
-                bool status = seller.seller.available;
-                if(seller.seller.available==null)
+              body: 
+               Builder(
+                              builder: (context)
+                              {
+                                  if(seller.seller.available==null)
                 {
                   return Splash();
                 }
@@ -180,12 +186,15 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                     return errorBox();
                   }
                 }
-              }),
+              }
+                    ),
+                
+                ),
             ),
           ),
         ),
-      ),
-    );
+      );
+                    });
   }
 }
 

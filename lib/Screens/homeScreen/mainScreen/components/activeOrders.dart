@@ -53,7 +53,7 @@ class _ActiveOrdersState extends State<ActiveOrders>
               controller: _controller,
               tabs: [
                 new Tab(
-                  text: 'All orders',
+                  text: 'All ',
                 ),
                 new Tab(
                   text: ('Preparing'),
@@ -62,7 +62,7 @@ class _ActiveOrdersState extends State<ActiveOrders>
                   text: 'Ready',
                 ),
                 new Tab(
-                  text: 'Timedout',
+                  text: 'Delayed',
                 ),
               ],
             ),

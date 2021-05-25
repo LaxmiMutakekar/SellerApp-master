@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:Seller_App/App_configs/app_configs.dart';
+import 'package:Seller_App/models/errorModel.dart';
 import 'package:Seller_App/models/orders.dart';
 import 'package:Seller_App/models/sellerDetails.dart';
 import 'package:http/http.dart' as http;
@@ -38,7 +39,7 @@ class APIServices {
     }
   }
 
-  static Future<List<Orders>> fetchOrders() async {
+  static Future<dynamic> fetchOrders() async {
     try {
      
       final response = await http.get(
@@ -56,7 +57,7 @@ class APIServices {
       if (response.statusCode == 200) {
         return ordersList;
       } else {
-        return ordersFromJson(response.body);
+        return errorFromJson(response.body);
       }
     }catch (e) {
       print(e);

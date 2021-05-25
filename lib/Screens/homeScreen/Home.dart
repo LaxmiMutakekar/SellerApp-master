@@ -16,7 +16,6 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    Provider.of<Update>(context, listen: false).ordersAdded();
     Provider.of<Product>(context, listen: false).addProducts();
 
   }

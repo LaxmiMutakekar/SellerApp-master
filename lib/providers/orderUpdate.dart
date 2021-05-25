@@ -4,7 +4,7 @@ import 'package:Seller_App/models/orders.dart';
 import 'package:Seller_App/App_configs/app_configs.dart';
 
 class Update extends ChangeNotifier {
-  List<Orders> ordersList = [];
+  dynamic ordersList = [];
   List<Orders> pendingOrders = [];
   List<Orders> activeOrders = [];
   List<Orders> rejectedOrders = [];
@@ -18,6 +18,7 @@ class Update extends ChangeNotifier {
     rejectedOrders.clear();
     completedOrders.clear();
     ordersList = await APIServices.fetchOrders();
+    print(ordersList.runtimeType.toString());
     ordersList.forEach((element) {
       if (element.status == AppConfig.pendingStatus) {
         pendingOrders.add(element);
