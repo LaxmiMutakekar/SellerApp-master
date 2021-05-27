@@ -18,7 +18,6 @@ class Update extends ChangeNotifier {
     rejectedOrders.clear();
     completedOrders.clear();
     ordersList = await APIServices.fetchOrders();
-    print(ordersList.runtimeType.toString());
     ordersList.forEach((element) {
       if (element.status == AppConfig.pendingStatus) {
         pendingOrders.add(element);
@@ -69,7 +68,6 @@ class Update extends ChangeNotifier {
 
   void updateETC(Orders order, double value) {
     order.orderPreparationTime = order.orderPreparationTime + value;
-
     notifyListeners();
   }
 

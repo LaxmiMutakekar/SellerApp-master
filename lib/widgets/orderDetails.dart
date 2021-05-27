@@ -2,7 +2,6 @@ import 'package:Seller_App/APIServices/APIServices.dart';
 import 'package:Seller_App/App_configs/app_configs.dart';
 import 'package:Seller_App/widgets/defaultButton.dart';
 import 'package:Seller_App/widgets/rejectionAleart.dart';
-import 'package:Seller_App/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:Seller_App/models/orders.dart';

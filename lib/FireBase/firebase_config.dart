@@ -6,7 +6,6 @@ import 'package:Seller_App/providers/seller.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:Seller_App/notifyCount.dart';
 class FirebaseConfig{
   void init(BuildContext context){
     
@@ -20,11 +19,11 @@ class FirebaseConfig{
       {
           APIServices.updateSellerDevice(devicetoken);
       }
-      print("Device Token: $token");
+     // print("Device Token: $token");
     });
     _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
-        print('onMessage: $message');
+        //print('onMessage: $message');
         _setMessage(message,order,msgs); 
       },
       onLaunch: (Map<String, dynamic> message) async {
@@ -54,16 +53,12 @@ class FirebaseConfig{
       msgs.addMessages(msg);
       msgs.readMessage();
       order.ordersAdded();
-      print(msgs.messagesList[1].title);
-      print(msgs.messagesList.length);
-      
-      print('in body');
     }
     if(body=='ORDER_NO_UPDATE_ETC')
     {
       APIServices.updateButton(oid).then((value) =>value?order.updateButton(oid):null);
     }
-    print("Title: $title, body: $body, message: $mMessage");
+    //print("Title: $title, body: $body, message: $mMessage");
   
 }
 }

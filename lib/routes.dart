@@ -1,5 +1,6 @@
 import 'package:Seller_App/Screens/HomeScreen/Home.dart';
 import 'package:Seller_App/Screens/catelogue/catalogue.dart';
+import 'package:Seller_App/Screens/homeScreen/mainScreen/mainScreen.dart';
 import 'package:Seller_App/Screens/loginScreen/loginScreen.dart';
 import 'package:Seller_App/Screens/orderHistory/orderHistory.dart';
 import 'package:Seller_App/Screens/productDetail/productDetail.dart';
@@ -21,4 +22,5 @@ final Map<String,WidgetBuilder> routes={
   SubmitPage.routeName:(context)=>SubmitPage(),
   ProfilePage.routeName:(context)=>ProfilePage(),
   ProductDetails.routeName:(context)=>ProductDetails(),
+  MainScreen.routeName:(context)=>MainScreen(),
 };

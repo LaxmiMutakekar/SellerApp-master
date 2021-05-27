@@ -1,6 +1,7 @@
 import 'package:Seller_App/Screens/homeScreen/mainScreen/components/updateETC.dart';
 import 'package:Seller_App/widgets/defaultButton.dart';
 import 'package:Seller_App/widgets/ribbon.dart';
+import 'package:Seller_App/widgets/textOverFlow.dart';
 import 'package:Seller_App/widgets/timer/timer.dart';
 import 'package:flutter/material.dart';
 import 'package:Seller_App/APIServices/APIServices.dart';
@@ -8,11 +9,14 @@ import 'package:Seller_App/App_configs/app_configs.dart';
 import 'package:Seller_App/widgets/cards.dart';
 import 'package:Seller_App/models/orders.dart';
 import 'package:Seller_App/widgets/orderDetails.dart';
-import 'package:Seller_App/widgets/widgets.dart';
-import 'package:provider/provider.dart';
 import 'package:Seller_App/providers/orderUpdate.dart';
 
 class ActiveOrders extends StatefulWidget {
+  final Update orderProvider;
+  ActiveOrders({
+    Key key,
+     this.orderProvider,
+  }) : super(key: key,);
   @override
   _ActiveOrdersState createState() => _ActiveOrdersState();
 }
@@ -23,8 +27,7 @@ class _ActiveOrdersState extends State<ActiveOrders>
   TabController _controller;
   DateTime subDt;
   bool visible = false;
-  DateTime currDt;
-   DownTimerController _timerController = DownTimerController();
+  DownTimerController _timerController = DownTimerController();
   @override
   void initState() {
     super.initState();
@@ -33,8 +36,9 @@ class _ActiveOrdersState extends State<ActiveOrders>
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<Update>(builder: (context, Update orders, child) {
-      if (orders.activeOrders.isEmpty) {
+    final provider=widget.orderProvider;
+    List<Orders> activeOrder=provider.activeOrders;
+      if (activeOrder.isEmpty) {
         return Container();
       }
       return Column(
@@ -67,33 +71,36 @@ class _ActiveOrdersState extends State<ActiveOrders>
               ],
             ),
           ),
-           ConstrainedBox(
-            constraints: BoxConstraints(minHeight: 0,maxHeight: 240*orders.activeOrders.length.toDouble()??0),
+          ConstrainedBox(
+            constraints: BoxConstraints(
+                minHeight: 0,
+                maxHeight: 240 * activeOrder.length.toDouble() ?? 0),
             child: new TabBarView(
               controller: _controller,
               children: <Widget>[
-                new Container(child: listOrders(orders, 'All accepted orders')),
+                new Container(child: listOrders(provider, 'All accepted orders')),
                 new Container(
-                    child: listOrders(orders, AppConfig.acceptStatus)),
-                new Container(child: listOrders(orders, AppConfig.markAsDone)),
-                new Container(child: listOrders(orders, AppConfig.timeout)),
+                    child: listOrders(provider, AppConfig.acceptStatus)),
+                new Container(child: listOrders(provider, AppConfig.markAsDone)),
+                new Container(child: listOrders(provider, AppConfig.timeout)),
               ],
             ),
           ),
         ],
       );
-    });
+    
   }
 
   listOrders(Update provider, chosenValue) {
+    List<Orders> order=provider.activeOrders;
     String url;
     return ListView.builder(
         scrollDirection: Axis.vertical,
-        itemCount: provider.activeOrders.length,
+        itemCount: order.length,
         physics: NeverScrollableScrollPhysics(),
         shrinkWrap: true,
         itemBuilder: (BuildContext context, int index) {
-          Orders active = provider.activeOrders[index];
+          Orders active = order[index];
           if (chosenValue == 'All accepted orders') {
             return activeOrders(provider, active);
           } else {
@@ -110,10 +117,10 @@ class _ActiveOrdersState extends State<ActiveOrders>
   }
 
   activeOrders(Update provider, Orders order) {
-   bool visibility=order.isOrderUpdateEtc;
+    bool visibility = order.isOrderUpdateEtc;
     return GestureDetector(
       onTap: () {
-         orderItem.settingModalBottomSheet(context, order);
+        orderItem.settingModalBottomSheet(context, order);
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 2.0),
@@ -125,68 +132,66 @@ class _ActiveOrdersState extends State<ActiveOrders>
               margin: EdgeInsets.all(3),
               padding: EdgeInsets.all(15),
               child: Column(
-                
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Container(
                         alignment: Alignment.topLeft,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10)),
-                                    clipBehavior: Clip.hardEdge,
-                                    width: 50,
-                                    height: 50,
-                                    child: Image(
-                                      image: new AssetImage(order.businessLogo),
-                                    ),
-                                  ),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10)),
+                        clipBehavior: Clip.hardEdge,
+                        width: 50,
+                        height: 50,
+                        child: Image(
+                          image: new AssetImage(order.businessLogo),
+                        ),
+                      ),
                     ],
                   ),
                   Row(
-                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     //crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Text('#00${order.orderId}',
                           style: Theme.of(context).textTheme.headline6),
-                           Visibility(
-                            visible: (order.status == 'Order Preparing'),
-                                                              child: Column(
-                                                                children: [
-                                                                  DownTimer(
-                                                                    timerController: _timerController,
-                                                                    timerTextStyle: TimerTextStyle(
-                                                                      uniformTextStyle: TextStyle(
-                                                                        fontSize: 20,
-                                                                        fontWeight: FontWeight.w500,
-                                                                      ),
-                                                                    ),
-                                                                    duration: Duration(seconds: order.remSeconds??0),
-                                                                    onComplete: () {
-                                                                      APIServices.changeOrderStatus(order, AppConfig.timeout);
-                                                                      //print('completed');
-                                                                      //print('timer called');
-                                                                      provider.activeOrdersUpdate(order, AppConfig.timeout);
-                                                                      //_timerController.updateDuration(Duration(seconds:0));
-                                                                    },
-                                                                  ),
-                                                                  Text(
-                                                                    "MM  SS",
-                                                                    style: TextStyle(
-                                                                        fontSize: 10,
-                                                                        fontWeight: FontWeight.w500),
-                                                                  ),
-                                                                ],
-                                                              ),
-                          ),
+                      Visibility(
+                        visible: (order.status == 'Order Preparing'),
+                        child: Column(
+                          children: [
+                            DownTimer(
+                              timerController: _timerController,
+                              timerTextStyle: TimerTextStyle(
+                                uniformTextStyle: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              duration:
+                                  Duration(seconds: order.remSeconds ?? 0),
+                              onComplete: () {
+                                APIServices.changeOrderStatus(
+                                    order, AppConfig.timeout);
+
+                                provider.activeOrdersUpdate(
+                                    order, AppConfig.timeout);
+                              },
+                            ),
+                            Text(
+                              "MM  SS",
+                              style: TextStyle(
+                                  fontSize: 10, fontWeight: FontWeight.w500),
+                            ),
+                          ],
+                        ),
+                      ),
                       SizedBox(width: 0),
                     ],
                   ),
                   Row(
                     children: [
-                      Text(
-                        productName(order.orderItems),
-                        style: Theme.of(context).textTheme.caption,
+                      OverFlowText(
+                        text: order.orderItemProducts,
                       ),
                       Text(
                         '\$' + order.totalPrice.toInt().toString(),
@@ -194,35 +199,36 @@ class _ActiveOrdersState extends State<ActiveOrders>
                       )
                     ],
                   ),
-                  (order.status=='Order Preparing')?Padding(
-                    padding: const EdgeInsets.only(top: 5.0),
-                    child: Container(
-                        height: 2,
-                        width: MediaQuery.of(context).size.width,
-                        color: Theme.of(context).dividerColor),
-                  ):Container(),
+                  (order.status == 'Order Preparing')
+                      ? Padding(
+                          padding: const EdgeInsets.only(top: 5.0),
+                          child: Container(
+                              height: 2,
+                              width: MediaQuery.of(context).size.width,
+                              color: Theme.of(context).dividerColor),
+                        )
+                      : Container(),
                   Container(
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Row(
                         children: [
-                          
-                               Visibility(
-                                visible: order.status == 'Order Preparing',
-                                                              child: Expanded(
-                                    child: DefaultButton(
-                                      press: () {
-                                        provider.activeOrdersUpdate(
-                                            order, AppConfig.markAsDone);
-                                        APIServices.changeOrderStatus(
-                                            order, AppConfig.markAsDone);
-                                      },
-                                      text: ('Mark ready'),
-                                    ),
-                                  ),
+                          Visibility(
+                            visible: order.status == AppConfig.acceptStatus,
+                            child: Expanded(
+                              child: DefaultButton(
+                                press: () {
+                                  provider.activeOrdersUpdate(
+                                      order, AppConfig.markAsDone);
+                                  APIServices.changeOrderStatus(
+                                      order, AppConfig.markAsDone);
+                                },
+                                text: ('Mark ready'),
                               ),
+                            ),
+                          ),
                           SizedBox(width: 8),
-                          order.status =='Order Preparing'
+                          order.status == 'Order Preparing'
                               ? Visibility(
                                   visible: visibility,
                                   child: Expanded(
@@ -230,12 +236,19 @@ class _ActiveOrdersState extends State<ActiveOrders>
                                         press: () async {
                                           updateETC(context).then((res) {
                                             if (res is double) {
-                                              //print('res value $res');
-                                              _timerController.updateDuration(Duration(seconds: order.remSeconds+res.toInt()*60));
-                                              APIServices.updateETC(order.orderId, res.toInt());
+                                              print('res value $res');
+                                              _timerController.updateDuration(
+                                                  Duration(
+                                                      seconds: order
+                                                              .remSeconds +
+                                                          res.toInt() * 60));
+                                              APIServices.updateETC(
+                                                  order.orderId, res.toInt());
                                               provider.updateETC(order, res);
-                                              APIServices.updateButton(order.orderId);
-                                              provider.updateButton(order.orderId);
+                                              APIServices.updateButton(
+                                                  order.orderId);
+                                              provider
+                                                  .updateButton(order.orderId);
                                             }
                                           });
                                         },
@@ -272,8 +285,5 @@ class _ActiveOrdersState extends State<ActiveOrders>
     );
   }
 
-  onEnd(Update provider, Orders order) {
-    provider.activeOrdersUpdate(order, AppConfig.timeout);
-    APIServices.changeOrderStatus(order, AppConfig.timeout);
-  }
+
 }

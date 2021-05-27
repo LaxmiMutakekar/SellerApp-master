@@ -15,12 +15,16 @@ class Catalogue extends StatefulWidget {
 
 class _CatalogueState extends State<Catalogue> {
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Provider.of<Product>(context, listen: false).addProducts();
+  }
+  @override
   Widget build(BuildContext context) {
     return Consumer<Product>(builder: (context, Product products, child) {
       return Scaffold(
           appBar: AppBar(
-            backgroundColor: Colors.transparent,
-            elevation: 0,
             automaticallyImplyLeading: false,
             leading: IconButton(
               icon: Icon(Icons.arrow_back),
@@ -126,8 +130,8 @@ class _CatalogueState extends State<Catalogue> {
                                             DefaultSwitch(
                                               value: item.available,
                                               type: 'Product',
-                                              index: index,
-                                              pid: item.pid,
+                                              model: products,
+                                              product: item,
                                             )
                                           ],
                                         ),

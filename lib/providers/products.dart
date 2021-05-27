@@ -7,10 +7,9 @@ void addProducts() async {
      productsList=await APIServices.fetchProducts();
     notifyListeners();
   }
-  void updateAvlb(int i,bool val){
-    productsList[i].available=val;
+  void updateAvlb(Products product,bool val){
+    product.available=val;
     notifyListeners();
-
   }
   
 }

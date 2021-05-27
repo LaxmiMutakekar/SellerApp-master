@@ -1,4 +1,5 @@
 import 'package:Seller_App/Screens/homeScreen/Home.dart';
+import 'package:Seller_App/Screens/homeScreen/mainScreen/mainScreen.dart';
 import 'package:flutter/material.dart';
 
 class Splash extends StatefulWidget {
@@ -9,7 +10,7 @@ class Splash extends StatefulWidget {
 class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
   void splashScreen() {
     Future.delayed(Duration(milliseconds: 2500), () {
-      Navigator.pushReplacementNamed(context, HomeScreen.routeName);
+      Navigator.pushReplacementNamed(context, MainScreen.routeName);
     });
   }
 

@@ -1,4 +1,3 @@
-import 'package:Seller_App/notifyCount.dart';
 import 'package:Seller_App/providers/seller.dart';
 import 'package:Seller_App/routes.dart';
 import 'package:flutter/material.dart';
@@ -44,7 +43,6 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    Provider.of<SellerDetail>(context, listen: false).fetchSeller();
     FirebaseConfig().init(context);
 
   }

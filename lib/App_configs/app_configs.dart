@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 class AppConfig {
   static Color loadingColorforworg=Colors.black38;
   static Color homeScreen=Color(0xffCCCCCD);
@@ -25,4 +26,8 @@ class AppConfig {
   static Color preparingColor=Colors.pink[300];
   static Color completedColor=Colors.green[300];
   static String baseUrl='http://10.0.2.2:8080';
+  static String currenlyNoOrder='Currently you dont have any orders!!';
+  static String noPendingOrders='No new orders are received';
+  static String availableError='You can\'t receive orders as you are offline, if you have any active orders please fulfill them';
+  static var format =  DateFormat('dd-MM-yyyy');
 }

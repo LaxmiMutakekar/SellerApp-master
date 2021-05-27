@@ -10,6 +10,7 @@ import 'package:google_fonts/google_fonts.dart';
         dividerColor: Colors.black12,
         buttonColor: Colors.black,
         textTheme: textTheme(),
+        appBarTheme: AppBarTheme(backgroundColor: Colors.transparent,elevation: 0,),
         textButtonTheme: TextButtonThemeData(
             style: TextButton.styleFrom(
               primary: Colors.black87,

@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:Seller_App/providers/orderUpdate.dart';
 import 'package:Seller_App/models/orders.dart';
-import 'package:provider/provider.dart';
 import 'package:Seller_App/widgets/cards.dart';
 
 class OrderHistory extends StatefulWidget {
-  static String routeName="/orderHistory";
+  static String routeName = "/orderHistory";
+   final Update orderProvider;
+  OrderHistory({
+    Key key,
+     this.orderProvider,
+  }) : super(key: key,);
   @override
   _OrderHistoryState createState() => _OrderHistoryState();
 }
@@ -13,11 +17,10 @@ class OrderHistory extends StatefulWidget {
 class _OrderHistoryState extends State<OrderHistory> {
   @override
   Widget build(BuildContext context) {
-    return Consumer<Update>(builder: (context, Update orders, child) {
+   final provider=widget.orderProvider;
+   List<Orders> completeList=provider.completedOrders;
       return Scaffold(
           appBar: AppBar(
-            elevation: 0,
-            backgroundColor: Colors.transparent,
             title: Text(
               'Orders History',
               style: TextStyle(
@@ -28,10 +31,10 @@ class _OrderHistoryState extends State<OrderHistory> {
           ),
           body: ListView.builder(
             scrollDirection: Axis.vertical,
-            itemCount: orders.completedOrders.length,
+            itemCount: completeList.length,
             shrinkWrap: true,
             itemBuilder: (BuildContext context, int index) {
-              Orders item = orders.completedOrders[index];
+              Orders item = completeList[index];
               if (item.status == 'Order Complete') {
                 return Cards(
                   margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
@@ -69,6 +72,5 @@ class _OrderHistoryState extends State<OrderHistory> {
               }
             },
           ));
-    });
   }
 }

@@ -97,9 +97,9 @@ class APIServices {
         }),
       );
       if (response.statusCode == 200) {
-        //print("Seller availability changed!");
+        
       } else {
-        //print("Seller Availability update failed!");
+        
       }
     }catch(e)
     {
@@ -122,7 +122,7 @@ class APIServices {
         return true;
       } else {
         return false;
-        //print("Seller Availability update failed!");
+       
       }
     }catch(e)
     {
@@ -144,7 +144,7 @@ class APIServices {
       if (response.statusCode == 200) {
         print("button availability changed!");
       } else {
-        //print("Seller Availability update failed!");
+        
       }
     }catch(e)
     {

@@ -1,9 +1,8 @@
 import 'dart:convert';
-
+import 'package:Seller_App/App_configs/app_configs.dart';
 import 'package:Seller_App/session.dart';
 import 'package:Seller_App/widgets/orderDetails.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:Seller_App/providers/orderUpdate.dart';
 import 'package:Seller_App/models/orders.dart';
 import 'package:provider/provider.dart';
@@ -12,13 +11,17 @@ import 'package:http/http.dart'as http;
 
 class RejectedOrders extends StatefulWidget {
   static String routeName="/rejectedOrder";
+   final Update orderProvider;
+  RejectedOrders({
+    Key key,
+     this.orderProvider,
+  }) : super(key: key,);
   @override
   _RejectedOrdersState createState() => _RejectedOrdersState();
 }
 
 class _RejectedOrdersState extends State<RejectedOrders> {
   OrderDetail orderItem = new OrderDetail();
-  var format =  DateFormat('dd-MM-yyyy');
   int days;
   int selectedValue = 1;
   List<Orders> lastRejected=[];
@@ -54,7 +57,6 @@ class _RejectedOrdersState extends State<RejectedOrders> {
     return Consumer<Update>(builder: (context, Update orders, child) {
       return Scaffold(
           appBar: AppBar(
-            backgroundColor: Colors.transparent,
             title: Text(
               'Rejected Orders',
               style: TextStyle(
@@ -62,7 +64,6 @@ class _RejectedOrdersState extends State<RejectedOrders> {
                   fontWeight: FontWeight.bold,
                   color: Colors.black),
             ),
-            elevation: 0,
             actions: [
               DropdownButton(
                 iconEnabledColor: Colors.black,
@@ -121,23 +122,6 @@ class _RejectedOrdersState extends State<RejectedOrders> {
           body: SingleChildScrollView(
             child: Column(
               children: [
-      //           Row(
-      //             mainAxisAlignment: MainAxisAlignment.end,
-      //             children:[ Padding(
-      //               padding: const EdgeInsets.symmetric(horizontal: 25),
-      //               child: Container(
-      //                 decoration: BoxDecoration(
-      //                   borderRadius: BorderRadius.circular(10),
-      //                   color: Colors.white60,
-      //                 ),
-      //                 child: Padding(
-      //                   padding: const EdgeInsets.only(left:5.0),
-      //                   child: 
-      //                 ),
-      //               ),
-      //             ),
-      // ]
-      //           ),
                 ListView.builder(
                   scrollDirection: Axis.vertical,
                   itemCount: (selectedValue!=1)?lastRejected.length:orders.rejectedOrders.length,
@@ -175,8 +159,6 @@ class _RejectedOrdersState extends State<RejectedOrders> {
                                   child: Text('Rejection reason ',style: TextStyle(color: Colors.white60),))
                                     ],
                                   ),
-
-
                                   Column(
                                     children: [
                                       Row(
@@ -186,7 +168,7 @@ class _RejectedOrdersState extends State<RejectedOrders> {
                                           Text('Date',style: TextStyle(color: Colors.deepOrangeAccent),),
                                         ],
                                       ),
-                                      Text(format.format(item.orderPlacedDate)),
+                                      Text(AppConfig.format.format(item.orderPlacedDate)),
                                     ],
                                   ),
                                 ],

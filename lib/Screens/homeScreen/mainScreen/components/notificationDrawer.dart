@@ -1,27 +1,26 @@
 import 'package:Seller_App/App_configs/sizeConfigs.dart';
-import 'package:Seller_App/FireBase/firebase_config.dart';
-import 'package:Seller_App/Screens/homeScreen/mainScreen/mainScreen.dart';
 import 'package:Seller_App/models/notificationModel.dart';
 import 'package:Seller_App/models/orders.dart';
 import 'package:Seller_App/providers/notification.dart';
 import 'package:Seller_App/providers/orderUpdate.dart';
 import 'package:Seller_App/widgets/cards.dart';
-import 'package:Seller_App/widgets/widgets.dart';
+import 'package:Seller_App/widgets/textOverFlow.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class NotificationDrawer extends StatelessWidget {
   NotificationDrawer({
     Key key,
     @required this.screenwidth,
+    this.orderProvider,
   }) : super(key: key);
 
   final double screenwidth;
-  String orderplacedTime;
+  Update orderProvider;
   @override
   Widget build(BuildContext context) {
-    return Consumer2<Messages,Update>(builder: (context, Messages msg,Update order, child) {
+    return Consumer<Messages>(builder: (context, Messages msg, child) {
+      List<Message> messageList=msg.messagesList;
       return Container(
         clipBehavior: Clip.hardEdge,
         decoration: BoxDecoration(
@@ -53,7 +52,7 @@ class NotificationDrawer extends StatelessWidget {
                   )
                 ],
               ),
-              (msg.messagesList.length==0)?Expanded(child: Center(child: Container(child: Text('No new messages'),))):
+              (messageList.length==0)?Expanded(child: Center(child: Container(child: Text('No new messages'),))):
               Expanded(
                               child: ListView.builder(
                   itemCount: msg.messagesList.length,
@@ -61,10 +60,8 @@ class NotificationDrawer extends StatelessWidget {
                     
                     Message message=msg.messagesList[index];
                     int oid=int.parse(message.title);
-                    Orders ordermsg=order.ordersList.firstWhere((element) => element.orderId==oid);
-                    orderplacedTime=DateFormat.jm().format(ordermsg.orderPlacedDate);
-                    print(msg.messagesList.length);
-                     
+                    Orders ordermsg=orderProvider.ordersList.firstWhere((element) => element.orderId==oid);
+                                 
                     return Cards(
                       color: Color(0xffF1F5EF),
                       padding: EdgeInsets.all(0),
@@ -104,7 +101,7 @@ class NotificationDrawer extends StatelessWidget {
                                     Row(
                                       children: [
                                         Text('Cart Items:',style: TextStyle(fontSize: 12,fontWeight: FontWeight.bold),),
-                                        Text(productName(ordermsg.orderItems),style: TextStyle(fontSize: 12),),
+                                        OverFlowText(text: ordermsg.orderItemProducts,textSize: 12,width: 60,)
                                       ],
                                     ),
                                     Row(
@@ -112,7 +109,7 @@ class NotificationDrawer extends StatelessWidget {
                                       crossAxisAlignment: CrossAxisAlignment.end,
                                       children:[
                                         SizedBox(width:getProportionateScreenWidth(110)),
-                                        Text(orderplacedTime,style:TextStyle(fontSize: 12,fontWeight:FontWeight.bold))
+                                        Text(ordermsg.placedTime,style:TextStyle(fontSize: 12,fontWeight:FontWeight.bold))
                                       ]
                                     )
                                   ]

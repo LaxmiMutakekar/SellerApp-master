@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:Seller_App/APIServices/APIServices.dart';
-import 'package:Seller_App/providers/orderUpdate.dart';
-import 'package:provider/provider.dart';
+
+import '../mainScreen.dart';
 final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 enum SingingCharacter { timing1, timing2 ,timing3,timing4}
 final List<String> reasons = [
@@ -94,9 +93,7 @@ Future<dynamic> updateETC(BuildContext context) async {
               TextButton(
                 child: Text('Continue'),
                 onPressed: (){
-                 // orders.updateETC(i,duration);
                   Navigator.of(context).pop(duration);
-
                 },
               ),
             ],

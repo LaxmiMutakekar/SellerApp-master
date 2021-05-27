@@ -30,7 +30,6 @@ class Orders {
     this.isOrderUpdateEtc,
   });
   
-   
   String get businessLogo {
     switch (this.businessUnit) {
       case 'Sodimac':
@@ -68,8 +67,14 @@ class Orders {
     return (offset.millisecondsSinceEpoch - now.millisecondsSinceEpoch) ~/ 1000;
   }
   String get placedTime{
-    
     return(DateFormat.jm().format(this.orderPlacedDate));
+  }
+  String get orderItemProducts{
+    List<String> productsList=[];
+    String products;
+    this.orderItems.forEach((element) { productsList.add(element.productName);});
+    products=productsList.join(',');
+    return products;
   }
   factory Orders.fromJson(Map<String, dynamic> json) => Orders(
         orderId: json["orderId"],

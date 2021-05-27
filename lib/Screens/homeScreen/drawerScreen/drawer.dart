@@ -1,27 +1,35 @@
 import 'package:Seller_App/Screens/loginScreen/loginScreen.dart';
 import 'package:Seller_App/Screens/orderHistory/orderHistory.dart';
 import 'package:Seller_App/Screens/profileScreen.dart';
+import 'package:Seller_App/Screens/rejectedOrder/rejectedOrders.dart';
+import 'package:Seller_App/providers/orderUpdate.dart';
 import 'package:Seller_App/providers/seller.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:Seller_App/Screens/catelogue/catalogue.dart';
 import 'package:Seller_App/session.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:Seller_App/Screens/rejectedOrder/rejectedOrders.dart';
-import 'package:provider/provider.dart';
 import 'package:Seller_App/App_configs/app_configs.dart';
 
 class MenuDashboard extends StatefulWidget {
   static String routeName="/drawer";
+   final Update orderProvider;
+   final SellerDetail sellerProvider;
+  MenuDashboard({
+    Key key,
+     this.orderProvider,
+     this.sellerProvider
+  }) : super(key: key,);
   @override
   _MenuDashboardState createState() => _MenuDashboardState();
 }
 
-class _MenuDashboardState extends State<MenuDashboard> {
-  
+class _MenuDashboardState extends State<MenuDashboard> { 
   @override
   Widget build(BuildContext context) {
-    return Consumer<SellerDetail>(builder: (context,seller, child) {
+    final provider=widget.sellerProvider.seller;
+    final sellerName=provider.name;
+    final orderProvider=widget.orderProvider;
       return SafeArea(
               child: Material(
           child: Container(
@@ -48,7 +56,7 @@ class _MenuDashboardState extends State<MenuDashboard> {
                     'Welcome',
                     style: GoogleFonts.raleway(textStyle:TextStyle(color:Colors.white,fontSize: 18 ))
                   ),
-                  Text(seller.seller.name==null?('Loading..'):seller.seller.name,
+                  Text(sellerName==null?('Loading..'):sellerName,
                       style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold)),
@@ -78,10 +86,10 @@ class _MenuDashboardState extends State<MenuDashboard> {
                 children: [
                   TextButton.icon(
                     onPressed: () {
-                      Navigator.pushNamed(
-                          context,
-                          OrderHistory.routeName
-                          );
+                      Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => OrderHistory(orderProvider: orderProvider,),
+                    ));
                     },
                     icon: Icon(
                       Icons.history,
@@ -98,10 +106,11 @@ class _MenuDashboardState extends State<MenuDashboard> {
                 children: [
                   TextButton.icon(
                       onPressed: () {
-                        Navigator.pushNamed(
-                          context,
-                          RejectedOrders.routeName
-                        );
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => RejectedOrders(orderProvider: orderProvider,),
+                    ),
+                  );
                       },
                       label: Text(
                         'Rejected Orders',
@@ -116,7 +125,6 @@ class _MenuDashboardState extends State<MenuDashboard> {
             SizedBox(width: 10),
             TextButton.icon(
               onPressed: () {
-                //Settings();
               },
               icon: Icon(Icons.settings, color: Colors.white),
               label: Text(
@@ -150,6 +158,5 @@ class _MenuDashboardState extends State<MenuDashboard> {
             ),
         ),
       );
-    });
   }
 }

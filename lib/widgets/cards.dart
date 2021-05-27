@@ -37,43 +37,43 @@ class Cards extends StatelessWidget {
   }
 }
 
-class ContainerCard extends StatelessWidget {
-  final EdgeInsets margin;
-  final EdgeInsets padding;
-  final BorderRadius radius;
-  final Color color;
-  final Widget child;
-  final double height;
-  final double width;
-  const ContainerCard(
-      {Key key,
-      this.margin,
-      this.padding,
-      this.radius,
-      this.color,
-      this.child,
-      this.height,
-      this.width})
-      : super(key: key);
+// class ContainerCard extends StatelessWidget {
+//   final EdgeInsets margin;
+//   final EdgeInsets padding;
+//   final BorderRadius radius;
+//   final Color color;
+//   final Widget child;
+//   final double height;
+//   final double width;
+//   const ContainerCard(
+//       {Key key,
+//       this.margin,
+//       this.padding,
+//       this.radius,
+//       this.color,
+//       this.child,
+//       this.height,
+//       this.width})
+//       : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return ConstrainedBox(
-        constraints: BoxConstraints(
-            minHeight: height ?? MediaQuery.of(context).size.height),
-        child: Container(
-            decoration: BoxDecoration(
-              color: color ?? Theme.of(context).canvasColor,
-              borderRadius: BorderRadius.only(
-                  topLeft: radius ?? Radius.circular(30),
-                  topRight: radius ?? Radius.circular(30)),
-            ),
-            padding: padding ?? EdgeInsets.all(16),
-            child: Material(
-              child: child,
-              color: Colors.transparent,
-              borderRadius: radius ?? BorderRadius.circular(5),
-              clipBehavior: Clip.hardEdge,
-            )));
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return ConstrainedBox(
+//         constraints: BoxConstraints(
+//             minHeight: height ?? MediaQuery.of(context).size.height),
+//         child: Container(
+//             decoration: BoxDecoration(
+//               color: color ?? Theme.of(context).canvasColor,
+//               borderRadius: BorderRadius.only(
+//                   topLeft: radius ?? Radius.circular(30),
+//                   topRight: radius ?? Radius.circular(30)),
+//             ),
+//             padding: padding ?? EdgeInsets.all(16),
+//             child: Material(
+//               child: child,
+//               color: Colors.transparent,
+//               borderRadius: radius ?? BorderRadius.circular(5),
+//               clipBehavior: Clip.hardEdge,
+//             )));
+//   }
+// }
