@@ -11,10 +11,8 @@ dependencies:
   animated_check: ^1.0.0
   fluentui_system_icons: ^1.1.120
   google_fonts: ^2.0.0
-  percent_indicator: "^2.1.7+2"
   intl: ^0.17.0
-  custom_timer: ^0.0.3
-  slide_countdown_clock: ^1.0.3
+  flutter_svg: ^0.22.0
   
   
   flutter:  
@@ -27,10 +25,7 @@ dependencies:
   flutter_switch: ^0.3.0
   provider: ^5.0.0
   fluttertoast: ^3.1.3
-  flutter_countdown_timer: ^4.1.0
-  countdown_flutter: ^0.1.2
   avatar_glow: ^1.1.0
-  stop_watch_timer: ^1.1.0+1
   pin_code_fields:   
 
 dev_dependencies:

@@ -1,7 +1,7 @@
 import 'package:Seller_App/models/orders.dart';
 import 'package:flutter/material.dart';
 import 'package:Seller_App/APIServices/APIServices.dart';
-import 'package:Seller_App/providers/orderUpdate.dart';
+import 'package:Seller_App/providers/orderProvider.dart';
 import 'package:provider/provider.dart';
 import 'package:Seller_App/App_configs/app_configs.dart';
 import 'package:Seller_App/models/rejectionReasons.dart';
@@ -11,7 +11,7 @@ bool isVisible=false;
 
 String reason="";
 Future<String> showReasonsDialog(BuildContext context,Orders order) async {
-  final orders = Provider.of<Update>(context, listen: false);
+  final orders = Provider.of<OrderProvider>(context, listen: false);
   return await showDialog(context: context,
       builder: (context){
         SingingCharacter  _character = SingingCharacter.reason1;

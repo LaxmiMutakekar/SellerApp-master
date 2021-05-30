@@ -1,6 +1,6 @@
 import 'package:Seller_App/Screens/homeScreen/drawerScreen/drawer.dart';
 import 'package:Seller_App/Screens/homeScreen/mainScreen/mainScreen.dart';
-import 'package:Seller_App/providers/orderUpdate.dart';
+import 'package:Seller_App/providers/orderProvider.dart';
 import 'package:Seller_App/providers/seller.dart';
 import 'package:flutter/material.dart';
 import 'package:Seller_App/providers/products.dart';
@@ -16,8 +16,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer2<Update, SellerDetail>(
-        builder: (context, Update orders, seller, child) {
+    return Consumer2<OrderProvider, SellerDetail>(
+        builder: (context, OrderProvider orders, seller, child) {
     return Material(
       child: Scaffold(
           body: Stack(

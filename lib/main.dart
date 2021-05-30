@@ -1,7 +1,7 @@
 import 'package:Seller_App/providers/seller.dart';
 import 'package:Seller_App/routes.dart';
 import 'package:flutter/material.dart';
-import 'providers/orderUpdate.dart';
+import 'providers/orderProvider.dart';
 import 'providers/products.dart';
 import 'root.dart';
 import 'package:provider/provider.dart';
@@ -17,8 +17,8 @@ void main() async {
       ChangeNotifierProvider<Product>(
         create: (_) => Product(),
       ),
-      ChangeNotifierProvider<Update>(
-        create: (_) => Update(),
+      ChangeNotifierProvider<OrderProvider>(
+        create: (_) => OrderProvider(),
       ),
       ChangeNotifierProvider<SellerDetail>(
         create: (_) => SellerDetail(),

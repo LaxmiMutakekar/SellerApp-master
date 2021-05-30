@@ -13,7 +13,7 @@ class OverFlowText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: width??80,
+      width: width??200,
       child: Text(
         text,
         maxLines: 1,

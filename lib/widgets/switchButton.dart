@@ -38,7 +38,7 @@ class _DefaultSwitchState extends State<DefaultSwitch> {
         value: widget.value ?? true,
         borderRadius: 15.0,
         padding: 0.0,
-        showOnOff: true,
+        showOnOff: false,
         onToggle: (val) {
           setState(() {
             showMyDialog(context, val).then((value) {
@@ -48,7 +48,7 @@ class _DefaultSwitchState extends State<DefaultSwitch> {
                   widget.model.changeAvailabiliy(val);
                   APIServices.updateAvailable(val);
                 } else {
-                      widget.model.updateAvlb(widget.product,val);
+                  widget.model.updateAvlb(widget.product, val);
                   APIServices.updateProduct(widget.product.pid, val);
                 }
               }
@@ -57,6 +57,7 @@ class _DefaultSwitchState extends State<DefaultSwitch> {
         });
   }
 }
+
 Future<bool> showMyDialog(BuildContext context, bool val) async {
   Widget cancelButton = FlatButton(
     child: Text("Cancel"),

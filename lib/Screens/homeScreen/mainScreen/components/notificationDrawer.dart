@@ -2,7 +2,7 @@ import 'package:Seller_App/App_configs/sizeConfigs.dart';
 import 'package:Seller_App/models/notificationModel.dart';
 import 'package:Seller_App/models/orders.dart';
 import 'package:Seller_App/providers/notification.dart';
-import 'package:Seller_App/providers/orderUpdate.dart';
+import 'package:Seller_App/providers/orderProvider.dart';
 import 'package:Seller_App/widgets/cards.dart';
 import 'package:Seller_App/widgets/textOverFlow.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +16,7 @@ class NotificationDrawer extends StatelessWidget {
   }) : super(key: key);
 
   final double screenwidth;
-  Update orderProvider;
+  OrderProvider orderProvider;
   @override
   Widget build(BuildContext context) {
     return Consumer<Messages>(builder: (context, Messages msg, child) {
@@ -101,7 +101,7 @@ class NotificationDrawer extends StatelessWidget {
                                     Row(
                                       children: [
                                         Text('Cart Items:',style: TextStyle(fontSize: 12,fontWeight: FontWeight.bold),),
-                                        OverFlowText(text: ordermsg.orderItemProducts,textSize: 12,width: 60,)
+                                        OverFlowText(text: ordermsg.orderItemProducts,textSize: 12,width: 132,)
                                       ],
                                     ),
                                     Row(

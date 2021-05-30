@@ -2,7 +2,7 @@ import 'package:Seller_App/Screens/loginScreen/loginScreen.dart';
 import 'package:Seller_App/Screens/orderHistory/orderHistory.dart';
 import 'package:Seller_App/Screens/profileScreen.dart';
 import 'package:Seller_App/Screens/rejectedOrder/rejectedOrders.dart';
-import 'package:Seller_App/providers/orderUpdate.dart';
+import 'package:Seller_App/providers/orderProvider.dart';
 import 'package:Seller_App/providers/seller.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:Seller_App/Screens/catelogue/catalogue.dart';
@@ -13,7 +13,7 @@ import 'package:Seller_App/App_configs/app_configs.dart';
 
 class MenuDashboard extends StatefulWidget {
   static String routeName="/drawer";
-   final Update orderProvider;
+   final OrderProvider orderProvider;
    final SellerDetail sellerProvider;
   MenuDashboard({
     Key key,

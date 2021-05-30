@@ -58,7 +58,6 @@ class Orders {
   OrderStatusHistory orderStatusHistory;
   double orderUpdateEtc;
   bool isOrderUpdateEtc;
-  
 
   int get remSeconds  {
     var time =  DateTime.parse(this.orderStatusHistory.orderPreparing.toString());
@@ -68,6 +67,14 @@ class Orders {
   }
   String get placedTime{
     return(DateFormat.jm().format(this.orderPlacedDate));
+  }
+  String get timePassedFromPlaced{
+    var passedTime=DateTime.now().difference(this.orderPlacedDate).inMinutes;
+    return ('${passedTime} minutes ago');
+  }
+  String get expectedByTime{
+    var time=this.orderPlacedDate.add(Duration(minutes: this.orderFulfillmentTime.toInt()));
+    return(DateFormat.jm().format(time));
   }
   String get orderItemProducts{
     List<String> productsList=[];

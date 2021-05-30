@@ -1,7 +1,7 @@
 import 'package:Seller_App/APIServices/APIServices.dart';
 import 'package:Seller_App/models/notificationModel.dart';
 import 'package:Seller_App/providers/notification.dart';
-import 'package:Seller_App/providers/orderUpdate.dart';
+import 'package:Seller_App/providers/orderProvider.dart';
 import 'package:Seller_App/providers/seller.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 class FirebaseConfig{
   void init(BuildContext context){
     
-    final order=Provider.of<Update>(context, listen: false);
+    final order=Provider.of<OrderProvider>(context, listen: false);
     final seller=Provider.of<SellerDetail>(context, listen: false);
     final msgs=Provider.of<Messages>(context, listen: false);
     FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
@@ -35,7 +35,7 @@ class FirebaseConfig{
       const IosNotificationSettings(sound: true, badge: true, alert: true),
     );
   }
-  _setMessage(Map<String, dynamic> message,Update order,Messages msgs) {
+  _setMessage(Map<String, dynamic> message,OrderProvider order,Messages msgs) {
     
     final notification = message['notification'];
     final data = message['data'];

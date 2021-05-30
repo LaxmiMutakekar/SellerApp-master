@@ -21,7 +21,7 @@ import 'package:google_fonts/google_fonts.dart';
               elevation: 5,
               primary: Colors.black,
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15))),
+                  borderRadius: BorderRadius.circular(10))),
         ),
         scaffoldBackgroundColor: Colors.grey[300],
         floatingActionButtonTheme: FloatingActionButtonThemeData(
@@ -55,8 +55,8 @@ import 'package:google_fonts/google_fonts.dart';
       subtitle1:  TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
       subtitle2:  TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
       bodyText1: TextStyle(
-        fontSize: 14.0,
-        fontWeight: FontWeight.bold,
+        fontSize: 18.0,
+        fontWeight: FontWeight.w600,
       ),
       bodyText2:  TextStyle(
         fontSize: 14.0,

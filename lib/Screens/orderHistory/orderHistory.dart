@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:Seller_App/providers/orderUpdate.dart';
+import 'package:Seller_App/providers/orderProvider.dart';
 import 'package:Seller_App/models/orders.dart';
 import 'package:Seller_App/widgets/cards.dart';
 
 class OrderHistory extends StatefulWidget {
   static String routeName = "/orderHistory";
-   final Update orderProvider;
+   final OrderProvider orderProvider;
   OrderHistory({
     Key key,
      this.orderProvider,
@@ -18,7 +18,7 @@ class _OrderHistoryState extends State<OrderHistory> {
   @override
   Widget build(BuildContext context) {
    final provider=widget.orderProvider;
-   List<Orders> completeList=provider.completedOrders;
+   List<Orders> completeList=provider.completedOrderList;
       return Scaffold(
           appBar: AppBar(
             title: Text(

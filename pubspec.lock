@@ -71,13 +71,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.15.0"
-  countdown_flutter:
-    dependency: "direct main"
-    description:
-      name: countdown_flutter
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.1.2"
   crypto:
     dependency: transitive
     description:
@@ -92,13 +85,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.2"
-  custom_timer:
-    dependency: "direct main"
-    description:
-      name: custom_timer
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.0.3"
   fake_async:
     dependency: transitive
     description:
@@ -174,13 +160,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.1"
-  flutter_countdown_timer:
+  flutter_svg:
     dependency: "direct main"
     description:
-      name: flutter_countdown_timer
+      name: flutter_svg
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.1.0"
+    version: "0.22.0"
   flutter_switch:
     dependency: "direct main"
     description:
@@ -282,6 +268,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.8.0"
+  path_drawing:
+    dependency: transitive
+    description:
+      name: path_drawing
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.5.1"
+  path_parsing:
+    dependency: transitive
+    description:
+      name: path_parsing
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.1"
   path_provider:
     dependency: transitive
     description:
@@ -324,13 +324,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.11.0"
-  percent_indicator:
-    dependency: "direct main"
-    description:
-      name: percent_indicator
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.1.9+1"
   petitparser:
     dependency: transitive
     description:
@@ -441,13 +434,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.99"
-  slide_countdown_clock:
-    dependency: "direct main"
-    description:
-      name: slide_countdown_clock
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.3"
   source_span:
     dependency: transitive
     description:
@@ -476,13 +462,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.10.0"
-  stop_watch_timer:
-    dependency: "direct main"
-    description:
-      name: stop_watch_timer
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.1.0+1"
   stream_channel:
     dependency: transitive
     description:

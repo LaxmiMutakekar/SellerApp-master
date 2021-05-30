@@ -5,7 +5,7 @@ import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:provider/provider.dart';
 import 'package:Seller_App/App_configs/app_configs.dart';
 import 'package:Seller_App/APIServices/APIServices.dart';
-import 'package:Seller_App/providers/orderUpdate.dart';
+import 'package:Seller_App/providers/orderProvider.dart';
 
 class Verify extends StatelessWidget {
    static String routeName="/verify";
@@ -15,7 +15,7 @@ class Verify extends StatelessWidget {
   var  otp;
   @override
   Widget build(BuildContext context) {
-    final orders = Provider.of<Update>(context, listen: false);
+    final orders = Provider.of<OrderProvider>(context, listen: false);
     return Material(
       child: Scaffold(
         appBar: AppBar(

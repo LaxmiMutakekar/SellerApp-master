@@ -3,7 +3,7 @@ import 'package:Seller_App/App_configs/app_configs.dart';
 import 'package:Seller_App/session.dart';
 import 'package:Seller_App/widgets/orderDetails.dart';
 import 'package:flutter/material.dart';
-import 'package:Seller_App/providers/orderUpdate.dart';
+import 'package:Seller_App/providers/orderProvider.dart';
 import 'package:Seller_App/models/orders.dart';
 import 'package:provider/provider.dart';
 import 'package:Seller_App/widgets/cards.dart';
@@ -11,7 +11,7 @@ import 'package:http/http.dart'as http;
 
 class RejectedOrders extends StatefulWidget {
   static String routeName="/rejectedOrder";
-   final Update orderProvider;
+   final OrderProvider orderProvider;
   RejectedOrders({
     Key key,
      this.orderProvider,
@@ -21,8 +21,9 @@ class RejectedOrders extends StatefulWidget {
 }
 
 class _RejectedOrdersState extends State<RejectedOrders> {
+  
   OrderDetail orderItem = new OrderDetail();
-  int days;
+  int days=1;
   int selectedValue = 1;
   List<Orders> lastRejected=[];
    Future<List<Orders>> fetchOrders(int i) async {
@@ -53,8 +54,14 @@ class _RejectedOrdersState extends State<RejectedOrders> {
 
   }
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    fetchOrders(days);
+  }
+  @override
   Widget build(BuildContext context) {
-    return Consumer<Update>(builder: (context, Update orders, child) {
+    return Consumer<OrderProvider>(builder: (context, OrderProvider orders, child) {
       return Scaffold(
           appBar: AppBar(
             title: Text(
@@ -73,7 +80,7 @@ class _RejectedOrdersState extends State<RejectedOrders> {
                               DropdownMenuItem(
                                 onTap: (){
                                   setState(() {
-                                    days=0;
+                                    days=1;
                                   });
                                 },
                                 child: Text("Today",textAlign: TextAlign.center,),
@@ -124,67 +131,18 @@ class _RejectedOrdersState extends State<RejectedOrders> {
               children: [
                 ListView.builder(
                   scrollDirection: Axis.vertical,
-                  itemCount: (selectedValue!=1)?lastRejected.length:orders.rejectedOrders.length,
+                  itemCount: lastRejected.length,
                   physics: NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   itemBuilder: (BuildContext context, int index) {
-                    Orders item = (selectedValue!=1)?lastRejected[index]:orders.rejectedOrders[index];
+                    Orders item = lastRejected[index];
                     if (item.status == 'Order Rejected') {
                       return GestureDetector(
                         onTap: () {
                           orderItem.settingModalBottomSheet(
                               context,item);
                         },
-                        child: Cards(
-                          margin: EdgeInsets.symmetric(vertical: 10, horizontal: 25),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row( mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-
-                                      Text(
-                                        '#00${item.orderId}',
-                                        style: TextStyle(
-                                            fontSize: 20.0,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-
-                              Container(
-                                decoration: BoxDecoration(borderRadius: BorderRadius.circular(10),color: Colors.red[300],),
-
-                                  child: Text('Rejection reason ',style: TextStyle(color: Colors.white60),))
-                                    ],
-                                  ),
-                                  Column(
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Icon(Icons.date_range),
-                                          SizedBox(width:5),
-                                          Text('Date',style: TextStyle(color: Colors.deepOrangeAccent),),
-                                        ],
-                                      ),
-                                      Text(AppConfig.format.format(item.orderPlacedDate)),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(item.customer.name,
-                                    style:
-                                    TextStyle(fontSize: 15, color: Colors.black)),
-                              ),
-                            ],
-                          ),
-                        ),
+                        child: RejectedOrderCard(order: item),
                       );
                     } else {
                       return Container();
@@ -195,5 +153,68 @@ class _RejectedOrdersState extends State<RejectedOrders> {
             ),
           ));
     });
+  }
+}
+
+class RejectedOrderCard extends StatelessWidget {
+  const RejectedOrderCard({
+    Key key,
+    @required this.order,
+  }) : super(key: key);
+
+  final Orders order;
+
+  @override
+  Widget build(BuildContext context) {
+    return Cards(
+      margin: EdgeInsets.symmetric(vertical: 10, horizontal: 25),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row( mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+
+                  Text(
+                    '#00${order.orderId}',
+                    style: TextStyle(
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold),
+                  ),
+
+          Container(
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(10),color: Colors.red[300],),
+
+              child: Text('Rejection reason ',style: TextStyle(color: Colors.white60),))
+                ],
+              ),
+              Column(
+                children: [
+                  Row(
+                    children: [
+                      Icon(Icons.date_range),
+                      SizedBox(width:5),
+                      Text('Date',style: TextStyle(color: Colors.deepOrangeAccent),),
+                    ],
+                  ),
+                  Text(AppConfig.format.format(order.orderPlacedDate)),
+                ],
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 5,
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(order.customer.name,
+                style:
+                TextStyle(fontSize: 15, color: Colors.black)),
+          ),
+        ],
+      ),
+    );
   }
 }
