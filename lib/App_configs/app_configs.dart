@@ -16,7 +16,7 @@ class AppConfig {
   static double headingPading=10;
   static const String pendingStatus='Order Placed';
   static const String preparingStatus='Order Preparing';
-  static const String raedyStatus='Order Ready';
+  static const String readyStatus='Order Ready';
   static const String rejectedStatus='Order Rejected';
   static const String delayedStatus='Order Timeout';
   static const String handedoverStatus='Delivery Assigned';
@@ -24,10 +24,17 @@ class AppConfig {
   static double elevation=8;
   static Color readyColor=Color(0xff10942C);
   static Color preparingColor=Color(0xff0089A9);
+  static Color delayedColor=Color(0xffC82020);
   static Color completedColor=Colors.green[300];
   static String baseUrl='http://10.0.2.2:8080';
   static String currenlyNoOrder='Currently you don\'t have any orders!!';
   static String noPendingOrders='No new orders are received';
   static String availableError='You can\'t receive orders as you are offline, if you have any active orders please fulfill them';
   static var format =  DateFormat('dd-MM-yyyy');
+  static var getColor=
+  {
+    preparingStatus:preparingColor,
+    readyStatus:readyColor,
+    delayedStatus:delayedColor
+  };
 }

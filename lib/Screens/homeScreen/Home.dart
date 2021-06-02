@@ -16,7 +16,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer2<OrderProvider, SellerDetail>(
+    return Consumer2<OrderProvider, SellerProvider>(
         builder: (context, OrderProvider orders, seller, child) {
     return Material(
       child: Scaffold(

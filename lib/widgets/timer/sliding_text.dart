@@ -5,12 +5,13 @@ import 'package:flutter/material.dart';
 class SwipingText extends StatefulWidget {
   final int defaultValue;
   final TextStyle textStyle;
+  final Color textColor;
   final BoxDecoration decoration;
   final SwipeDirection swipeDirection;
   final EdgeInsets padding;
   final Size size;
 
-  const SwipingText({Key key, this.defaultValue, this.textStyle, this.decoration, this.swipeDirection, this.padding, this.size}) : super(key: key);
+  const SwipingText({Key key, this.defaultValue, this.textStyle, this.decoration, this.swipeDirection, this.padding, this.size,this.textColor}) : super(key: key);
 
   @override
   SwipingTextState createState() => SwipingTextState();
@@ -85,6 +86,7 @@ class SwipingTextState extends State<SwipingText> with TickerProviderStateMixin 
         style: widget.textStyle,
         textScaleFactor: 1.0,
         textAlign: TextAlign.center,
+        
       ),
     );
 

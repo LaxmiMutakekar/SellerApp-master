@@ -35,7 +35,7 @@ class OrderProvider extends ChangeNotifier {
             activeOrderList.add(element);
           }
           break;
-        case AppConfig.raedyStatus:
+        case AppConfig.readyStatus:
           {
             readyOrderList.add(element);
             activeOrderList.add(element);
@@ -63,6 +63,7 @@ class OrderProvider extends ChangeNotifier {
   }
 
   void acceptOrder(Orders order) {
+    //after accepting order order is moved to preparingList from pending list 
     order.status = AppConfig.preparingStatus;
     activeOrderList.add(order);
     preparingOrderList.add(order);
@@ -77,22 +78,31 @@ class OrderProvider extends ChangeNotifier {
   }
 
   void activeOrdersUpdate(Orders order, String status) {
-    order.status = status;
-    preparingOrderList.remove(order);
+    
     switch (status) {
-      case AppConfig.raedyStatus:
+      case AppConfig.readyStatus:
         {
           //moved to ready orders
-          readyOrderList.add(order);    
+          order.isOrderUpdateEtc=false;
+          readyOrderList.add(order);   
+          if(order.status==AppConfig.delayedStatus)
+          {
+            delayedOrderList.remove(order);
+          }
+          else{
+            preparingOrderList.remove(order);
+          }
         }
         break;
       case AppConfig.delayedStatus:
         {
           //moved to delayed orders
           delayedOrderList.add(order);
+          preparingOrderList.remove(order);
         }
         break;
     }
+    order.status = status;
     notifyListeners();
   }
   void completeOrders(Orders order) {
@@ -103,7 +113,7 @@ class OrderProvider extends ChangeNotifier {
           preparingOrderList.remove(order);
         }
         break;
-      case AppConfig.raedyStatus:
+      case AppConfig.readyStatus:
         {
           //ready order moved to completed
           readyOrderList.remove(order);
@@ -123,15 +133,17 @@ class OrderProvider extends ChangeNotifier {
   }
 
   void updateETC(Orders order, double value) {
+    //updating the visibility of button to false
+    order.isOrderUpdateEtc=false;
     order.orderPreparationTime = order.orderPreparationTime + value;
     notifyListeners();
   }
 
   void updateAcceptTimings(Orders order, DateTime value) {
+    APIServices.changeOrderStatus(order, AppConfig.preparingStatus);
     order.orderStatusHistory.orderPreparing = value;
     notifyListeners();
   }
-
   void updateButton(int oid) {
     activeOrderList
         .firstWhere((element) => element.orderId == oid)
@@ -146,11 +158,19 @@ class OrderProvider extends ChangeNotifier {
           preparingOrderList.remove(order);
         }
         break;
-      case AppConfig.raedyStatus:
+      case AppConfig.readyStatus:
         {
           //ready orders
           readyOrderList.add(order);
-          preparingOrderList.remove(order);
+          if(order.status==AppConfig.delayedStatus)
+          {
+            delayedOrderList.remove(order);
+          }
+          else
+          {
+              preparingOrderList.remove(order);
+          }
+          
         }
         break;
       case AppConfig.delayedStatus:

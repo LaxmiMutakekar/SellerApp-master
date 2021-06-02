@@ -9,10 +9,11 @@ import 'package:Seller_App/session.dart';
 import 'package:Seller_App/models/loginModel.dart';
 import 'package:Seller_App/models/products.dart';
 import 'package:Seller_App/models/statusUpd.dart';
+
 class APIServices {
   static Future<LoginResponseModel> login(
       LoginRequestModel requestModel) async {
-    Uri url = Uri.parse(AppConfig.baseUrl+"/login/seller");
+    Uri url = Uri.parse(AppConfig.baseUrl + "/login/seller");
     Map<String, String> headers = {
       "Accept": "application/json",
       "content-type": "application/json"
@@ -41,53 +42,46 @@ class APIServices {
 
   static Future<dynamic> fetchOrders() async {
     try {
-     
       final response = await http.get(
-          Uri.parse(AppConfig.baseUrl+"/orders/seller"),
+          Uri.parse(AppConfig.baseUrl + "/orders/seller"),
           headers: {"Authorization": "Bearer " + Session.token});
-           
+
       List<dynamic> responseJson = json.decode(response.body);
       List<Orders> ordersList =
-      responseJson.map((d) =>  Orders.fromJson(d)).toList();
-      
+          responseJson.map((d) => Orders.fromJson(d)).toList();
+
       ordersList.sort((a, b) {
         return a.orderFulfillmentTime.compareTo(b.orderFulfillmentTime);
       });
-      
+
       if (response.statusCode == 200) {
         return ordersList;
       } else {
         return errorFromJson(response.body);
       }
-    }catch (e) {
+    } catch (e) {
       print(e);
     }
-
   }
 
   static Future<Seller> fetchSeller() async {
-
     try {
       final response = await http.get(
-          Uri.parse(AppConfig.baseUrl+"/details/seller"),
+          Uri.parse(AppConfig.baseUrl + "/details/seller"),
           headers: {"Authorization": "Bearer " + Session.token});
       if (response.statusCode == 200) {
         return SellerFromJson(response.body);
       }
-      if (response.statusCode == 401) {
-      }
-    }
-    catch(e)
-    {
+      if (response.statusCode == 401) {}
+    } catch (e) {
       print(e);
     }
-
   }
 
   static Future<http.Response> updateAvailable(bool value) async {
     try {
       final response = await http.patch(
-        Uri.parse(AppConfig.baseUrl+"/update/seller/available"),
+        Uri.parse(AppConfig.baseUrl + "/update/seller/available"),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           "Authorization": "Bearer " + Session.token
@@ -97,19 +91,19 @@ class APIServices {
         }),
       );
       if (response.statusCode == 200) {
-        
-      } else {
-        
-      }
-    }catch(e)
-    {
+      } else {}
+    } catch (e) {
       print(e);
     }
   }
+
   static Future<bool> updateButton(int oid) async {
     try {
       final response = await http.patch(
-        Uri.parse(AppConfig.baseUrl+"/orders/"+oid.toString()+"/isOrderUpdateEtc"),
+        Uri.parse(AppConfig.baseUrl +
+            "/orders/" +
+            oid.toString() +
+            "/isOrderUpdateEtc"),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           "Authorization": "Bearer " + Session.token
@@ -122,17 +116,19 @@ class APIServices {
         return true;
       } else {
         return false;
-       
       }
-    }catch(e)
-    {
+    } catch (e) {
       print(e);
     }
   }
-   static Future<http.Response> updateETC(int oid,int duration) async {
+
+  static Future<http.Response> updateETC(Orders order, int duration) async {
     try {
       final response = await http.patch(
-        Uri.parse(AppConfig.baseUrl+"/orders/"+oid.toString()+"/OrderUpdateEtc"),
+        Uri.parse(AppConfig.baseUrl +
+            "/orders/" +
+            order.orderId.toString() +
+            "/OrderUpdateEtc"),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           "Authorization": "Bearer " + Session.token
@@ -143,47 +139,49 @@ class APIServices {
       );
       if (response.statusCode == 200) {
         print("button availability changed!");
-      } else {
-        
-      }
-    }catch(e)
-    {
+      } else {}
+    } catch (e) {
       print(e);
     }
   }
-  static Future<http.Response> changeOrderStatus(Orders order, String status) async {
 
+  static Future<bool> changeOrderStatus(Orders order, String status) async {
     try {
       final response = await http.patch(
-        Uri.parse(AppConfig.baseUrl+"/orders/" + order.orderId.toString()),
+        Uri.parse(AppConfig.baseUrl + "/orders/" + order.orderId.toString()),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           "Authorization": "Bearer " + Session.token
         },
-
-
         body: jsonEncode(<String, String>{
           "status": status,
         }),
       );
       dynamic responseJson = json.decode(response.body);
-      UpdateResponse updateResponse=updateResponseFromJson(response.body);
+      UpdateResponse updateResponse = updateResponseFromJson(response.body);
       if (response.statusCode == 200) {
-        order.orderPre=updateResponseFromJson(response.body).localDateTime;
-    
-        //return updateResponse.localDateTime;
+        order.orderPre = updateResponseFromJson(response.body).localDateTime;
+        if (status == AppConfig.delayedStatus) {
+          order.delayedTime =
+              updateResponseFromJson(response.body).localDateTime;
+          order.updateButtonStatus = false;
+        }
+
+        return true;
       } else {
+        return false;
         //print("Seller status update failed!");
       }
-    }catch(e)
-    {
+    } catch (e) {
       print(e);
     }
   }
-  static Future<http.Response> addRejectionStatus(int oid, String reason,String status) async {
+
+  static Future<http.Response> addRejectionStatus(
+      int oid, String reason, String status) async {
     try {
       final response = await http.patch(
-        Uri.parse(AppConfig.baseUrl+"/orders/" + oid.toString()),
+        Uri.parse(AppConfig.baseUrl + "/orders/" + oid.toString()),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           "Authorization": "Bearer " + Session.token
@@ -198,8 +196,7 @@ class APIServices {
       } else {
         //print("Seller status update failed!");
       }
-    }catch(e)
-    {
+    } catch (e) {
       print(e);
     }
   }
@@ -207,20 +204,18 @@ class APIServices {
   static Future<List<Products>> fetchProducts() async {
     try {
       final response = await http.get(
-          Uri.parse(AppConfig.baseUrl+"/product/seller"),
+          Uri.parse(AppConfig.baseUrl + "/product/seller"),
           headers: {"Authorization": "Bearer " + Session.token});
       List<dynamic> responseJson = json.decode(response.body);
       List<Products> products =
-      responseJson.map((d) => new Products.fromJson(d)).toList();
+          responseJson.map((d) => new Products.fromJson(d)).toList();
       if (response.statusCode == 200) {
         //print(products);
         return products;
       } else {
         return productsFromJson(response.body);
       }
-    }
-    catch(e)
-    {
+    } catch (e) {
       print(e);
     }
   }
@@ -228,7 +223,7 @@ class APIServices {
   static Future<http.Response> updateProduct(int index, bool value) async {
     try {
       final response = await http.patch(
-        Uri.parse(AppConfig.baseUrl+"/product"),
+        Uri.parse(AppConfig.baseUrl + "/product"),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           "Authorization": "Bearer " + Session.token
@@ -237,18 +232,16 @@ class APIServices {
           'pid': index,
           'available': value,
         }),
-
       );
-    }
-    catch(e)
-    {
+    } catch (e) {
       print(e);
     }
   }
+
   static Future<http.Response> updateSellerDevice(String token) async {
     try {
       final response = await http.patch(
-        Uri.parse(AppConfig.baseUrl+"/update/seller/device"),
+        Uri.parse(AppConfig.baseUrl + "/update/seller/device"),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           "Authorization": "Bearer " + Session.token
@@ -262,10 +255,8 @@ class APIServices {
       } else {
         print("Seller device token update failed!");
       }
-    }catch(e)
-    {
+    } catch (e) {
       print(e);
     }
   }
-
 }

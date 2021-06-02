@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:Seller_App/APIServices/APIServices.dart';
 import 'package:Seller_App/models/sellerDetails.dart';
-class SellerDetail extends ChangeNotifier{
+class SellerProvider extends ChangeNotifier{
    Seller seller=new Seller();
   void fetchSeller()async
   {

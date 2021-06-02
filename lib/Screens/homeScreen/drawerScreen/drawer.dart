@@ -14,7 +14,7 @@ import 'package:Seller_App/App_configs/app_configs.dart';
 class MenuDashboard extends StatefulWidget {
   static String routeName="/drawer";
    final OrderProvider orderProvider;
-   final SellerDetail sellerProvider;
+   final SellerProvider sellerProvider;
   MenuDashboard({
     Key key,
      this.orderProvider,

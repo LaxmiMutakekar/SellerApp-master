@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:Seller_App/App_configs/app_configs.dart';
 import 'package:Seller_App/session.dart';
-import 'package:Seller_App/widgets/orderDetails.dart';
+import 'package:Seller_App/widgets/orderDetail/orderDetails.dart';
 import 'package:flutter/material.dart';
 import 'package:Seller_App/providers/orderProvider.dart';
 import 'package:Seller_App/models/orders.dart';
@@ -22,7 +22,7 @@ class RejectedOrders extends StatefulWidget {
 
 class _RejectedOrdersState extends State<RejectedOrders> {
   
-  OrderDetail orderItem = new OrderDetail();
+  OrderDetail orderItem ;
   int days=1;
   int selectedValue = 1;
   List<Orders> lastRejected=[];
@@ -136,11 +136,12 @@ class _RejectedOrdersState extends State<RejectedOrders> {
                   shrinkWrap: true,
                   itemBuilder: (BuildContext context, int index) {
                     Orders item = lastRejected[index];
+                    orderItem =  OrderDetail(widget.orderProvider,item,);
                     if (item.status == 'Order Rejected') {
                       return GestureDetector(
                         onTap: () {
                           orderItem.settingModalBottomSheet(
-                              context,item);
+                              context);
                         },
                         child: RejectedOrderCard(order: item),
                       );

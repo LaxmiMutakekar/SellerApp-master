@@ -71,8 +71,8 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               SizedBox(height: 30),
               Container(
-                child: Consumer<SellerDetail>(
-                  builder: (context, SellerDetail seller, child) {
+                child: Consumer<SellerProvider>(
+                  builder: (context, SellerProvider seller, child) {
                     return Column(
                       children: [
                         buildTextField("Full Name", seller.seller.name, false),

@@ -1,6 +1,7 @@
 import 'package:Seller_App/providers/seller.dart';
 import 'package:Seller_App/routes.dart';
 import 'package:flutter/material.dart';
+import 'App_configs/sizeConfigs.dart';
 import 'providers/orderProvider.dart';
 import 'providers/products.dart';
 import 'root.dart';
@@ -20,8 +21,8 @@ void main() async {
       ChangeNotifierProvider<OrderProvider>(
         create: (_) => OrderProvider(),
       ),
-      ChangeNotifierProvider<SellerDetail>(
-        create: (_) => SellerDetail(),
+      ChangeNotifierProvider<SellerProvider>(
+        create: (_) => SellerProvider(),
       ),
       ChangeNotifierProvider<Messages>(
         create: (_) => Messages(),
@@ -44,7 +45,7 @@ class _MyAppState extends State<MyApp> {
     // TODO: implement initState
     super.initState();
     FirebaseConfig().init(context);
-
+    
   }
   @override
   Widget build(BuildContext context) {
@@ -54,7 +55,7 @@ class _MyAppState extends State<MyApp> {
       initialRoute: RootPage.routeName,
       debugShowCheckedModeBanner: false,
       title: 'Seller App',
-      home: Text('seller App'),
+      home: Text('Seller App'),
     );
   }
 }

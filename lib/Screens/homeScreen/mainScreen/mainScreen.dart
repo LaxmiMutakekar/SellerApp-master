@@ -11,12 +11,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'components/activeOrders.dart';
-import 'components/pendingOrders.dart';
+import 'components/pendingOrder/pendingOrders.dart';
 
 class MainScreen extends StatefulWidget {
   static String routeName = "/mainScreen";
   final OrderProvider orderProvider;
-  final SellerDetail sellerProvider;
+  final SellerProvider sellerProvider;
   MainScreen({
     Key key,
     this.orderProvider,

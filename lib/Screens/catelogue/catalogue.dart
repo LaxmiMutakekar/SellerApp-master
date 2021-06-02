@@ -1,3 +1,4 @@
+import 'package:Seller_App/App_configs/sizeConfigs.dart';
 import 'package:Seller_App/Screens/productDetail/productDetail.dart';
 import 'package:Seller_App/providers/products.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +21,7 @@ class _CatalogueState extends State<Catalogue> {
     super.initState();
     Provider.of<Product>(context, listen: false).addProducts();
   }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<Product>(builder: (context, Product products, child) {
@@ -38,7 +40,6 @@ class _CatalogueState extends State<Catalogue> {
               style:
                   TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
             ),
-            
           ),
           body: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -59,7 +60,7 @@ class _CatalogueState extends State<Catalogue> {
                             skuId: item.skuId,
                             ean: item.ean,
                             upc: item.upc,
-                            description: item.description,
+                            description: item.description.trim(),
                             price: item.price,
                             basicEta: item.basicEta,
                           ),
@@ -70,16 +71,18 @@ class _CatalogueState extends State<Catalogue> {
                       padding: const EdgeInsets.symmetric(vertical: 5),
                       child: Cards(
                           color: Colors.white,
-                          padding: EdgeInsets.all(8),
+                          padding: EdgeInsets.all(10),
                           margin: EdgeInsets.all(2),
                           child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               ClipRRect(
                                 clipBehavior: Clip.hardEdge,
                                 borderRadius: BorderRadius.circular(20),
                                 child: Container(
-                                  width: 120,
-                                  height: 120,
+                                  width: getProportionateScreenWidth(125),
+                                  height: getProportionateScreenHeight(125),
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(13)),
                                   clipBehavior: Clip.hardEdge,
@@ -96,16 +99,17 @@ class _CatalogueState extends State<Catalogue> {
                                   ),
                                 ),
                               ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(left: 8.0, top: 8.0),
+                              SizedBox(
+                                width: getProportionateScreenWidth(10),
+                              ),
+                              Expanded(
                                 child: Column(
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                        CrossAxisAlignment.stretch,
                                     children: [
                                       Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        //crossAxisAlignment: CrossAxisAlignment.stretch,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
                                         children: [
                                           Container(
                                             child: Text(
@@ -115,14 +119,11 @@ class _CatalogueState extends State<Catalogue> {
                                                   fontWeight: FontWeight.bold),
                                             ),
                                           ),
-                                          Padding(
-                                            padding: const EdgeInsets.symmetric(horizontal: 20),
-                                            child: DefaultSwitch(
-                                              value: item.available,
-                                              type: 'Product',
-                                              model: products,
-                                              product: item,
-                                            ),
+                                          DefaultSwitch(
+                                            value: item.available,
+                                            type: 'Product',
+                                            model: products,
+                                            product: item,
                                           )
                                         ],
                                       ),
@@ -132,10 +133,11 @@ class _CatalogueState extends State<Catalogue> {
                                       ),
                                       SizedBox(height: 10),
                                       Container(
-                                          width: 220,
-                                          child: Text(
-                                            item.description,
-                                            textAlign: TextAlign.left,
+                                        width: 180,
+                                        child: Flexible(
+                                                  child: Text(
+                                            item.description.trim(),
+                                            textAlign: TextAlign.justify,
                                             maxLines: 2,
                                             overflow: TextOverflow.ellipsis,
                                             softWrap: false,
@@ -144,6 +146,7 @@ class _CatalogueState extends State<Catalogue> {
                                                 fontSize: 15),
                                           ),
                                         ),
+                                      ),
                                       SizedBox(height: 3),
                                       Text(
                                         "\$ " + item.price.toString(),

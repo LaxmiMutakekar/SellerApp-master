@@ -4,6 +4,7 @@
 
 import 'dart:convert';
 
+import 'package:Seller_App/Screens/homeScreen/mainScreen/components/activeCard.dart';
 import 'package:intl/intl.dart';
 
 List<Orders> ordersFromJson(String str) =>
@@ -61,6 +62,7 @@ class Orders {
 
   int get remSeconds  {
     var time =  DateTime.parse(this.orderStatusHistory.orderPreparing.toString());
+    print('update time'+this.orderUpdateEtc.toString());
     var offset = time.add(Duration(seconds: ((this.orderPreparationTime+this.orderUpdateEtc)*60).toInt() ?? 0));
     var now = DateTime.now();
     return (offset.millisecondsSinceEpoch - now.millisecondsSinceEpoch) ~/ 1000;
@@ -72,10 +74,21 @@ class Orders {
     var passedTime=DateTime.now().difference(this.orderPlacedDate).inMinutes;
     return ('${passedTime} minutes ago');
   }
+   set delayedTime(DateTime delayedTime)=>this.orderStatusHistory.orderTimeout=delayedTime;
+  set updateButtonStatus(bool status)=>this.isOrderUpdateEtc=status;
+  int get getDelayedSec{
+    if(this.orderStatusHistory.orderTimeout==null)
+    {
+      return 0;
+    }
+    var time =  DateTime.parse(this.orderStatusHistory.orderTimeout.toString());
+    return DateTime.now().difference(time).inSeconds;
+  }
   String get expectedByTime{
     var time=this.orderPlacedDate.add(Duration(minutes: this.orderFulfillmentTime.toInt()));
     return(DateFormat.jm().format(time));
   }
+
   String get orderItemProducts{
     List<String> productsList=[];
     String products;

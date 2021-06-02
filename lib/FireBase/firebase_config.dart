@@ -8,9 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 class FirebaseConfig{
   void init(BuildContext context){
-    
     final order=Provider.of<OrderProvider>(context, listen: false);
-    final seller=Provider.of<SellerDetail>(context, listen: false);
+    final seller=Provider.of<SellerProvider>(context, listen: false);
     final msgs=Provider.of<Messages>(context, listen: false);
     FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
     _firebaseMessaging.getToken().then((token) {
@@ -19,14 +18,13 @@ class FirebaseConfig{
       {
           APIServices.updateSellerDevice(devicetoken);
       }
-     // print("Device Token: $token");
     });
     _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
-        //print('onMessage: $message');
         _setMessage(message,order,msgs); 
       },
       onLaunch: (Map<String, dynamic> message) async {
+        _setMessage(message,order,msgs); 
       },
       onResume: (Map<String, dynamic> message) async {
       },
@@ -36,13 +34,13 @@ class FirebaseConfig{
     );
   }
   _setMessage(Map<String, dynamic> message,OrderProvider order,Messages msgs) {
-    
     final notification = message['notification'];
     final data = message['data'];
     final String title = notification['title'];
     final String body = notification['body'];
     String mMessage = data['message'];
     int oid=int.parse(title);
+    //only for driver assigned and new orders added refresh the orders
     if(body=='ORDER_DELIVERY_ASSIGNED')
     {
       order.ordersAdded();
@@ -51,15 +49,15 @@ class FirebaseConfig{
     {
       Message msg = Message(title, body, mMessage);
       msgs.addMessages(msg);
+      print(msgs.messagesList[0]);
       msgs.readMessage();
       order.ordersAdded();
     }
+    //updating the visibility of update_button after this notification to false
     if(body=='ORDER_NO_UPDATE_ETC')
     {
       APIServices.updateButton(oid).then((value) =>value?order.updateButton(oid):null);
     }
-    //print("Title: $title, body: $body, message: $mMessage");
-  
 }
 }
 

@@ -10,8 +10,7 @@ import 'package:Seller_App/providers/orderProvider.dart';
 class Verify extends StatelessWidget {
    static String routeName="/verify";
   final Orders order;
-  final String deliveryOTP;
-  Verify({Key key, this.order,this.deliveryOTP}) : super(key: key);
+  Verify({Key key, this.order}) : super(key: key);
   var  otp;
   @override
   Widget build(BuildContext context) {
@@ -82,7 +81,7 @@ class Verify extends StatelessWidget {
                         onPressed: () {
                           if (otp == null) {
                             showOTP(context);
-                          } else if (otp == deliveryOTP) {
+                          } else if (otp == order.deliveryResource.otp) {
                             orders.completeOrders(order);
                             APIServices.changeOrderStatus(
                                 order, AppConfig.doneStatus);
