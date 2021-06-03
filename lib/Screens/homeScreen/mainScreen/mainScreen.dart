@@ -1,6 +1,7 @@
 import 'package:Seller_App/App_configs/app_configs.dart';
 import 'package:Seller_App/Screens/homeScreen/mainScreen/components/notificationDrawer.dart';
 import 'package:Seller_App/Screens/splashScreen.dart';
+import 'package:Seller_App/models/sellerDetails.dart';
 import 'package:Seller_App/providers/notification.dart';
 import 'package:Seller_App/providers/orderProvider.dart';
 import 'package:Seller_App/providers/seller.dart';
@@ -111,21 +112,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              // Text(
-                              //   (sellerName == null) ? ('Loading..') : sellerName,
-                              //   style: TextStyle(
-                              //       fontSize: 16, fontWeight: FontWeight.w500),
-                              // ),
-                              //SizedBox(height:2),
-                              Text(
-                                'MasterChief Kitchen',
-                                style: TextStyle(
-                                    fontSize: 15, fontWeight: FontWeight.bold),
-                              ),
-                              Text(
-                                '3rd Cross Camp road, Belgaum',
-                                style: TextStyle(fontSize: 16),
-                              ),
+                              Text(widget.sellerProvider.seller.shortName??'',style: TextStyle(fontSize: 16,fontWeight:FontWeight.w400),),
                               Row(
                                 children: [
                                   DefaultSwitch(
@@ -142,7 +129,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                                         : 'Offline',
                                     style: TextStyle(
                                         fontSize: 12,
-                                        fontWeight: FontWeight.w300,
+                                        fontWeight: FontWeight.bold,
                                         color: Colors.black87),
                                   ),
                                 ],

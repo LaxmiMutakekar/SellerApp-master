@@ -113,7 +113,7 @@ class _MenuDashboardState extends State<MenuDashboard> {
                   );
                       },
                       label: Text(
-                        'Rejected Orders',
+                        'Rejected order',
                         style: TextStyle(color: Colors.white),
                       ),
                       icon: Icon(Icons.cancel, color: Colors.white))

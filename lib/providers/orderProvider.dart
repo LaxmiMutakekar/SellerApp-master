@@ -133,9 +133,10 @@ class OrderProvider extends ChangeNotifier {
   }
 
   void updateETC(Orders order, double value) {
-    //updating the visibility of button to false
+    APIServices.updateETC(order, value.toInt());
+    APIServices.updateButton(order.orderId);
+    order.orderUpdateEtc=value;
     order.isOrderUpdateEtc=false;
-    order.orderPreparationTime = order.orderPreparationTime + value;
     notifyListeners();
   }
 
@@ -145,6 +146,7 @@ class OrderProvider extends ChangeNotifier {
     notifyListeners();
   }
   void updateButton(int oid) {
+
     activeOrderList
         .firstWhere((element) => element.orderId == oid)
         .isOrderUpdateEtc = false;

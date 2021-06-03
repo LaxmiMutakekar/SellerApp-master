@@ -1,7 +1,6 @@
 import 'package:Seller_App/providers/seller.dart';
 import 'package:Seller_App/routes.dart';
 import 'package:flutter/material.dart';
-import 'App_configs/sizeConfigs.dart';
 import 'providers/orderProvider.dart';
 import 'providers/products.dart';
 import 'root.dart';

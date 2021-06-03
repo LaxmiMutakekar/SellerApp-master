@@ -61,116 +61,99 @@ class DefaultOrderDetail extends StatelessWidget {
           height: 17,
           thickness: 2,
         ),
-        ConstrainedBox(
-          constraints: BoxConstraints(minHeight: 100, maxHeight: 270),
-          child: Container(
-            child: RawScrollbar(
-              thumbColor: Colors.black,
-              isAlwaysShown: true,
-              controller: _scrollController,
-              thickness: 4,
-              child: ListView.builder(
-                  shrinkWrap: true,
-                  controller: _scrollController,
-                  itemCount: order.orderItems.length,
-                  itemBuilder: (context, int index) {
-                    return Container(
-                      child: Row(
-                        mainAxisAlignment:
-                            MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Row(
-                              children: [
-                                Column(
-                                  children: [
-                                    Text(
-                                      order.orderItems[index].skuId,
-                                      style: TextStyle(
-                                          fontSize: 10,
-                                          fontWeight: FontWeight.bold),
+        Container(
+          child: RawScrollbar(
+            thumbColor: Colors.black,
+            isAlwaysShown: true,
+            controller: _scrollController,
+            thickness: 4,
+            child: ListView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                controller: _scrollController,
+                itemCount: order.orderItems.length,
+                itemBuilder: (context, int index) {
+                  return Container(
+                    child: Row(
+                      mainAxisAlignment:
+                          MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Container(
+                                  height: 60,
+                                  width: 70,
+                                  child: ClipRRect(
+                                    borderRadius:
+                                        BorderRadius.circular(13),
+                                    child: CachedNetworkImage(
+                                      fit: BoxFit.fill,
+                                      imageUrl: order
+                                          .orderItems[index]
+                                          .image,
+                                      placeholder: (context,
+                                              url) =>
+                                          CircularProgressIndicator(),
+                                      errorWidget:
+                                          (context, url, error) =>
+                                              Icon(Icons.error),
                                     ),
-                                    Center(
-                                      child: Container(
-                                        height: 60,
-                                        width: 70,
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(13),
-                                          child: CachedNetworkImage(
-                                            fit: BoxFit.fill,
-                                            imageUrl: order
-                                                .orderItems[index]
-                                                .image,
-                                            placeholder: (context,
-                                                    url) =>
-                                                CircularProgressIndicator(),
-                                            errorWidget:
-                                                (context, url, error) =>
-                                                    Icon(Icons.error),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Text(
-                                      '\$' +
-                                          order.orderItems[index].price
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 15),
+                              Column(
+                                crossAxisAlignment:
+                                    CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    order.orderItems[index]
+                                        .productName,
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  SizedBox(width: 5),
+                                  Container(
+                                    child: Text(
+                                      order.orderItems[index]
+                                              .price
+                                              .toString()+
+                                      'X ' +
+                                          order.orderItems[index]
+                                              .quantity
                                               .toString(),
                                       style: TextStyle(
                                           fontSize: 13,
-                                          fontWeight: FontWeight.bold,
-                                          color: Color(0xff0D2F36)),
+                                          fontWeight: FontWeight.w200,
+                                          color: Colors.black),
                                     ),
-                                  ],
-                                ),
-                                SizedBox(width: 15),
-                                Column(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      order.orderItems[index]
-                                          .productName,
-                                      style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    SizedBox(width: 5),
-                                    Container(
-                                      child: Text(
-                                        'X ' +
-                                            order.orderItems[index]
-                                                .quantity
-                                                .toString(),
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w200,
-                                            color: Colors.black),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
-                          Text(
-                            '\$' +
-                                (order.orderItems[index].quantity *
-                                        order.orderItems[index].price)
-                                    .toString(),
-                            style: TextStyle(
-                                fontSize: 22,
-                                color: Color(0xff0D2F36),
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    );
-                  }),
-            ),
+                        ),
+                        Text(
+                          '\$' +
+                              (order.orderItems[index].quantity *
+                                      order.orderItems[index].price)
+                                  .toString(),
+                          style: TextStyle(
+                              fontSize: 22,
+                              color: Color(0xff0D2F36),
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                  );
+                }),
           ),
         ),
         Stack(

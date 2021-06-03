@@ -14,8 +14,7 @@ class CountDownTimer {
   set updateEtcTime(double duration) {
     _timerController.updateDuration(
         Duration(seconds: order.remSeconds + duration.toInt() * 60));
-    APIServices.updateETC(order, duration.toInt());
-    orderProvider.updateButton(order.orderId);
+    orderProvider.updateETC(order,duration);
   }
 
   Container get countDownTimer {

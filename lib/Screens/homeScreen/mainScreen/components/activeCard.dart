@@ -43,7 +43,7 @@ class _ActiveOrderCardState extends State<ActiveOrderCard> {
      
     return GestureDetector(
       onTap: () {
-        orderDetail=OrderDetail(widget.orderProvider,widget.activeOrder);
+        orderDetail=OrderDetail(widget.activeOrder);
         orderDetail.setTimer=_countDownTimer;
         orderDetail.settingModalBottomSheet(context);
       },
@@ -104,7 +104,12 @@ class _ActiveOrderCardState extends State<ActiveOrderCard> {
                             ],
                           )
                           : (widget.activeOrder.status==AppConfig.delayedStatus)?
-                          UpCounter(order: widget.activeOrder,):Container()
+                          Column(
+                            children: [
+                              UpCounter(order: widget.activeOrder,),
+                              Text('Delayed by')
+                            ],
+                          ):Container()
                     ],
                   ),
                   ActiveOrderButton( orderProvider: widget.orderProvider,order: widget.activeOrder,countDownTimer: _countDownTimer,),

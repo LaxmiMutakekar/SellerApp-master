@@ -72,6 +72,10 @@ class Orders {
   }
   String get timePassedFromPlaced{
     var passedTime=DateTime.now().difference(this.orderPlacedDate).inMinutes;
+    if(passedTime==0)
+    {
+      return ('now');
+    }
     return ('${passedTime} minutes ago');
   }
    set delayedTime(DateTime delayedTime)=>this.orderStatusHistory.orderTimeout=delayedTime;
@@ -88,7 +92,10 @@ class Orders {
     var time=this.orderPlacedDate.add(Duration(minutes: this.orderFulfillmentTime.toInt()));
     return(DateFormat.jm().format(time));
   }
-
+  String get fulfilledTime{
+    var time=DateTime.parse(this.orderStatusHistory.orderHandover);
+    return(DateFormat.jm().format(time));
+  }
   String get orderItemProducts{
     List<String> productsList=[];
     String products;

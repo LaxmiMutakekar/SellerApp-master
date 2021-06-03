@@ -166,7 +166,11 @@ class APIServices {
               updateResponseFromJson(response.body).localDateTime;
           order.updateButtonStatus = false;
         }
-
+       
+        // if (status == AppConfig.doneStatus) {
+        //   order.sedHandedoverTime =
+        //       updateResponseFromJson(response.body).localDateTime;
+        // }
         return true;
       } else {
         return false;

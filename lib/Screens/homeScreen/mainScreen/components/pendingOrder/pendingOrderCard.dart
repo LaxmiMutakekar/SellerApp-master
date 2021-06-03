@@ -18,10 +18,10 @@ class PendingOrderCard extends StatelessWidget {
 
   final Orders pendingOrder;
   final OrderProvider provider;
-  PendingOrderDetail orderDetail;
+  OrderDetail orderDetail;
   @override
   Widget build(BuildContext context) {
-    orderDetail=PendingOrderDetail(provider,pendingOrder);
+    orderDetail=OrderDetail(pendingOrder);
     return Padding(
       padding: const EdgeInsets.only(left: 16),
       child: GestureDetector(

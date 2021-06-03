@@ -57,7 +57,7 @@ class PendingOrders extends StatelessWidget {
                 shrinkWrap: true,
                 itemBuilder: (BuildContext context, int index) {
                   Orders pendings = pendingOrder[index];
-                  orderItem =  OrderDetail(orderProvider,pendings);
+                  orderItem =  OrderDetail(pendings);
                   return PendingOrderCard(
                       pendingOrder: pendings, provider: provider);
                 }),

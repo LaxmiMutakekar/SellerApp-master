@@ -36,7 +36,7 @@ class ActiveOrderButton extends StatelessWidget {
                             width: getProportionateScreenWidth(8),
                           )
                         : Container(),
-                    (order.isOrderUpdateEtc)
+                    (order.isOrderUpdateEtc&& order.status!=AppConfig.readyStatus)
                         ? Expanded(
                             child: DefaultButton(
                                 press: ()  {
@@ -59,7 +59,7 @@ class ActiveOrderButton extends StatelessWidget {
                               press: () {
                                 if(order.status!=AppConfig.readyStatus)
                                 {
-                                  showAleartDialog(context,'Warrning',
+                                  showAleartDialog(context,'Warning!',
                                      Text('You need to first mark your order as ready to proceed with handover',textAlign: TextAlign.center,maxLines: 3,),
                                   );
                                 }

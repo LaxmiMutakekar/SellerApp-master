@@ -42,7 +42,7 @@ class _CatalogueState extends State<Catalogue> {
             ),
           ),
           body: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.symmetric(horizontal:8.0),
             child: ListView.builder(
                 scrollDirection: Axis.vertical,
                 itemCount: products.productsList.length,
@@ -134,10 +134,9 @@ class _CatalogueState extends State<Catalogue> {
                                       SizedBox(height: 10),
                                       Container(
                                         width: 180,
-                                        child: Flexible(
-                                                  child: Text(
+                                        child: Text(
                                             item.description.trim(),
-                                            textAlign: TextAlign.justify,
+                                            textAlign: TextAlign.left,
                                             maxLines: 2,
                                             overflow: TextOverflow.ellipsis,
                                             softWrap: false,
@@ -145,7 +144,6 @@ class _CatalogueState extends State<Catalogue> {
                                                 fontWeight: FontWeight.w200,
                                                 fontSize: 15),
                                           ),
-                                        ),
                                       ),
                                       SizedBox(height: 3),
                                       Text(
