@@ -24,11 +24,11 @@ class Orders {
     this.totalQuantity,
     this.orderFulfillmentTime,
     this.orderPreparationTime,
+    this.updatedEtc,
     this.orderItems,
     this.deliveryResource,
     this.orderStatusHistory,
     this.orderUpdateEtc,
-    this.isOrderUpdateEtc,
   });
   
   String get businessLogo {
@@ -57,13 +57,12 @@ class Orders {
   List<OrderItem> orderItems;
   DeliveryResource deliveryResource;
   OrderStatusHistory orderStatusHistory;
-  double orderUpdateEtc;
-  bool isOrderUpdateEtc;
+  double updatedEtc;
+  bool orderUpdateEtc;
 
   int get remSeconds  {
     var time =  DateTime.parse(this.orderStatusHistory.orderPreparing.toString());
-    print('update time'+this.orderUpdateEtc.toString());
-    var offset = time.add(Duration(seconds: ((this.orderPreparationTime+this.orderUpdateEtc)*60).toInt() ?? 0));
+    var offset = time.add(Duration(seconds: ((this.orderPreparationTime+this.updatedEtc??0)*60).toInt() ?? 0));
     var now = DateTime.now();
     return (offset.millisecondsSinceEpoch - now.millisecondsSinceEpoch) ~/ 1000;
   }
@@ -79,7 +78,7 @@ class Orders {
     return ('${passedTime} minutes ago');
   }
    set delayedTime(DateTime delayedTime)=>this.orderStatusHistory.orderTimeout=delayedTime;
-  set updateButtonStatus(bool status)=>this.isOrderUpdateEtc=status;
+  set updateButtonStatus(bool status)=>this.orderUpdateEtc=status;
   int get getDelayedSec{
     if(this.orderStatusHistory.orderTimeout==null)
     {
@@ -113,13 +112,13 @@ class Orders {
         totalQuantity: json["totalQuantity"],
         orderFulfillmentTime: json["orderFulfillmentTime"],
         orderPreparationTime: json["orderPreparationTime"],
-        orderUpdateEtc: json["orderUpdateEtc"],
+        updatedEtc: json["updatedEtc"],
         orderItems: List<OrderItem>.from(
             json["orderItems"].map((x) => OrderItem.fromJson(x))),
         deliveryResource: DeliveryResource.fromJson(json["deliveryResource"]),
         orderStatusHistory:
             OrderStatusHistory.fromJson(json["orderStatusHistory"]),
-            isOrderUpdateEtc: json["isOrderUpdateEtc"],
+    orderUpdateEtc: json["orderUpdateEtc"],
       );
 
   Map<String, dynamic> toJson() => {

@@ -1,7 +1,6 @@
 import 'package:Seller_App/App_configs/app_configs.dart';
 import 'package:Seller_App/Screens/homeScreen/mainScreen/components/notificationDrawer.dart';
 import 'package:Seller_App/Screens/splashScreen.dart';
-import 'package:Seller_App/models/sellerDetails.dart';
 import 'package:Seller_App/providers/notification.dart';
 import 'package:Seller_App/providers/orderProvider.dart';
 import 'package:Seller_App/providers/seller.dart';
@@ -18,6 +17,7 @@ class MainScreen extends StatefulWidget {
   static String routeName = "/mainScreen";
   final OrderProvider orderProvider;
   final SellerProvider sellerProvider;
+
   MainScreen({
     Key key,
     this.orderProvider,
@@ -42,8 +42,6 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    widget.sellerProvider.fetchSeller();
-    widget.orderProvider.ordersAdded();
     _controller = AnimationController(vsync: this, duration: duration);
     _scaleAnimation = Tween<double>(begin: 1, end: 0.8).animate(_controller);
   }
@@ -56,8 +54,8 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    bool availablity = widget.sellerProvider.seller.available;
-    String sellerName = widget.sellerProvider.seller.name;
+    final sellerProvider = widget.sellerProvider;
+    final orderProvider = widget.orderProvider;
     final message = Provider.of<Messages>(context, listen: false);
     Size size = MediaQuery.of(context).size;
     screenheight = size.height;
@@ -78,95 +76,89 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                 : BorderRadius.circular(0),
             child: Scaffold(
               endDrawer: NotificationDrawer(
-                screenwidth: screenwidth,
                 orderProvider: widget.orderProvider,
               ),
               appBar: AppBar(
                 automaticallyImplyLeading: false,
-                title: Row(
-                    //crossAxisAlignment: CrossAxisAlignment.stretch,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          isDrawerOpen
-                              ? DefaultIconButton(
-                                  icon: Icon(Icons.arrow_back),
-                                  onPress: () {
-                                    setState(() {
-                                      isDrawerOpen = !isDrawerOpen;
-                                      _controller.reverse();
-                                    });
-                                  },
-                                )
-                              : DefaultIconButton(
-                                  icon: Icon(Icons.menu),
-                                  onPress: () {
-                                    setState(() {
-                                      isDrawerOpen = !isDrawerOpen;
-                                      _controller.forward();
-                                    });
-                                  },
-                                ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(widget.sellerProvider.seller.shortName??'',style: TextStyle(fontSize: 16,fontWeight:FontWeight.w400),),
-                              Row(
+                leading: isDrawerOpen
+                    ? DefaultIconButton(
+                        icon: Icon(Icons.arrow_back),
+                        onPress: () {
+                          setState(() {
+                            isDrawerOpen = !isDrawerOpen;
+                            _controller.reverse();
+                          });
+                        },
+                      )
+                    : DefaultIconButton(
+                        icon: Icon(Icons.menu),
+                        onPress: () {
+                          setState(() {
+                            isDrawerOpen = !isDrawerOpen;
+                            _controller.forward();
+                          });
+                        },
+                      ),
+                title: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      sellerProvider.seller.shortName ?? '',
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyText2
+                          .copyWith(fontSize: 14),
+                    ),
+                    Row(
+                      children: [
+                        DefaultSwitch(
+                          value: sellerProvider.seller.available,
+                          type: ('Seller'),
+                          model: sellerProvider,
+                        ),
+                        SizedBox(
+                          width: 2,
+                        ),
+                        Text(
+                          (sellerProvider.seller.available ?? true)
+                              ? 'Available'
+                              : 'Offline',
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyText1
+                              .copyWith(fontSize: 12),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                actions: [
+                  Builder(
+                      builder: (context) => InkWell(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Stack(
                                 children: [
-                                  DefaultSwitch(
-                                    value: availablity,
-                                    type: ('Seller'),
-                                    model: widget.sellerProvider,
+                                  Icon(
+                                    Icons.notifications_active,
                                   ),
-                                  SizedBox(
-                                    width: 2,
-                                  ),
-                                  Text(
-                                    (availablity ?? true)
-                                        ? 'Available'
-                                        : 'Offline',
-                                    style: TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black87),
-                                  ),
+                                  PlayButton()
                                 ],
                               ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      Builder(
-                          builder: (context) => InkWell(
-                                child: Stack(
-                                  children: [
-                                    Icon(
-                                      Icons.notifications_active,
-                                    ),
-                                    PlayButton()
-                                  ],
-                                ),
-                                onTap: () {
-                                  Scaffold.of(context).openEndDrawer();
-                                  message.messageRead();
-                                },
-                              ))
-                    ]),
-                actions: [
-                  Text(''),
+                            ),
+                            onTap: () {
+                              Scaffold.of(context).openEndDrawer();
+                              message.messageRead();
+                            },
+                          ))
                 ],
               ),
               body: Builder(builder: (context) {
-                if (availablity == null) {
-                  return Splash();
-                }
-
-                return (availablity)
+                return (sellerProvider.seller.available)
                     //seller available
-                    ? (widget.orderProvider.pendingOrderList.isEmpty &&
-                            widget.orderProvider.activeOrderList.isEmpty)
+                    ? (orderProvider.pendingOrderList.isEmpty &&
+                            orderProvider.activeOrderList.isEmpty)
                         //orders not available
                         ? Container(
                             child: Center(
@@ -176,6 +168,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                                 SvgPicture.asset(
                                   'assets/Images/sad_panda.svg',
                                   color: Colors.black45,
+                                  height: 100,
                                 ),
                                 Text(
                                   AppConfig.currenlyNoOrder,
@@ -191,16 +184,16 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                         :
                         //orders available
                         buildSingleChildScrollView(
-                            PendingOrders(orderProvider: widget.orderProvider),
+                            PendingOrders(orderProvider: orderProvider),
                             ActiveOrders(
-                              orderProvider: widget.orderProvider,
+                              orderProvider: orderProvider,
                             ))
                     :
                     //seller offline
                     buildSingleChildScrollView(
                         TextContainer(text: AppConfig.availableError),
                         ActiveOrders(
-                          orderProvider: widget.orderProvider,
+                          orderProvider: orderProvider,
                         ));
               }),
             ),

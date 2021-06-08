@@ -15,52 +15,9 @@ class DefaultOrderDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
-              children: [
-                GestureDetector(
-                    onTap: () {
-                    },
-                    child: Row(
-                      children: [
-                        Column(
-                          children: [
-                            Text(order.customer.name,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .subtitle2),
-                            Text("Ordered by"),
-                          ],
-                        ),
-                        Icon(Icons.expand_more),
-                      ],
-                    )),
-              ],
-            ),
-            Column(
-              children: [
-                Text(
-                  order.placedTime,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                    color: Color(0xff9E545E),
-                  ),
-                ),
-                Text(
-                  'Ordered at',
-                ),
-              ],
-            ),
-          ],
-        ),
-        const Divider(
-          height: 17,
-          thickness: 2,
-        ),
+        
         Container(
           child: RawScrollbar(
             thumbColor: Colors.black,
@@ -156,78 +113,7 @@ class DefaultOrderDetail extends StatelessWidget {
                 }),
           ),
         ),
-        Stack(
-          children: [
-            ClipPath(
-              child: Container(
-                  width: 470,
-                  height: 70,
-                  color: Colors.white,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(left: 8.0),
-                              child: Text(
-                                'Items',
-                                style: TextStyle(fontSize: 20),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: Column(
-                          children: [
-                            Text(
-                              order.totalQuantity.toString(),
-                              style: TextStyle(
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                top: 12.0, right: 10),
-                            child: Column(children: [
-                              Text(
-                                '\$' + order.totalPrice.toString(),
-                                style: TextStyle(
-                                    fontSize: 24,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              Center(
-                                  child: Text(
-                                'Total',
-                                style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w300),
-                              )),
-                            ]),
-                          ),
-                        ],
-                      )
-                    ],
-                  )),
-              clipper: CustomClipPath(),
-            ),
-            CustomPaint(
-                painter: BorderPainter(),
-                child: Container(
-                  height: 70.0,
-                  width: 470,
-                )),
-          ],
-        ),
+
       ],
     );
   }

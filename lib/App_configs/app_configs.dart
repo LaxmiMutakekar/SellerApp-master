@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+ double kButtonRadius=5;
 class AppConfig {
   static Color loadingColorforworg=Colors.black38;
   static Color homeScreen=Color(0xffCCCCCD);
@@ -37,4 +39,17 @@ class AppConfig {
     readyStatus:readyColor,
     delayedStatus:delayedColor
   };
+  static Future goto(BuildContext context, Widget page, {bool replace = false}) {
+    if (replace) {
+      return Navigator.pushReplacement(
+        context,
+        CupertinoPageRoute(builder: (_) => page),
+      );
+    }
+    return Navigator.push(
+      context,
+      CupertinoPageRoute(builder: (_) => page),
+    );
+  }
 }
+

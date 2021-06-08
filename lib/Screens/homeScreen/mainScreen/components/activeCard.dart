@@ -3,15 +3,16 @@ import 'package:Seller_App/App_configs/sizeConfigs.dart';
 import 'package:Seller_App/Screens/homeScreen/mainScreen/components/activeOrderButtons.dart';
 import 'package:Seller_App/models/orders.dart';
 import 'package:Seller_App/providers/orderProvider.dart';
+import 'package:Seller_App/utilities/pageRoute.dart';
 import 'package:Seller_App/widgets/cards.dart';
 import 'package:Seller_App/widgets/coloredBadge.dart';
 import 'package:Seller_App/widgets/orderDetail/orderDetails.dart';
 import 'package:Seller_App/widgets/textOverFlow.dart';
-import 'package:Seller_App/widgets/timer/timer.dart';
 import 'package:Seller_App/widgets/upCounter.dart';
 import 'package:flutter/material.dart';
 
 import 'countDownTimer.dart';
+
 OrderDetail orderDetail;
 
 class ActiveOrderCard extends StatefulWidget {
@@ -28,30 +29,39 @@ class ActiveOrderCard extends StatefulWidget {
 }
 
 class _ActiveOrderCardState extends State<ActiveOrderCard> {
-
-  
   CountDownTimer _countDownTimer;
- @override
+
+  @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _countDownTimer=CountDownTimer( widget.orderProvider,widget.activeOrder);
-   
+    _countDownTimer = CountDownTimer(widget.orderProvider, widget.activeOrder);
   }
+
   @override
   Widget build(BuildContext context) {
-     
     return GestureDetector(
       onTap: () {
-        orderDetail=OrderDetail(widget.activeOrder);
-        orderDetail.setTimer=_countDownTimer;
-        orderDetail.settingModalBottomSheet(context);
+        setState(() {
+          _countDownTimer =
+              CountDownTimer(widget.orderProvider, widget.activeOrder);
+        });
+        Navigator.of(context).push(
+          HeroDialogRoute(
+            builder: (context) => Center(
+              child: DetailScreen(
+                order: widget.activeOrder,
+                provider: widget.orderProvider,
+              ),
+            ),
+          ),
+        );
       },
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
+      child: Hero(
+        tag: widget.activeOrder.orderId,
         child: Cards(
             radius: BorderRadius.circular(20),
-            margin: EdgeInsets.all(3),
+            margin: EdgeInsets.all(10),
             padding: EdgeInsets.all(10),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -70,7 +80,10 @@ class _ActiveOrderCardState extends State<ActiveOrderCard> {
                               style: Theme.of(context).textTheme.bodyText1,
                             ),
                             Text(
-                              '\$' + widget.activeOrder.totalPrice.toInt().toString(),
+                              '\$' +
+                                  widget.activeOrder.totalPrice
+                                      .toInt()
+                                      .toString(),
                               style: TextStyle(
                                   color: Color(0xff55B793),
                                   fontSize: 16,
@@ -81,7 +94,7 @@ class _ActiveOrderCardState extends State<ActiveOrderCard> {
                         Spacer(),
                         ColoredBadge(
                           text: widget.activeOrder.status,
-                          color:AppConfig.getColor[widget.activeOrder.status],
+                          color: AppConfig.getColor[widget.activeOrder.status],
                         ),
                       ]),
                     ],
@@ -93,32 +106,31 @@ class _ActiveOrderCardState extends State<ActiveOrderCard> {
                       OverFlowText(
                         text: widget.activeOrder.orderItemProducts,
                       ),
-                      (widget.activeOrder.status==AppConfig.preparingStatus)
-                          ? Column(
-                            children: [
-                              Container(
-                                  
-                                  child:_countDownTimer.countDownTimer,
-                                ),
-                                Text('MM : SS'),
-                            ],
-                          )
-                          : (widget.activeOrder.status==AppConfig.delayedStatus)?
-                          Column(
-                            children: [
-                              UpCounter(order: widget.activeOrder,),
-                              Text('Delayed by')
-                            ],
-                          ):Container()
+                      (widget.activeOrder.status == AppConfig.preparingStatus)
+                          ? Container(
+                              child: _countDownTimer.countDownTimer,
+                            )
+                          : (widget.activeOrder.status ==
+                                  AppConfig.delayedStatus)
+                              ? Column(
+                                  children: [
+                                    UpCounter(
+                                      order: widget.activeOrder,
+                                    ),
+                                  ],
+                                )
+                              : Container()
                     ],
                   ),
-                  ActiveOrderButton( orderProvider: widget.orderProvider,order: widget.activeOrder,countDownTimer: _countDownTimer,),
+                  ActiveOrderButton(
+                    orderProvider: widget.orderProvider,
+                    order: widget.activeOrder,
+                    countDownTimer: _countDownTimer,
+                  ),
                 ],
               ),
             )),
       ),
     );
   }
-
-  
 }

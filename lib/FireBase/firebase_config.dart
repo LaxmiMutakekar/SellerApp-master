@@ -43,7 +43,7 @@ class FirebaseConfig{
     //only for driver assigned and new orders added refresh the orders
     if(body=='ORDER_DELIVERY_ASSIGNED')
     {
-      order.ordersAdded();
+      order.fetchOrders();
     }
     if(body=='ORDER_ADDED')
     {
@@ -51,7 +51,7 @@ class FirebaseConfig{
       msgs.addMessages(msg);
       print(msgs.messagesList[0]);
       msgs.readMessage();
-      order.ordersAdded();
+      order.fetchOrders();
     }
     //updating the visibility of update_button after this notification to false
     if(body=='ORDER_NO_UPDATE_ETC')

@@ -2,6 +2,7 @@ import 'package:Seller_App/App_configs/sizeConfigs.dart';
 import 'package:Seller_App/Screens/homeScreen/mainScreen/components/pendingOrder/buttons.dart';
 import 'package:Seller_App/models/orders.dart';
 import 'package:Seller_App/providers/orderProvider.dart';
+import 'package:Seller_App/utilities/pageRoute.dart';
 import 'package:Seller_App/widgets/cards.dart';
 import 'package:Seller_App/widgets/orderDetail/orderDetails.dart';
 import 'package:Seller_App/widgets/textOverFlow.dart';
@@ -10,7 +11,7 @@ import 'package:Seller_App/widgets/timer/swipe_direction.dart';
 import 'package:flutter/material.dart';
 
 class PendingOrderCard extends StatelessWidget {
-   PendingOrderCard({
+  PendingOrderCard({
     Key key,
     @required this.pendingOrder,
     @required this.provider,
@@ -18,99 +19,108 @@ class PendingOrderCard extends StatelessWidget {
 
   final Orders pendingOrder;
   final OrderProvider provider;
-  OrderDetail orderDetail;
+
   @override
   Widget build(BuildContext context) {
-    orderDetail=OrderDetail(pendingOrder);
     return Padding(
       padding: const EdgeInsets.only(left: 16),
       child: GestureDetector(
         onTap: () {
-                      orderDetail.settingModalBottomSheet(context);
-                    },
-              child: Cards(
-            radius: BorderRadius.circular(16),
-            margin: EdgeInsets.all(3),
-            padding: EdgeInsets.all(10),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                //mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          '#00000000${pendingOrder.orderId}',
-                          style: Theme.of(context).textTheme.bodyText1,
-                        ),
-                        SizedBox(width: getProportionateScreenWidth(100)),
-                        Container(
-                          alignment: Alignment.topRight,
-                          child: Column(
-                            children: [
-                              Text(pendingOrder.timePassedFromPlaced),
-                              SizedBox(height: 2),
-                              Container(
-                                height: 1.3,
-                                width: 80,
-                                color: Colors.black87,
-                              )
-                            ],
-                          ),
-                        )
-                      ]),
-                  SizedBox(height: 2),
-                  Text(
-                    '\$' + pendingOrder.totalPrice.toInt().toString(),
-                    style: TextStyle(
-                        color: Color(0xff55B793),
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600),
-                  ),
-                  SizedBox(height: getProportionateScreenHeight(3)),
-                  OverFlowText(
-                    text: pendingOrder.orderItemProducts,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: Container(
-                        height: 0.9,
-                        width: getProportionateScreenWidth(289),
-                        color: Colors.black),
-                  ),
-                  Row(
-                      //mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+          Navigator.of(context).push(
+            HeroDialogRoute(
+              builder: (context) => Center(
+                child: DetailScreen(
+                  order: pendingOrder,
+                  provider: provider,
+                ),
+              ),
+            ),
+          );
+        },
+        child: Hero(
+          tag: pendingOrder.orderId,
+          child: Cards(
+              radius: BorderRadius.circular(16),
+              margin: EdgeInsets.all(3),
+              padding: EdgeInsets.all(10),
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.76,
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              'Orders from',
-                              style: TextStyle(fontStyle: FontStyle.italic),
+                              '#00000000${pendingOrder.orderId}',
+                              style: Theme.of(context).textTheme.bodyText1,
                             ),
-                            Container(
-                                height: 30,
-                                width: 70,
-                                child: Image.asset(
-                                  "assets/Images/falabellaLogo.png",
-                                ))
-                          ],
-                        ),
-                        SizedBox(
-                          width: getProportionateScreenWidth(16),
-                        ),
-                        SizedBox(
-
-                          width: getProportionateScreenWidth(200),
-                          child: PendingOrderButtons(
-                              pendingOrder: pendingOrder, provider: provider),
-                        ),
-                      ])
-                ],
-              ),
-            )),
+                            Spacer(),
+                            Column(
+                              children: [
+                                Text(pendingOrder.timePassedFromPlaced),
+                                SizedBox(height: 2),
+                                Container(
+                                  height: 1.3,
+                                  width: getProportionateScreenWidth(80),
+                                  color: Colors.black87,
+                                )
+                              ],
+                            )
+                          ]),
+                    ),
+                    SizedBox(height: 2),
+                    Text(
+                      '\$' + pendingOrder.totalPrice.toInt().toString(),
+                      style: TextStyle(
+                          color: Color(0xff55B793),
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600),
+                    ),
+                    SizedBox(height: getProportionateScreenHeight(3)),
+                    OverFlowText(
+                      text: pendingOrder.orderItemProducts,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: Container(
+                          height: 0.9,
+                          width: getProportionateScreenWidth(295),
+                          color: Colors.black),
+                    ),
+                    Row(
+                        //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Orders from',
+                                style: TextStyle(fontStyle: FontStyle.italic),
+                              ),
+                              Container(
+                                  height: 30,
+                                  width: 70,
+                                  child: Image.asset(
+                                    "assets/Images/falabellaLogo.png",
+                                  ))
+                            ],
+                          ),
+                          SizedBox(
+                            width: getProportionateScreenWidth(16),
+                          ),
+                          SizedBox(
+                            width: getProportionateScreenWidth(200),
+                            child: PendingOrderButtons(
+                                pendingOrder: pendingOrder, provider: provider),
+                          ),
+                        ])
+                  ],
+                ),
+              )),
+        ),
       ),
     );
   }
@@ -131,6 +141,7 @@ class PendingTimeStamp extends StatefulWidget {
 class _PendingTimeStampState extends State<PendingTimeStamp> {
   int passedTime;
   DateTime currentTime;
+
   _update(int value) {
     _min10Key.currentState.update(passedTime ~/ 10);
     _minKey.currentState.update(passedTime % 10);
@@ -153,6 +164,7 @@ class _PendingTimeStampState extends State<PendingTimeStamp> {
 
   GlobalKey<SwipingTextState> _minKey = GlobalKey<SwipingTextState>();
   GlobalKey<SwipingTextState> _min10Key = GlobalKey<SwipingTextState>();
+
   @override
   Widget build(BuildContext context) {
     return Row(children: [

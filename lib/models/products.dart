@@ -20,7 +20,7 @@ class Products {
         this.description,
         this.price,
         this.available,
-        this.basicEta,
+        this.basicEtc,
     });
 
     int pid;
@@ -33,20 +33,20 @@ class Products {
     String description;
     double price;
     bool available;
-    double basicEta;
+    double basicEtc;
 
     factory Products.fromJson(Map<String, dynamic> json) => Products(
         pid: json["pid"],
         date: DateTime.parse(json["date"]),
         name: json["name"],
-        skuId: json["sku_id"],
+        skuId: json["skuId"],
         upc: json["upc"],
         ean: json["ean"],
         image: json["image"],
         description: json["description"],
         price: json["price"],
         available: json["available"],
-        basicEta: json["basic_eta"],
+        basicEtc: json["basicEtc"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -60,6 +60,6 @@ class Products {
         "description": description,
         "price": price,
         "available": available,
-        "basic_eta": basicEta,
+        "basic_eta": basicEtc,
     };
 }

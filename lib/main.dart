@@ -1,3 +1,4 @@
+import 'package:Seller_App/Screens/splashScreen.dart';
 import 'package:Seller_App/providers/seller.dart';
 import 'package:Seller_App/routes.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +10,7 @@ import 'session.dart';
 import 'App_configs/theme.dart';
 import 'package:Seller_App/FireBase/firebase_config.dart';
 import 'providers/notification.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Session.init();
@@ -33,28 +35,19 @@ void main() async {
 
 class MyApp extends StatefulWidget {
   // This widget is the root of your application.
-
   @override
   _MyAppState createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
   @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    FirebaseConfig().init(context);
-    
-  }
-  @override
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: themeData(context),
       routes: routes,
-      initialRoute: RootPage.routeName,
       debugShowCheckedModeBanner: false,
       title: 'Seller App',
-      home: Text('Seller App'),
+      home: Splash(),
     );
   }
 }

@@ -8,15 +8,11 @@ import 'package:flutter/material.dart';
 class LoginBody extends StatefulWidget {
    LoginBody({
     Key key,
-    @required this.globalFormKey,
-    @required this.loginRequestModel,
     @required this.hidePassword,
     @required this.scaffoldKey,
     @required this.isApiCallProcess,
   }) : super(key: key);
 
-  final GlobalKey<FormState> globalFormKey;
-  final LoginRequestModel loginRequestModel;
   final bool hidePassword;
   final GlobalKey<ScaffoldState> scaffoldKey;
   bool isApiCallProcess;
@@ -25,6 +21,13 @@ class LoginBody extends StatefulWidget {
 }
 
 class _LoginBodyState extends State<LoginBody> {
+  GlobalKey<FormState> globalFormKey = GlobalKey<FormState>();
+  LoginRequestModel loginRequestModel;
+  @override
+  void initState() {
+    super.initState();
+    loginRequestModel = new LoginRequestModel();
+  }
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -47,7 +50,7 @@ class _LoginBodyState extends State<LoginBody> {
                   ],
                 ),
                 child: Form(
-                  key: widget.globalFormKey,
+                  key: globalFormKey,
                   child: Column(
                     children: <Widget>[
                       SizedBox(height: 25),
@@ -56,9 +59,9 @@ class _LoginBodyState extends State<LoginBody> {
                         style: Theme.of(context).textTheme.headline2,
                       ),
                       SizedBox(height: 20),
-                      BuildEmailFormField(loginRequestModel: widget.loginRequestModel),
+                      BuildEmailFormField(loginRequestModel: loginRequestModel),
                       SizedBox(height: 20),
-                       BuildPassWordform(loginRequestModel: widget.loginRequestModel, hidePassword: widget.hidePassword),
+                       BuildPassWordform(loginRequestModel: loginRequestModel, hidePassword: widget.hidePassword),
                       SizedBox(height: 30),
                       FlatButton(
                         padding: EdgeInsets.symmetric(
@@ -68,26 +71,33 @@ class _LoginBodyState extends State<LoginBody> {
                             setState(() {
                               widget.isApiCallProcess = true;
                             });
-                            APIServices.login(widget.loginRequestModel)
+                            APIServices.login(loginRequestModel)
                                 .then((value) {
                               if (value != null) {
                                 setState(() {
                                   widget.isApiCallProcess = false;
                                 });
-
-                                if (value.token.isNotEmpty) {
+                                if (value.runtimeType != LoginResponseModel) {
                                   final snackBar = SnackBar(
-                                      content: Text("Login Successful"));
+                                      content: Text("Sorry server error!"));
                                   widget.scaffoldKey.currentState
                                       .showSnackBar(snackBar);
-                                  Navigator.pushNamed(
-                                      context,
-                                      HomeScreen.routeName);
-                                } else {
-                                  final snackBar =
-                                      SnackBar(content: Text(value.error));
-                                  widget.scaffoldKey.currentState
-                                      .showSnackBar(snackBar);
+                                }
+                                else {
+                                  if (value.token.isNotEmpty) {
+                                    final snackBar = SnackBar(
+                                        content: Text("Login Successful"));
+                                    widget.scaffoldKey.currentState
+                                        .showSnackBar(snackBar);
+                                    Navigator.pushNamed(
+                                        context,
+                                        HomeScreen.routeName);
+                                  } else {
+                                    final snackBar =
+                                    SnackBar(content: Text(value.error));
+                                    widget.scaffoldKey.currentState
+                                        .showSnackBar(snackBar);
+                                  }
                                 }
                               }
                             });
@@ -113,7 +123,7 @@ class _LoginBodyState extends State<LoginBody> {
   }
 
   bool validateAndSave() {
-    final form = widget.globalFormKey.currentState;
+    final form = globalFormKey.currentState;
     if (form.validate()) {
       form.save();
       return true;

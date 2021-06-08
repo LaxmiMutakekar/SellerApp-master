@@ -13,14 +13,9 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   bool hidePassword = true;
   bool isApiCallProcess = false;
-  GlobalKey<FormState> globalFormKey = GlobalKey<FormState>();
-  LoginRequestModel loginRequestModel;
+
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  @override
-  void initState() {
-    super.initState();
-    loginRequestModel = new LoginRequestModel();
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -36,8 +31,6 @@ class _LoginPageState extends State<LoginPage> {
       key: scaffoldKey,
       backgroundColor: Theme.of(context).accentColor,
       body: LoginBody(
-        globalFormKey: globalFormKey,
-        loginRequestModel: loginRequestModel,
         hidePassword: hidePassword,
         scaffoldKey: scaffoldKey,
         isApiCallProcess: isApiCallProcess,

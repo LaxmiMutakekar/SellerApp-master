@@ -1,3 +1,5 @@
+import 'package:Seller_App/APIServices/APIServices.dart';
+import 'package:Seller_App/FireBase/firebase_config.dart';
 import 'package:Seller_App/Screens/homeScreen/drawerScreen/drawer.dart';
 import 'package:Seller_App/Screens/homeScreen/mainScreen/mainScreen.dart';
 import 'package:Seller_App/providers/orderProvider.dart';
@@ -7,26 +9,34 @@ import 'package:Seller_App/providers/products.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
-  static String routeName="/home";
+  static String routeName = "/home";
+
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    FirebaseConfig().init(context);
+    //fetch the orders related to this seller
+    Provider.of<OrderProvider>(context, listen: false).fetchOrders();
+  }
   @override
   Widget build(BuildContext context) {
     return Consumer2<OrderProvider, SellerProvider>(
         builder: (context, OrderProvider orders, seller, child) {
-    return Material(
-      child: Scaffold(
-          body: Stack(
-        children: [
-         MenuDashboard(orderProvider:orders,sellerProvider:seller),
-         MainScreen(orderProvider:orders,sellerProvider:seller)
-        ],
-      )),
-    );
-        });
+      return Material(
+        child: Scaffold(
+            body: Stack(
+          children: [
+            MenuDashboard(orderProvider: orders, sellerProvider: seller),
+            MainScreen(orderProvider: orders, sellerProvider: seller)
+          ],
+        )),
+      );
+    });
   }
 }

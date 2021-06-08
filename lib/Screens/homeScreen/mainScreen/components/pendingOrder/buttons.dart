@@ -1,5 +1,6 @@
 import 'package:Seller_App/APIServices/APIServices.dart';
 import 'package:Seller_App/App_configs/app_configs.dart';
+import 'package:Seller_App/App_configs/sizeConfigs.dart';
 import 'package:Seller_App/models/orders.dart';
 import 'package:Seller_App/providers/orderProvider.dart';
 import 'package:Seller_App/widgets/defaultButton.dart';
@@ -21,40 +22,38 @@ class PendingOrderButtons extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      //crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Expanded(
-                  child: FlatButton(
-                  minWidth: 100,
-                  color: Colors.grey.shade200,
-                  //padding: EdgeInsets.symmetric(vertical:16),
-                  shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-          side: BorderSide(color: Colors.grey, width: 1.1),
-                  ),
-                  onPressed: () async {
-          showReasonsDialog(context, pendingOrder);
-                  },
-                  child: Text('Reject')),
-        ),
-             SizedBox(width: 10),
-    Expanded(
           child: DefaultButton(
-          text: ('Accept'),
-          press: () {
-      {
-        provider.acceptOrder(pendingOrder);
-        provider.updateAcceptTimings(
-            pendingOrder, DateTime.now());
-        APIServices.changeOrderStatus(
-            pendingOrder, AppConfig.preparingStatus);
-        showInSnackBar(
-            'Order accepted succesfully!!', context);
-        pendingOrder.orderPre = DateTime.now();
-      }
-          },
+            buttonColor: Colors.grey[200],
+            textColor: Colors.black,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(kButtonRadius),
+              side: BorderSide(color: Colors.grey, width: 1.1),
+            ),
+            press: () async {
+              showReasonsDialog(context, pendingOrder);
+            },
+            text: ('Reject'),
+          ),
         ),
-    ),
+        SizedBox(width: getProportionateScreenWidth(10)),
+        Expanded(
+          child: DefaultButton(
+            text: ('Accept'),
+            press: () {
+              {
+                pendingOrder.orderPre = DateTime.now();
+                provider.acceptOrder(pendingOrder);
+                provider.updateAcceptTimings(pendingOrder, DateTime.now());
+                APIServices.changeOrderStatus(
+                    pendingOrder, AppConfig.preparingStatus);
+                showInSnackBar('Order accepted successfully!!', context);
+
+              }
+            },
+          ),
+        ),
       ],
     );
   }

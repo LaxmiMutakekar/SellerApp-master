@@ -17,42 +17,53 @@ class CountDownTimer {
     orderProvider.updateETC(order,duration);
   }
 
-  Container get countDownTimer {
-    return Container(
-      width: getProportionateScreenWidth(70),
-      padding: EdgeInsets.all(3),
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: Colors.black45,
-          style: BorderStyle.solid,
-          width: 1.0,
-        ),
-        boxShadow: [
-          // to make elevation
-          BoxShadow(
-            color: Colors.black12,
-            offset: Offset(0, 0),
-            blurRadius: 20,
+  Widget get countDownTimer {
+    return Column(
+      children: [
+        Opacity(
+          opacity: 0.6,
+          child: Text('Time left',style: TextStyle(fontSize: 12,fontWeight: FontWeight.w200,),)),
+        Container(
+          width: getProportionateScreenWidth(70),
+          padding: EdgeInsets.all(3),
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: Colors.black45,
+              style: BorderStyle.solid,
+              width: 1.0,
+            ),
+            boxShadow: [
+              // to make elevation
+              BoxShadow(
+                color: Colors.black12,
+                offset: Offset(0, 0),
+                blurRadius: 20,
+              ),
+              // to make the coloured border
+            ],
+            color: Colors.transparent,
+            borderRadius: BorderRadius.circular(5.0),
           ),
-          // to make the coloured border
-        ],
-        color: Colors.transparent,
-        borderRadius: BorderRadius.circular(5.0),
-      ),
-      child: DownTimer(
-        timerController: _timerController,
-        timerTextStyle: TimerTextStyle(
-          uniformTextStyle: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.w500,
-          ),
+          child: 
+              DownTimer(
+                timerController: _timerController,
+                timerTextStyle: TimerTextStyle(
+                  uniformTextStyle: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                duration: Duration(seconds: order.remSeconds),
+                onComplete: () {
+                  APIServices.changeOrderStatus(order, AppConfig.delayedStatus);
+                  APIServices.updateButton(order.orderId);
+                  orderProvider.activeOrdersUpdate(order, AppConfig.delayedStatus);
+                },
+              ),
+            
         ),
-        duration: Duration(seconds: order.remSeconds ?? 0),
-        onComplete: () {
-          APIServices.changeOrderStatus(order, AppConfig.delayedStatus);
-          orderProvider.activeOrdersUpdate(order, AppConfig.delayedStatus);
-        },
-      ),
+        Text('MM : SS'), 
+      ],
     );
   }
 }

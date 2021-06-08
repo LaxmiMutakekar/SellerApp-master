@@ -11,32 +11,38 @@ import 'package:Seller_App/models/products.dart';
 import 'package:Seller_App/models/statusUpd.dart';
 
 class APIServices {
-  static Future<LoginResponseModel> login(
+  static Future<dynamic> login(
       LoginRequestModel requestModel) async {
-    Uri url = Uri.parse(AppConfig.baseUrl + "/login/seller");
-    Map<String, String> headers = {
-      "Accept": "application/json",
-      "content-type": "application/json"
-    };
+    try {
+      Uri url = Uri.parse(AppConfig.baseUrl + "/login/seller");
+      Map<String, String> headers = {
+        "Accept": "application/json",
+        "content-type": "application/json"
+      };
 
-    final response = await http.post(
-      url,
-      body: jsonEncode(requestModel.toJson()),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-    );
+      final response = await http.post(
+        url,
+        body: jsonEncode(requestModel.toJson()),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+      );
 
-    //print(response.statusCode);
-    if (response.statusCode == 200) {
-      Session.token = json.decode(response.body)['token'];
-      return LoginResponseModel.fromJson(
-        json.decode(response.body),
-      );
-    } else {
-      return LoginResponseModel.fromJson(
-        json.decode(response.body),
-      );
+      //print(response.statusCode);
+      if (response.statusCode == 200) {
+        Session.token = json.decode(response.body)['token'];
+        return LoginResponseModel.fromJson(
+          json.decode(response.body),
+        );
+      } else {
+        return LoginResponseModel.fromJson(
+          json.decode(response.body),
+        );
+      }
+    }
+    catch(e)
+    {
+      return e;
     }
   }
 
@@ -64,7 +70,7 @@ class APIServices {
     }
   }
 
-  static Future<Seller> fetchSeller() async {
+  static Future<dynamic> fetchSeller() async {
     try {
       final response = await http.get(
           Uri.parse(AppConfig.baseUrl + "/details/seller"),
@@ -74,7 +80,7 @@ class APIServices {
       }
       if (response.statusCode == 401) {}
     } catch (e) {
-      print(e);
+      return ('You Are offline');
     }
   }
 

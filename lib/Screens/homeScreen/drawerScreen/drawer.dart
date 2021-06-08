@@ -12,151 +12,145 @@ import 'package:flutter/cupertino.dart';
 import 'package:Seller_App/App_configs/app_configs.dart';
 
 class MenuDashboard extends StatefulWidget {
-  static String routeName="/drawer";
-   final OrderProvider orderProvider;
-   final SellerProvider sellerProvider;
-  MenuDashboard({
-    Key key,
-     this.orderProvider,
-     this.sellerProvider
-  }) : super(key: key,);
+  static String routeName = "/drawer";
+  final OrderProvider orderProvider;
+  final SellerProvider sellerProvider;
+
+  MenuDashboard({Key key, this.orderProvider, this.sellerProvider})
+      : super(
+          key: key,
+        );
+
   @override
   _MenuDashboardState createState() => _MenuDashboardState();
 }
 
-class _MenuDashboardState extends State<MenuDashboard> { 
+class _MenuDashboardState extends State<MenuDashboard> {
   @override
   Widget build(BuildContext context) {
-    final provider=widget.sellerProvider.seller;
-    final sellerName=provider.name;
-    final orderProvider=widget.orderProvider;
-      return SafeArea(
-              child: Material(
-          child: Container(
-              color: AppConfig.drawerBackground,
-              padding: EdgeInsets.only(top: 70, bottom: 30),
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-          Row(children: [
-            IconButton(
-                icon: Icon(Icons.account_circle, color: Colors.white),
-                onPressed: (){
-                  Navigator.pushNamed(
-                    context,
-                    ProfilePage.routeName);
-                }),
-            SizedBox(
-              width: 10,
-            ),
-            Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Welcome',
-                    style: GoogleFonts.raleway(textStyle:TextStyle(color:Colors.white,fontSize: 18 ))
-                  ),
-                  Text(sellerName==null?('Loading..'):sellerName,
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold)),
-                ])
-          ]),
-          Column(
-            children: [
-              Row(
-                children: [
-                  TextButton.icon(
+    final provider = widget.sellerProvider.seller;
+    final sellerName = provider.name;
+    final orderProvider = widget.orderProvider;
+    return SafeArea(
+      child: Material(
+        child: Container(
+          color: AppConfig.drawerBackground,
+          padding: EdgeInsets.only(top: 70, bottom: 30),
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(children: [
+                  IconButton(
+                      icon: Icon(Icons.account_circle, color: Colors.white),
                       onPressed: () {
-                        Navigator.pushNamed(
-                          context,
-                          Catalogue.routeName
-                        );
-                        // Catalogue();
-                      },
-                      label: Text(
-                        'Catalogue',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      icon:
-                          Icon(Icons.shopping_cart, color: Colors.white))
-                ],
-              ),
-              Row(
-                children: [
-                  TextButton.icon(
-                    onPressed: () {
-                      Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => OrderHistory(orderProvider: orderProvider,),
-                    ));
-                    },
-                    icon: Icon(
-                      Icons.history,
-                      color: Colors.white,
+                        Navigator.pushNamed(context, ProfilePage.routeName);
+                      }),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Welcome',
+                            style: GoogleFonts.raleway(
+                                textStyle: Theme.of(context).textTheme.subtitle2.copyWith(color: Colors.white))),
+                        Text(sellerName == null ? ('Loading..') : sellerName,
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold)),
+                      ])
+                ]),
+                Column(
+                  children: [
+                    Row(
+                      children: [
+                        TextButton.icon(
+                            onPressed: () {
+                              Navigator.pushNamed(context, Catalogue.routeName);
+                              // Catalogue();
+                            },
+                            label: Text(
+                              'Catalogue',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            icon:
+                                Icon(Icons.shopping_cart, color: Colors.white))
+                      ],
                     ),
+                    Row(
+                      children: [
+                        TextButton.icon(
+                          onPressed: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => OrderHistory(
+                                orderProvider: orderProvider,
+                              ),
+                            ));
+                          },
+                          icon: Icon(
+                            Icons.history,
+                            color: Colors.white,
+                          ),
+                          label: Text(
+                            'Order history',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        TextButton.icon(
+                            onPressed: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => RejectedOrders(
+                                    orderProvider: orderProvider,
+                                  ),
+                                ),
+                              );
+                            },
+                            label: Text(
+                              'Rejected order',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            icon: Icon(Icons.cancel, color: Colors.white))
+                      ],
+                    ),
+                  ],
+                ),
+                Row(children: [
+                  SizedBox(width: 10),
+                  TextButton.icon(
+                    onPressed: () {},
+                    icon: Icon(Icons.settings, color: Colors.white),
                     label: Text(
-                      'Order history',
+                      'Settings',
                       style: TextStyle(color: Colors.white),
                     ),
                   ),
-                ],
-              ),
-              Row(
-                children: [
+                  SizedBox(width: 10),
+                  Container(
+                    width: 2,
+                    height: 20,
+                    color: Colors.white,
+                  ),
+                  SizedBox(width: 10),
                   TextButton.icon(
-                      onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => RejectedOrders(orderProvider: orderProvider,),
+                    onPressed: () {
+                      Session.logout();
+                      Navigator.pushNamed(context, LoginPage.routeName);
+                    },
+                    icon: Icon(Icons.logout, color: Colors.white),
+                    label: Text(
+                      'Logout',
+                      style: TextStyle(color: Colors.white),
                     ),
-                  );
-                      },
-                      label: Text(
-                        'Rejected order',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      icon: Icon(Icons.cancel, color: Colors.white))
-                ],
-              ),
-            ],
-          ),
-          Row(children: [
-            SizedBox(width: 10),
-            TextButton.icon(
-              onPressed: () {
-              },
-              icon: Icon(Icons.settings, color: Colors.white),
-              label: Text(
-                'Settings',
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
-            SizedBox(width: 10),
-            Container(
-              width: 2,
-              height: 20,
-              color: Colors.white,
-            ),
-            SizedBox(width: 10),
-            TextButton.icon(
-              onPressed: () {
-                Session.logout();
-                Navigator.pushNamed(
-                  context,
-                  LoginPage.routeName
-                );
-              },
-              icon: Icon(Icons.logout, color: Colors.white),
-              label: Text(
-                'Logout',
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
-          ])
-                  ]),
-            ),
+                  ),
+                ])
+              ]),
         ),
-      );
+      ),
+    );
   }
 }

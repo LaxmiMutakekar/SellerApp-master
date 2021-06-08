@@ -12,7 +12,7 @@ class OrderProvider extends ChangeNotifier {
   List<Orders> preparingOrderList = [];
   List<Orders> readyOrderList = [];
   List<Orders> delayedOrderList = [];
-  void ordersAdded()async {
+  void fetchOrders()async {
     //all order lists cleared
     pendingOrderList.clear();
     activeOrderList.clear();
@@ -83,7 +83,7 @@ class OrderProvider extends ChangeNotifier {
       case AppConfig.readyStatus:
         {
           //moved to ready orders
-          order.isOrderUpdateEtc=false;
+          order.orderUpdateEtc=false;
           readyOrderList.add(order);   
           if(order.status==AppConfig.delayedStatus)
           {
@@ -135,8 +135,8 @@ class OrderProvider extends ChangeNotifier {
   void updateETC(Orders order, double value) {
     APIServices.updateETC(order, value.toInt());
     APIServices.updateButton(order.orderId);
-    order.orderUpdateEtc=value;
-    order.isOrderUpdateEtc=false;
+    order.updatedEtc=value;
+    order.orderUpdateEtc=false;
     notifyListeners();
   }
 
@@ -149,7 +149,7 @@ class OrderProvider extends ChangeNotifier {
 
     activeOrderList
         .firstWhere((element) => element.orderId == oid)
-        .isOrderUpdateEtc = false;
+        .orderUpdateEtc = false;
     notifyListeners();
   }
   void orderUpdate(String status, Orders order) {

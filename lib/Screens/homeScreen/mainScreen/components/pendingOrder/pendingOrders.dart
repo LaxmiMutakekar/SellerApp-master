@@ -1,3 +1,4 @@
+import 'package:Seller_App/App_configs/sizeConfigs.dart';
 import 'package:Seller_App/Screens/homeScreen/mainScreen/components/pendingOrder/pendingOrderCard.dart';
 import 'package:flutter/material.dart';
 import 'package:Seller_App/App_configs/app_configs.dart';
@@ -8,14 +9,17 @@ import 'package:flutter_svg/svg.dart';
 
 class PendingOrders extends StatelessWidget {
   final OrderProvider orderProvider;
+
   PendingOrders({
     Key key,
     this.orderProvider,
   }) : super(
           key: key,
         );
-  OrderDetail orderItem ;
+  OrderDetail orderItem;
+
   GlobalKey<FormState> globalFormKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     OrderProvider provider = orderProvider;
@@ -28,17 +32,20 @@ class PendingOrders extends StatelessWidget {
               height: 80,
               width: 80,
               child: SvgPicture.asset(
-                                    'assets/Images/sad_panda.svg',
-                                    color: Colors.black45,
-                                  ),
+                'assets/Images/sad_panda.svg',
+                color: Colors.black45,
+              ),
             ),
-            Text(AppConfig.noPendingOrders,style: TextStyle(color: Colors.black45),)
+            Text(
+              AppConfig.noPendingOrders,
+              style: TextStyle(color: Colors.black45),
+            )
           ],
         ),
       );
     }
     return SizedBox(
-      height: 222,
+      height: getProportionateScreenHeight(222),
       child: Column(
         children: [
           Center(
@@ -56,10 +63,10 @@ class PendingOrders extends StatelessWidget {
                 itemCount: pendingOrder.length,
                 shrinkWrap: true,
                 itemBuilder: (BuildContext context, int index) {
-                  Orders pendings = pendingOrder[index];
-                  orderItem =  OrderDetail(pendings);
+                  Orders order = pendingOrder[index];
+                  orderItem = OrderDetail(order);
                   return PendingOrderCard(
-                      pendingOrder: pendings, provider: provider);
+                      pendingOrder: order, provider: provider);
                 }),
           ),
         ],

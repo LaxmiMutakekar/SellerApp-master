@@ -83,65 +83,70 @@ class _UpCounterState extends State<UpCounter> {
   @override
   Widget build(BuildContext context) {
 
-    return Container(
-      width: getProportionateScreenWidth(70),
-      padding: EdgeInsets.all(3),
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: Colors.black45,
-          style: BorderStyle.solid,
-          width: 1.0,
+    return Column(
+      children: [
+        Container(
+          width: getProportionateScreenWidth(70),
+          padding: EdgeInsets.all(3),
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: Colors.black45,
+              style: BorderStyle.solid,
+              width: 1.0,
+            ),
+            boxShadow: [
+              // to make elevation
+              BoxShadow(
+                color: Colors.black12,
+                offset: Offset(0, 0),
+                blurRadius: 20,
+              ),
+              // to make the coloured border
+            ],
+            color: Colors.transparent,
+            borderRadius: BorderRadius.circular(5.0),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SwipingText(
+                key: _min10Key,
+                defaultValue: minutes ~/ 10,
+                textStyle: TextStyle(
+                    color: Colors.red, fontSize: 15, fontWeight: FontWeight.w400),
+                swipeDirection: SwipeDirection.up,
+              ),
+              SwipingText(
+                key: _minKey,
+                textStyle: TextStyle(
+                    color: Colors.red, fontSize: 15, fontWeight: FontWeight.w400),
+                defaultValue: minutes % 10,
+                swipeDirection: SwipeDirection.up,
+              ),
+              Text(
+                ':',
+                style: TextStyle(
+                    color: Colors.red, fontSize: 15, fontWeight: FontWeight.w400),
+              ),
+              SwipingText(
+                key: _sec10Key,
+                textStyle: TextStyle(
+                    color: Colors.red, fontSize: 15, fontWeight: FontWeight.w400),
+                defaultValue: seconds ~/ 10,
+                swipeDirection: SwipeDirection.up,
+              ),
+              SwipingText(
+                key: _secKey,
+                textStyle: TextStyle(
+                    color: Colors.red, fontSize: 15, fontWeight: FontWeight.w400),
+                defaultValue: seconds %10,
+                swipeDirection: SwipeDirection.up,
+              ),
+            ],
+          ),
         ),
-        boxShadow: [
-          // to make elevation
-          BoxShadow(
-            color: Colors.black12,
-            offset: Offset(0, 0),
-            blurRadius: 20,
-          ),
-          // to make the coloured border
-        ],
-        color: Colors.transparent,
-        borderRadius: BorderRadius.circular(5.0),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SwipingText(
-            key: _min10Key,
-            defaultValue: minutes ~/ 10,
-            textStyle: TextStyle(
-                color: Colors.red, fontSize: 15, fontWeight: FontWeight.w400),
-            swipeDirection: SwipeDirection.up,
-          ),
-          SwipingText(
-            key: _minKey,
-            textStyle: TextStyle(
-                color: Colors.red, fontSize: 15, fontWeight: FontWeight.w400),
-            defaultValue: minutes % 10,
-            swipeDirection: SwipeDirection.up,
-          ),
-          Text(
-            ':',
-            style: TextStyle(
-                color: Colors.red, fontSize: 15, fontWeight: FontWeight.w400),
-          ),
-          SwipingText(
-            key: _sec10Key,
-            textStyle: TextStyle(
-                color: Colors.red, fontSize: 15, fontWeight: FontWeight.w400),
-            defaultValue: seconds ~/ 10,
-            swipeDirection: SwipeDirection.up,
-          ),
-          SwipingText(
-            key: _secKey,
-            textStyle: TextStyle(
-                color: Colors.red, fontSize: 15, fontWeight: FontWeight.w400),
-            defaultValue: seconds %10,
-            swipeDirection: SwipeDirection.up,
-          ),
-        ],
-      ),
+        Text('Delayed by')
+      ],
     );
   }
 }

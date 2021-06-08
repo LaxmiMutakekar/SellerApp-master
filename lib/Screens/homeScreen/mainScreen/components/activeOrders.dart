@@ -120,16 +120,16 @@ class _ActiveOrdersState extends State<ActiveOrders>
       );
     }
     return ListView.builder(
-        scrollDirection: Axis.vertical,
-        itemCount: activeOrderList.length,
-        physics: NeverScrollableScrollPhysics(),
-        shrinkWrap: true,
-        itemBuilder: (BuildContext context, int index) {
-          activeOrder = activeOrderList[index];
-          return ActiveOrderCard(
-            orderProvider: provider,
-            activeOrder: activeOrder,
-          );
-        });
+    scrollDirection: Axis.vertical,
+    itemCount: activeOrderList.length,
+    physics: NeverScrollableScrollPhysics(),
+    shrinkWrap: true,
+    itemBuilder: (BuildContext context, int index) {
+      activeOrder = activeOrderList[index];
+      return ActiveOrderCard(
+        orderProvider: provider,
+        activeOrder: activeOrder,
+      );
+    });
   }
 }

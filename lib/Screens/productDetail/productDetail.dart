@@ -1,32 +1,15 @@
+import 'package:Seller_App/models/products.dart';
+import 'package:Seller_App/providers/products.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/src/cached_image_widget.dart';
 
-class ProductDetails extends StatefulWidget {
-  final String image;
-  final String name;
-  final String skuId;
-  final String ean;
-  final String upc;
-  final String description;
-  final double price;
-  final double basicEta;
+class ProductDetails extends StatelessWidget {
+  final Products product;
   const ProductDetails({
     Key key,
-    this.image,
-    this.name,
-    this.skuId,
-    this.ean,
-    this.upc,
-    this.description,
-    this.price,
-    this.basicEta,
+    this.product
   }) : super(key: key);
   static String routeName = "/productDetail";
-  @override
-  _ProductDetailsState createState() => _ProductDetailsState();
-}
-
-class _ProductDetailsState extends State<ProductDetails> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -38,9 +21,9 @@ class _ProductDetailsState extends State<ProductDetails> {
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height / 2,
               child: Hero(
-                tag: widget.skuId,
+                tag:product.pid ,
                 child: CachedNetworkImage(
-                  imageUrl: widget.image,
+                  imageUrl: product.image,
                   fit: BoxFit.fill,
                   placeholder: (context, url) => CircularProgressIndicator(),
                   errorWidget: (context, url, error) => Icon(Icons.error),
@@ -88,20 +71,20 @@ class _ProductDetailsState extends State<ProductDetails> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        widget.name,
+                        product.name,
                         style: Theme.of(context).textTheme.headline6,
                       ),
                       SizedBox(
                         height: 10,
                       ),
                       Text(
-                        widget.description,
+                        product.description,
                         style: Theme.of(context).textTheme.bodyText2,
                       ),
                       div(),
-                      buildText("skuId", widget.skuId),
-                      buildText("upc", widget.upc),
-                      buildText("ean", widget.ean),
+                      buildText("skuId", product.skuId,context),
+                      buildText("upc", product.upc,context),
+                      buildText("ean", product.ean,context),
                       div(),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -113,7 +96,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                                 style: Theme.of(context).textTheme.bodyText2,
                               ),
                               Text(
-                                "\$ " + widget.price.toString(),
+                                "\$ " + product.price.toString(),
                                 style: Theme.of(context).textTheme.headline6,
                               ),
                             ],
@@ -132,7 +115,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                                 style: Theme.of(context).textTheme.bodyText2,
                               ),
                               Text(
-                                widget.basicEta.toString() + " mins",
+                                product.basicEtc.toString() + " mins",
                                 style: Theme.of(context).textTheme.headline6,
                               ),
                             ],
@@ -150,7 +133,7 @@ class _ProductDetailsState extends State<ProductDetails> {
     );
   }
 
-  Widget buildText(String t1, String t2) {
+  Widget buildText(String t1, String t2,BuildContext context) {
     return Row(
       children: [
         Text(
@@ -165,7 +148,7 @@ class _ProductDetailsState extends State<ProductDetails> {
     );
   }
 
-  Widget div() {
+   div() {
     return const Divider(
       height: 17,
       thickness: 2,

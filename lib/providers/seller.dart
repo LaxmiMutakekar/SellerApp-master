@@ -6,7 +6,7 @@ class SellerProvider extends ChangeNotifier{
   void fetchSeller()async
   {
     seller=await APIServices.fetchSeller();
-    notifyListeners();
+    //notifyListeners();
   }
   void changeAvailabiliy(bool value)
   {

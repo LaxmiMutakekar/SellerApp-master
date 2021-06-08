@@ -10,6 +10,7 @@ import 'package:Seller_App/widgets/switchButton.dart';
 
 class Catalogue extends StatefulWidget {
   static String routeName = "/catalogue";
+
   @override
   _CatalogueState createState() => _CatalogueState();
 }
@@ -42,27 +43,20 @@ class _CatalogueState extends State<Catalogue> {
             ),
           ),
           body: Padding(
-            padding: const EdgeInsets.symmetric(horizontal:8.0),
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: ListView.builder(
                 scrollDirection: Axis.vertical,
                 itemCount: products.productsList.length,
                 shrinkWrap: true,
                 itemBuilder: (BuildContext context, int index) {
-                  Products item = products.productsList[index];
+                  Products product = products.productsList[index];
                   return GestureDetector(
                     onTap: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => ProductDetails(
-                            image: item.image,
-                            name: item.name,
-                            skuId: item.skuId,
-                            ean: item.ean,
-                            upc: item.upc,
-                            description: item.description.trim(),
-                            price: item.price,
-                            basicEta: item.basicEta,
+                            product: product,
                           ),
                         ),
                       );
@@ -87,9 +81,9 @@ class _CatalogueState extends State<Catalogue> {
                                       borderRadius: BorderRadius.circular(13)),
                                   clipBehavior: Clip.hardEdge,
                                   child: Hero(
-                                    tag: item.name,
+                                    tag: product.pid,
                                     child: CachedNetworkImage(
-                                      imageUrl: item.image,
+                                      imageUrl: product.image,
                                       fit: BoxFit.fill,
                                       placeholder: (context, url) =>
                                           CircularProgressIndicator(),
@@ -113,41 +107,41 @@ class _CatalogueState extends State<Catalogue> {
                                         children: [
                                           Container(
                                             child: Text(
-                                              item.name,
+                                              product.name,
                                               style: TextStyle(
                                                   fontSize: 16,
                                                   fontWeight: FontWeight.bold),
                                             ),
                                           ),
                                           DefaultSwitch(
-                                            value: item.available,
+                                            value: product.available,
                                             type: 'Product',
                                             model: products,
-                                            product: item,
+                                            product: product,
                                           )
                                         ],
                                       ),
                                       Text(
-                                        item.skuId,
+                                        product.skuId.toString(),
                                         style: TextStyle(fontSize: 12),
                                       ),
                                       SizedBox(height: 10),
                                       Container(
                                         width: 180,
                                         child: Text(
-                                            item.description.trim(),
-                                            textAlign: TextAlign.left,
-                                            maxLines: 2,
-                                            overflow: TextOverflow.ellipsis,
-                                            softWrap: false,
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.w200,
-                                                fontSize: 15),
-                                          ),
+                                          product.description.trim(),
+                                          textAlign: TextAlign.left,
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                          softWrap: false,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w200,
+                                              fontSize: 15),
+                                        ),
                                       ),
                                       SizedBox(height: 3),
                                       Text(
-                                        "\$ " + item.price.toString(),
+                                        "\$ " + product.price.toString(),
                                         style: TextStyle(
                                             color: Colors.black,
                                             fontWeight: FontWeight.bold),

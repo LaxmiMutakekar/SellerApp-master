@@ -26,11 +26,15 @@ dependencies:
   provider: ^5.0.0
   fluttertoast: ^3.1.3
   avatar_glow: ^1.1.0
+
   pin_code_fields:   
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+dependency_overrides:
+  flutter_offline: ^2.0.0
+  connectivity: ^3.0.6
 
 flutter:
 

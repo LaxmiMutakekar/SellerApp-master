@@ -1,49 +1,35 @@
 import 'package:Seller_App/Screens/homeScreen/Home.dart';
 import 'package:Seller_App/Screens/homeScreen/mainScreen/mainScreen.dart';
+import 'package:Seller_App/internetCheck.dart';
+import 'package:Seller_App/root.dart';
 import 'package:flutter/material.dart';
-
+import 'package:flutter_offline/flutter_offline.dart';
 class Splash extends StatefulWidget {
+  static String routeName="/splashScreen";
   @override
   _SplashState createState() => _SplashState();
 }
-
 class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
   void splashScreen() {
-    Future.delayed(Duration(milliseconds: 2500), () {
-      Navigator.pushReplacementNamed(context, MainScreen.routeName);
+    //after delay of 1500ms navigates to connectivity check till then shows image
+    Future.delayed(Duration(milliseconds: 1500), () {
+      Navigator.pushReplacementNamed(context, IsConnected.routName);
     });
   }
 
   @override
   void initState() {
     super.initState();
-
-    // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-    //   splashScreen();
-    // });
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      splashScreen();
+    });
   }
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            SizedBox(
-              child: CircularProgressIndicator(
-                strokeWidth: 2,
-                backgroundColor: Theme.of(context).accentColor.withOpacity(0.2),
-              ),
-              width: 16,
-              height: 16,
-            ),
-            SizedBox(width: 10),
-            Text(
-              "loading..",
-              style: Theme.of(context).textTheme.bodyText1,
-            ),
-          ],
+    return Material(
+      child: Scaffold(
+        body: Center(
+          child: Image.asset('assets/Images/photo.png',height: 200,),
         ),
       ),
     );

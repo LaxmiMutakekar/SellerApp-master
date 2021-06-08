@@ -1,4 +1,5 @@
 import 'package:Seller_App/models/orders.dart';
+import 'package:Seller_App/widgets/defaultButton.dart';
 import 'package:flutter/material.dart';
 import 'package:Seller_App/APIServices/APIServices.dart';
 import 'package:Seller_App/providers/orderProvider.dart';
@@ -109,9 +110,9 @@ Future<String> showReasonsDialog(BuildContext context,Orders order) async {
                   Navigator.of(context).pop();
                 },
               ),
-              TextButton(
-                child: Text('Continue'),
-                onPressed: (){
+              DefaultButton(
+                text:('Continue'),
+                press: (){
                   if(isVisible) {
                     if (_formKey.currentState.validate()) {
                       reason = _textEditingController.text;

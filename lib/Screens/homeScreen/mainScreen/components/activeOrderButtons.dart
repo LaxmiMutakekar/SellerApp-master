@@ -36,7 +36,7 @@ class ActiveOrderButton extends StatelessWidget {
                             width: getProportionateScreenWidth(8),
                           )
                         : Container(),
-                    (order.isOrderUpdateEtc&& order.status!=AppConfig.readyStatus)
+                    (order.orderUpdateEtc&& order.status!=AppConfig.readyStatus)
                         ? Expanded(
                             child: DefaultButton(
                                 press: ()  {
