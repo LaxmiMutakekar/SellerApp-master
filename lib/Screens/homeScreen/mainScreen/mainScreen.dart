@@ -104,7 +104,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      sellerProvider.seller.shortName ?? '',
+                      'Master Chief Kitchen ' ?? '',
                       style: Theme.of(context)
                           .textTheme
                           .bodyText2

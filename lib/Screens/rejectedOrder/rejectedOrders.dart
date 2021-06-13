@@ -13,21 +13,23 @@ import 'package:http/http.dart' as http;
 class RejectedOrders extends StatefulWidget {
   static String routeName = "/rejectedOrder";
   final OrderProvider orderProvider;
+
   RejectedOrders({
     Key key,
     this.orderProvider,
   }) : super(
           key: key,
         );
+
   @override
   _RejectedOrdersState createState() => _RejectedOrdersState();
 }
 
 class _RejectedOrdersState extends State<RejectedOrders> {
-  OrderDetail orderItem;
   int days = 1;
   int selectedValue = 1;
   List<Orders> lastRejected = [];
+
   Future<List<Orders>> fetchOrders(int i) async {
     lastRejected.clear();
     try {
@@ -140,13 +142,10 @@ class _RejectedOrdersState extends State<RejectedOrders> {
                   shrinkWrap: true,
                   itemBuilder: (BuildContext context, int index) {
                     Orders item = lastRejected[index];
-                    orderItem = OrderDetail(
-                      item,
-                    );
                     if (item.status == 'Order Rejected') {
                       return GestureDetector(
                         onTap: () {
-                          orderItem.settingModalBottomSheet(context);
+                          // orderItem.settingModalBottomSheet(context);
                         },
                         child: RejectedOrderCard(order: item),
                       );
@@ -169,7 +168,9 @@ class RejectedOrderCard extends StatelessWidget {
   }) : super(key: key);
 
   final Orders order;
+
   format(Duration d) => d.toString().substring(2, 7);
+
   @override
   Widget build(BuildContext context) {
     return Cards(
@@ -195,8 +196,7 @@ class RejectedOrderCard extends StatelessWidget {
                 ],
               ),
               Text(
-                '@'+
-                order.placedTime,
+                '@' + order.placedTime,
                 style: TextStyle(fontSize: 14),
               ),
             ],
@@ -226,7 +226,11 @@ class RejectedOrderCard extends StatelessWidget {
                   color: Colors.transparent,
                   borderRadius: BorderRadius.circular(5.0),
                 ),
-                child: Text('Unavailable',style: TextStyle(color: Colors.red[300],fontWeight: FontWeight.bold),),
+                child: Text(
+                  'Unavailable',
+                  style: TextStyle(
+                      color: Colors.red[300], fontWeight: FontWeight.bold),
+                ),
               ),
               Column(
                 children: [

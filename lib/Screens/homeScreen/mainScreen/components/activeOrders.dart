@@ -8,12 +8,14 @@ import 'activeCard.dart';
 
 class ActiveOrders extends StatefulWidget {
   final OrderProvider orderProvider;
+
   ActiveOrders({
     Key key,
     this.orderProvider,
   }) : super(
           key: key,
         );
+
   @override
   _ActiveOrdersState createState() => _ActiveOrdersState();
 }
@@ -52,18 +54,10 @@ class _ActiveOrdersState extends State<ActiveOrders>
           child: new TabBar(
             controller: _controller,
             tabs: [
-              new Tab(
-                text: 'All ',
-              ),
-              new Tab(
-                text: ('Preparing'),
-              ),
-              new Tab(
-                text: 'Ready',
-              ),
-              new Tab(
-                text: 'Delayed',
-              ),
+              tabStack('All', provider.activeOrderList),
+              tabStack('Preparing', provider.preparingOrderList),
+              tabStack('Ready', provider.readyOrderList),
+              tabStack('Delayed', provider.delayedOrderList),
             ],
           ),
         ),
@@ -120,16 +114,55 @@ class _ActiveOrdersState extends State<ActiveOrders>
       );
     }
     return ListView.builder(
-    scrollDirection: Axis.vertical,
-    itemCount: activeOrderList.length,
-    physics: NeverScrollableScrollPhysics(),
-    shrinkWrap: true,
-    itemBuilder: (BuildContext context, int index) {
-      activeOrder = activeOrderList[index];
-      return ActiveOrderCard(
-        orderProvider: provider,
-        activeOrder: activeOrder,
-      );
-    });
+        scrollDirection: Axis.vertical,
+        itemCount: activeOrderList.length,
+        physics: NeverScrollableScrollPhysics(),
+        shrinkWrap: true,
+        itemBuilder: (BuildContext context, int index) {
+          activeOrder = activeOrderList[index];
+          return ActiveOrderCard(
+            orderProvider: provider,
+            activeOrder: activeOrder,
+            
+          );
+        });
+  }
+
+  //tab bar content
+  tabStack(String tab, List<Orders> activeOrderList) {
+    return Stack(
+      children: [
+        Center(
+          child: new Tab(
+            text: tab,
+          ),
+        ),
+        activeOrderList.isEmpty != true
+            ? new Positioned(
+                right: 7,
+                top: 25,
+                child: new Container(
+                  padding: EdgeInsets.all(2),
+                  decoration: new BoxDecoration(
+                    color: Colors.grey[100],
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  constraints: BoxConstraints(
+                    minWidth: 14,
+                    minHeight: 14,
+                  ),
+                  child: Text(
+                    activeOrderList.length.toString(),
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 10,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              )
+            : new Container(),
+      ],
+    );
   }
 }

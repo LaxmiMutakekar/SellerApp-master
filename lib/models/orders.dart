@@ -6,6 +6,7 @@ import 'dart:convert';
 
 import 'package:Seller_App/Screens/homeScreen/mainScreen/components/activeCard.dart';
 import 'package:intl/intl.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 List<Orders> ordersFromJson(String str) =>
     List<Orders>.from(json.decode(str).map((x) => Orders.fromJson(x)));
@@ -30,7 +31,7 @@ class Orders {
     this.orderStatusHistory,
     this.orderUpdateEtc,
   });
-  
+
   String get businessLogo {
     switch (this.businessUnit) {
       case 'Sodimac':
@@ -41,10 +42,13 @@ class Orders {
         return "";
     }
   }
-  int get updateDelay { 
-    return(this.orderPreparationTime*60~/2);
+
+  int get updateDelay {
+    return (this.orderPreparationTime * 60 ~/ 2);
   }
-  set orderPre(DateTime orderprep)=>this.orderStatusHistory.orderPreparing=orderprep;
+
+  set orderPre(DateTime orderprep) =>
+      this.orderStatusHistory.orderPreparing = orderprep;
   int orderId;
   Customer customer;
   DateTime orderPlacedDate;
@@ -60,48 +64,85 @@ class Orders {
   double updatedEtc;
   bool orderUpdateEtc;
 
-  int get remSeconds  {
-    var time =  DateTime.parse(this.orderStatusHistory.orderPreparing.toString());
-    var offset = time.add(Duration(seconds: ((this.orderPreparationTime+this.updatedEtc??0)*60).toInt() ?? 0));
+  int get remSeconds {
+    var time =
+        DateTime.parse(this.orderStatusHistory.orderPreparing.toString());
+    var offset = time.add(Duration(
+        seconds:
+            ((this.orderPreparationTime + this.updatedEtc ?? 0) * 60).toInt() ??
+                0));
     var now = DateTime.now();
     return (offset.millisecondsSinceEpoch - now.millisecondsSinceEpoch) ~/ 1000;
   }
-  String get placedTime{
-    return(DateFormat.jm().format(this.orderPlacedDate));
+
+  String get placedTime {
+    return (DateFormat.jm().format(this.orderPlacedDate));
   }
-  String get timePassedFromPlaced{
-    var passedTime=DateTime.now().difference(this.orderPlacedDate).inMinutes;
-    if(passedTime==0)
-    {
-      return ('now');
+
+  String get placedAgo {
+    var time = DateTime.now().subtract(Duration(
+        minutes: this.orderPlacedDate.minute,
+        hours: this.orderPlacedDate.hour));
+    String agoTime = '';
+    if (time.hour != 0) {
+      agoTime += time.hour.toString() + ' hour';
+      if (time.minute != 0) {
+        agoTime += ' ' + time.minute.toString() + ' minutes';
+      }
+    } else if (time.minute != 0) {
+      agoTime += time.minute.toString() + ' minutes';
+    } else {
+      agoTime += 'Just now';
     }
-    return ('${passedTime} minutes ago');
+    if (!agoTime.contains('Just now')) {
+      agoTime += ' ago';
+    }
+    return agoTime;
   }
-   set delayedTime(DateTime delayedTime)=>this.orderStatusHistory.orderTimeout=delayedTime;
-  set updateButtonStatus(bool status)=>this.orderUpdateEtc=status;
-  int get getDelayedSec{
-    if(this.orderStatusHistory.orderTimeout==null)
-    {
+
+  set delayedTime(DateTime delayedTime) =>
+      this.orderStatusHistory.orderTimeout = delayedTime;
+
+  set updateButtonStatus(bool status) => this.orderUpdateEtc = status;
+
+  int get getDelayedSec {
+    if (this.orderStatusHistory.orderTimeout == null) {
       return 0;
     }
-    var time =  DateTime.parse(this.orderStatusHistory.orderTimeout.toString());
+    var time = DateTime.parse(this.orderStatusHistory.orderTimeout.toString());
     return DateTime.now().difference(time).inSeconds;
   }
-  String get expectedByTime{
-    var time=this.orderPlacedDate.add(Duration(minutes: this.orderFulfillmentTime.toInt()));
-    return(DateFormat.jm().format(time));
+
+  String get expectedByTime {
+    var time = this
+        .orderPlacedDate
+        .add(Duration(minutes: this.orderFulfillmentTime.toInt()));
+    return (DateFormat.jm().format(time));
   }
-  String get fulfilledTime{
-    var time=DateTime.parse(this.orderStatusHistory.orderHandover);
-    return(DateFormat.jm().format(time));
+
+  String get fulfilledTime {
+    var time = DateTime.parse(this.orderStatusHistory.orderHandover);
+    return (DateFormat.jm().format(time));
   }
-  String get orderItemProducts{
-    List<String> productsList=[];
+
+  String get orderItemProducts {
+    List<String> productsList = [];
     String products;
-    this.orderItems.forEach((element) { productsList.add(element.productName);});
-    products=productsList.join(',');
+    this.orderItems.forEach((element) {
+      productsList.add(element.productName);
+    });
+    (productsList.length > 2)
+        ? (products = productsList.getRange(0, 2).join(',').toString() +
+            ' ' +
+            '(' +
+            (productsList.length - 2).toString() +
+            ')' +
+            ' more')
+        : products = productsList.join(',');
+
     return products;
   }
+
   factory Orders.fromJson(Map<String, dynamic> json) => Orders(
         orderId: json["orderId"],
         customer: Customer.fromJson(json["customer"]),
@@ -118,7 +159,7 @@ class Orders {
         deliveryResource: DeliveryResource.fromJson(json["deliveryResource"]),
         orderStatusHistory:
             OrderStatusHistory.fromJson(json["orderStatusHistory"]),
-    orderUpdateEtc: json["orderUpdateEtc"],
+        orderUpdateEtc: json["orderUpdateEtc"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -280,25 +321,25 @@ class OrderItem {
 
 class OrderStatusHistory {
   OrderStatusHistory({
-     this.orderPreparing,
+    this.orderPreparing,
     this.orderReady,
     this.orderTimeout,
     this.orderHandover,
     this.orderFulfilled,
   });
-  
+
   dynamic orderPreparing;
   dynamic orderReady;
   dynamic orderTimeout;
   dynamic orderHandover;
   dynamic orderFulfilled;
-  
+
   factory OrderStatusHistory.fromJson(Map<String, dynamic> json) =>
       OrderStatusHistory(
         orderPreparing: (json["orderPreparing"]),
         orderReady: (json["orderPreparing"]),
-        orderTimeout:(json["orderPreparing"]),
-        orderHandover:(json["orderPreparing"]),
+        orderTimeout: (json["orderPreparing"]),
+        orderHandover: (json["orderPreparing"]),
         orderFulfilled: (json["orderPreparing"]),
       );
 
@@ -309,5 +350,4 @@ class OrderStatusHistory {
         "orderHandover": orderHandover,
         "orderFulfilled": orderFulfilled,
       };
-
 }

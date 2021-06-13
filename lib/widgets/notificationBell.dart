@@ -3,7 +3,6 @@ import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-
 class PlayButton extends StatefulWidget {
   @override
   _PlayButtonState createState() => _PlayButtonState();
@@ -12,9 +11,8 @@ class PlayButton extends StatefulWidget {
 class _PlayButtonState extends State<PlayButton> {
   @override
   Widget build(BuildContext context) {
-   return Consumer<Messages>(builder: (context, Messages msg, child) {
-      if(msg.messagesList.length==0||msg.isRead)
-      {
+    return Consumer<Messages>(builder: (context, Messages msg, child) {
+      if (msg.messagesList.length == 0 || msg.isRead) {
         return Container();
       }
       return AvatarGlow(
@@ -42,6 +40,6 @@ class _PlayButtonState extends State<PlayButton> {
           ),
         ),
       );
-   });
+    });
   }
 }

@@ -18,7 +18,6 @@ class RootPage extends StatelessWidget {
     return FutureBuilder(
         future: readStorage(),
         builder: (ctx, snapshot) {
-
           if (snapshot.hasData) {
             //if device local data is empty means either he is logging in for first time
             // or he logged out last time hence direct him to LoginScreen

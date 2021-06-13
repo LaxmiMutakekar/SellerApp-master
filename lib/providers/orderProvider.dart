@@ -12,7 +12,8 @@ class OrderProvider extends ChangeNotifier {
   List<Orders> preparingOrderList = [];
   List<Orders> readyOrderList = [];
   List<Orders> delayedOrderList = [];
-  void fetchOrders()async {
+
+  void fetchOrders() async {
     //all order lists cleared
     pendingOrderList.clear();
     activeOrderList.clear();
@@ -63,13 +64,14 @@ class OrderProvider extends ChangeNotifier {
   }
 
   void acceptOrder(Orders order) {
-    //after accepting order order is moved to preparingList from pending list 
+    //after accepting order order is moved to preparingList from pending list
     order.status = AppConfig.preparingStatus;
     activeOrderList.add(order);
     preparingOrderList.add(order);
     pendingOrderList.remove(order);
     notifyListeners();
   }
+
   void rejectOrder(Orders order) {
     order.status = AppConfig.rejectedStatus;
     rejectedOrderList.add(order);
@@ -78,18 +80,15 @@ class OrderProvider extends ChangeNotifier {
   }
 
   void activeOrdersUpdate(Orders order, String status) {
-    
     switch (status) {
       case AppConfig.readyStatus:
         {
           //moved to ready orders
-          order.orderUpdateEtc=false;
-          readyOrderList.add(order);   
-          if(order.status==AppConfig.delayedStatus)
-          {
+          order.orderUpdateEtc = false;
+          readyOrderList.add(order);
+          if (order.status == AppConfig.delayedStatus) {
             delayedOrderList.remove(order);
-          }
-          else{
+          } else {
             preparingOrderList.remove(order);
           }
         }
@@ -105,6 +104,7 @@ class OrderProvider extends ChangeNotifier {
     order.status = status;
     notifyListeners();
   }
+
   void completeOrders(Orders order) {
     switch (order.status) {
       case AppConfig.preparingStatus:
@@ -135,8 +135,8 @@ class OrderProvider extends ChangeNotifier {
   void updateETC(Orders order, double value) {
     APIServices.updateETC(order, value.toInt());
     APIServices.updateButton(order.orderId);
-    order.updatedEtc=value;
-    order.orderUpdateEtc=false;
+    order.updatedEtc = value;
+    order.orderUpdateEtc = false;
     notifyListeners();
   }
 
@@ -145,13 +145,14 @@ class OrderProvider extends ChangeNotifier {
     order.orderStatusHistory.orderPreparing = value;
     notifyListeners();
   }
-  void updateButton(int oid) {
 
+  void updateButton(int oid) {
     activeOrderList
         .firstWhere((element) => element.orderId == oid)
         .orderUpdateEtc = false;
     notifyListeners();
   }
+
   void orderUpdate(String status, Orders order) {
     switch (status) {
       case AppConfig.preparingStatus:
@@ -164,15 +165,11 @@ class OrderProvider extends ChangeNotifier {
         {
           //ready orders
           readyOrderList.add(order);
-          if(order.status==AppConfig.delayedStatus)
-          {
+          if (order.status == AppConfig.delayedStatus) {
             delayedOrderList.remove(order);
+          } else {
+            preparingOrderList.remove(order);
           }
-          else
-          {
-              preparingOrderList.remove(order);
-          }
-          
         }
         break;
       case AppConfig.delayedStatus:

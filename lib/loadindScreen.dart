@@ -16,24 +16,22 @@ class LoadingScreen extends StatefulWidget {
 class _LoadingScreenState extends State<LoadingScreen> {
   @override
   Widget build(BuildContext context) {
-    final seller=Provider.of<SellerProvider>(context, listen: false);
-      return FutureBuilder(
+    final seller = Provider.of<SellerProvider>(context, listen: false);
+    return FutureBuilder(
         //fetches a seller from server by http get request
-          future: APIServices.fetchSeller(),
-          builder: (ctx, snapshot) {
-            if (snapshot.hasData) {
-              //if response is Seller type then store seller and go to HomeScreen
-              if (snapshot.data.runtimeType == Seller) {
-                seller.seller = snapshot.data;
-                return HomeScreen();
-              }
-              //else show error in server
-              return ServerError();
-            } else {
-              return Container();
+        future: APIServices.fetchSeller(),
+        builder: (ctx, snapshot) {
+          if (snapshot.hasData) {
+            //if response is Seller type then store seller and go to HomeScreen
+            if (snapshot.data.runtimeType == Seller) {
+              seller.seller = snapshot.data;
+              return HomeScreen();
             }
-          });
+            //else show error in server
+            return ServerError();
+          } else {
+            return Container();
+          }
+        });
   }
 }
-
-

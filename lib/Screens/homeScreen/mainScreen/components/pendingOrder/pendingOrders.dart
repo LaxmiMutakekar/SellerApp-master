@@ -16,7 +16,6 @@ class PendingOrders extends StatelessWidget {
   }) : super(
           key: key,
         );
-  OrderDetail orderItem;
 
   GlobalKey<FormState> globalFormKey = GlobalKey<FormState>();
 
@@ -45,7 +44,7 @@ class PendingOrders extends StatelessWidget {
       );
     }
     return SizedBox(
-      height: getProportionateScreenHeight(222),
+      height: 210,
       child: Column(
         children: [
           Center(
@@ -64,7 +63,6 @@ class PendingOrders extends StatelessWidget {
                 shrinkWrap: true,
                 itemBuilder: (BuildContext context, int index) {
                   Orders order = pendingOrder[index];
-                  orderItem = OrderDetail(order);
                   return PendingOrderCard(
                       pendingOrder: order, provider: provider);
                 }),

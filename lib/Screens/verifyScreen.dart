@@ -8,10 +8,12 @@ import 'package:Seller_App/APIServices/APIServices.dart';
 import 'package:Seller_App/providers/orderProvider.dart';
 
 class Verify extends StatelessWidget {
-   static String routeName="/verify";
+  static String routeName = "/verify";
   final Orders order;
+
   Verify({Key key, this.order}) : super(key: key);
-  var  otp;
+  var otp;
+
   @override
   Widget build(BuildContext context) {
     final orders = Provider.of<OrderProvider>(context, listen: false);
@@ -41,7 +43,8 @@ class Verify extends StatelessWidget {
                               fontSize: 19, fontWeight: FontWeight.w300))),
                   Container(
                     color: Colors.transparent,
-                    margin: const EdgeInsets.symmetric(horizontal: 50,vertical: 10),
+                    margin: const EdgeInsets.symmetric(
+                        horizontal: 50, vertical: 10),
                     //padding: const EdgeInsets.all(10.0),
                     child: PinCodeTextField(
                       cursorColor: Colors.green[400],

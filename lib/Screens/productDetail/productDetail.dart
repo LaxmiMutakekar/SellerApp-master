@@ -5,11 +5,10 @@ import 'package:cached_network_image/src/cached_image_widget.dart';
 
 class ProductDetails extends StatelessWidget {
   final Products product;
-  const ProductDetails({
-    Key key,
-    this.product
-  }) : super(key: key);
+
+  const ProductDetails({Key key, this.product}) : super(key: key);
   static String routeName = "/productDetail";
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -21,7 +20,7 @@ class ProductDetails extends StatelessWidget {
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height / 2,
               child: Hero(
-                tag:product.pid ,
+                tag: product.pid,
                 child: CachedNetworkImage(
                   imageUrl: product.image,
                   fit: BoxFit.fill,
@@ -54,12 +53,11 @@ class ProductDetails extends StatelessWidget {
                 width: 350,
                 height: 350,
                 decoration: BoxDecoration(
-                
                   color: Colors.white,
                   boxShadow: [
                     BoxShadow(
                       color: Colors.grey,
-                      offset: Offset(0.0, 1.0), 
+                      offset: Offset(0.0, 1.0),
                       blurRadius: 6.0,
                     ),
                   ],
@@ -82,9 +80,9 @@ class ProductDetails extends StatelessWidget {
                         style: Theme.of(context).textTheme.bodyText2,
                       ),
                       div(),
-                      buildText("skuId", product.skuId,context),
-                      buildText("upc", product.upc,context),
-                      buildText("ean", product.ean,context),
+                      buildText("skuId", product.skuId, context),
+                      buildText("upc", product.upc, context),
+                      buildText("ean", product.ean, context),
                       div(),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -133,7 +131,7 @@ class ProductDetails extends StatelessWidget {
     );
   }
 
-  Widget buildText(String t1, String t2,BuildContext context) {
+  Widget buildText(String t1, String t2, BuildContext context) {
     return Row(
       children: [
         Text(
@@ -148,7 +146,7 @@ class ProductDetails extends StatelessWidget {
     );
   }
 
-   div() {
+  div() {
     return const Divider(
       height: 17,
       thickness: 2,

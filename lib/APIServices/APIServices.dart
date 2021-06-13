@@ -12,7 +12,7 @@ import 'package:Seller_App/models/statusUpd.dart';
 
 class APIServices {
   static Future<dynamic> login(
-      LoginRequestModel requestModel) async {
+      LoginRequestModel requestModel,http.Client client) async {
     try {
       Uri url = Uri.parse(AppConfig.baseUrl + "/login/seller");
       Map<String, String> headers = {
@@ -28,7 +28,7 @@ class APIServices {
         },
       );
 
-      //print(response.statusCode);
+      print(response.statusCode);
       if (response.statusCode == 200) {
         Session.token = json.decode(response.body)['token'];
         return LoginResponseModel.fromJson(
@@ -172,10 +172,7 @@ class APIServices {
               updateResponseFromJson(response.body).localDateTime;
           order.updateButtonStatus = false;
         }
-       
-        // if (status == AppConfig.doneStatus) {
-        //   order.sedHandedoverTime =
-        //       updateResponseFromJson(response.body).localDateTime;
+
         // }
         return true;
       } else {

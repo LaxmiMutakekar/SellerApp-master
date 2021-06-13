@@ -7,12 +7,14 @@ import 'package:Seller_App/widgets/cards.dart';
 class OrderHistory extends StatefulWidget {
   static String routeName = "/orderHistory";
   final OrderProvider orderProvider;
+
   OrderHistory({
     Key key,
     this.orderProvider,
   }) : super(
           key: key,
         );
+
   @override
   _OrderHistoryState createState() => _OrderHistoryState();
 }
@@ -77,15 +79,18 @@ class OrderHistoryCard extends StatelessWidget {
               )
             ],
           ),
-           OverFlowText(text: order.orderItemProducts,textSize: 12,),
+          OverFlowText(
+            text: order.orderItemProducts,
+            textSize: 12,
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-           // crossAxisAlignment: CrossAxisAlignment.end,
+            // crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               SizedBox(
-           height: 30,
-           width: 100,
-           child: Image.asset("assets/Images/falabellaLogo.png")),
+                  height: 30,
+                  width: 100,
+                  child: Image.asset("assets/Images/falabellaLogo.png")),
               Column(
                 children: [
                   Text(
@@ -96,15 +101,16 @@ class OrderHistoryCard extends StatelessWidget {
                         fontWeight: FontWeight.bold),
                   ),
                   Text(
-                'Order amount',
-                style: TextStyle(fontSize: 10,color: Colors.black45,fontWeight: FontWeight.bold),
-              ),
+                    'Order amount',
+                    style: TextStyle(
+                        fontSize: 10,
+                        color: Colors.black45,
+                        fontWeight: FontWeight.bold),
+                  ),
                 ],
               ),
             ],
           ),
-          
-         
         ],
       ),
     );

@@ -4,9 +4,10 @@ import 'package:Seller_App/Screens/loginScreen/components/emailForm.dart';
 import 'package:Seller_App/Screens/loginScreen/components/passwordForm.dart';
 import 'package:Seller_App/models/loginModel.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart'as http;
 
 class LoginBody extends StatefulWidget {
-   LoginBody({
+  LoginBody({
     Key key,
     @required this.hidePassword,
     @required this.scaffoldKey,
@@ -16,6 +17,7 @@ class LoginBody extends StatefulWidget {
   final bool hidePassword;
   final GlobalKey<ScaffoldState> scaffoldKey;
   bool isApiCallProcess;
+
   @override
   _LoginBodyState createState() => _LoginBodyState();
 }
@@ -23,11 +25,13 @@ class LoginBody extends StatefulWidget {
 class _LoginBodyState extends State<LoginBody> {
   GlobalKey<FormState> globalFormKey = GlobalKey<FormState>();
   LoginRequestModel loginRequestModel;
+
   @override
   void initState() {
     super.initState();
     loginRequestModel = new LoginRequestModel();
   }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -61,18 +65,19 @@ class _LoginBodyState extends State<LoginBody> {
                       SizedBox(height: 20),
                       BuildEmailFormField(loginRequestModel: loginRequestModel),
                       SizedBox(height: 20),
-                       BuildPassWordform(loginRequestModel: loginRequestModel, hidePassword: widget.hidePassword),
+                      BuildPassWordform(
+                          loginRequestModel: loginRequestModel,
+                          hidePassword: widget.hidePassword),
                       SizedBox(height: 30),
                       FlatButton(
-                        padding: EdgeInsets.symmetric(
-                            vertical: 12, horizontal: 80),
+                        padding:
+                            EdgeInsets.symmetric(vertical: 12, horizontal: 80),
                         onPressed: () {
                           if (validateAndSave()) {
                             setState(() {
                               widget.isApiCallProcess = true;
                             });
-                            APIServices.login(loginRequestModel)
-                                .then((value) {
+                            APIServices.login(loginRequestModel,http.Client()).then((value) {
                               if (value != null) {
                                 setState(() {
                                   widget.isApiCallProcess = false;
@@ -82,19 +87,17 @@ class _LoginBodyState extends State<LoginBody> {
                                       content: Text("Sorry server error!"));
                                   widget.scaffoldKey.currentState
                                       .showSnackBar(snackBar);
-                                }
-                                else {
+                                } else {
                                   if (value.token.isNotEmpty) {
                                     final snackBar = SnackBar(
                                         content: Text("Login Successful"));
                                     widget.scaffoldKey.currentState
                                         .showSnackBar(snackBar);
                                     Navigator.pushNamed(
-                                        context,
-                                        HomeScreen.routeName);
+                                        context, HomeScreen.routeName);
                                   } else {
                                     final snackBar =
-                                    SnackBar(content: Text(value.error));
+                                        SnackBar(content: Text(value.error));
                                     widget.scaffoldKey.currentState
                                         .showSnackBar(snackBar);
                                   }

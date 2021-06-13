@@ -19,7 +19,9 @@ class DefaultButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialButton(
-        shape: shape??RoundedRectangleBorder(borderRadius: BorderRadius.circular(kButtonRadius)),
+        shape: shape ??
+            RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(kButtonRadius)),
         color: buttonColor ?? Colors.black,
         onPressed: press,
         elevation: 0,

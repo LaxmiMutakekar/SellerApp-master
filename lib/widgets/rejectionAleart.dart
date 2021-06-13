@@ -6,25 +6,34 @@ import 'package:Seller_App/providers/orderProvider.dart';
 import 'package:provider/provider.dart';
 import 'package:Seller_App/App_configs/app_configs.dart';
 import 'package:Seller_App/models/rejectionReasons.dart';
-final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-enum SingingCharacter { reason1, reason2 ,reason3,reason4}
-bool isVisible=false;
 
-String reason="";
-Future<String> showReasonsDialog(BuildContext context,Orders order) async {
+final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+enum SingingCharacter { reason1, reason2, reason3, reason4 }
+
+bool isVisible = false;
+
+String reason = "";
+
+Future<String> showReasonsDialog(BuildContext context, Orders order) async {
   final orders = Provider.of<OrderProvider>(context, listen: false);
-  return await showDialog(context: context,
-      builder: (context){
-        SingingCharacter  _character = SingingCharacter.reason1;
-        final TextEditingController _textEditingController = TextEditingController();
+  return await showDialog(
+      context: context,
+      builder: (context) {
+        SingingCharacter _character = SingingCharacter.reason1;
+        final TextEditingController _textEditingController =
+            TextEditingController();
         bool isChecked = false;
-        isVisible=false;
-        return StatefulBuilder(builder: (context,setState){
+        isVisible = false;
+        return StatefulBuilder(builder: (context, setState) {
           return AlertDialog(
-            contentPadding:EdgeInsets.only(left: 24,right: 24,top: 10,bottom: 0),
+            contentPadding:
+                EdgeInsets.only(left: 24, right: 24, top: 10, bottom: 0),
             shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-            title: Text('Select the rejection reason',style: TextStyle(fontSize: 20),),
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            title: Text(
+              'Select the rejection reason',
+              style: TextStyle(fontSize: 20),
+            ),
             content: Form(
                 key: _formKey,
                 child: SingleChildScrollView(
@@ -35,69 +44,70 @@ Future<String> showReasonsDialog(BuildContext context,Orders order) async {
                       children: [
                         RadioListTile<SingingCharacter>(
                           contentPadding: EdgeInsets.all(0),
-                          title:  Text(reasons[0]),
+                          title: Text(reasons[0]),
                           value: SingingCharacter.reason1,
                           groupValue: _character,
                           onChanged: (value) {
                             setState(() {
-                              isVisible=false;
+                              isVisible = false;
                               _character = value;
-                              reason=reasons[0];
+                              reason = reasons[0];
                             });
                           },
                         ),
                         RadioListTile<SingingCharacter>(
                           contentPadding: EdgeInsets.all(0),
-                          title:  Text(reasons[1]),
+                          title: Text(reasons[1]),
                           value: SingingCharacter.reason2,
                           groupValue: _character,
                           onChanged: (value) {
                             setState(() {
-                              isVisible=false;
+                              isVisible = false;
                               _character = value;
-                              reason=reasons[1];
+                              reason = reasons[1];
                             });
                           },
                         ),
                         RadioListTile<SingingCharacter>(
                           contentPadding: EdgeInsets.all(0),
-                          title:  Text(reasons[2]),
+                          title: Text(reasons[2]),
                           value: SingingCharacter.reason3,
                           groupValue: _character,
                           onChanged: (value) {
                             setState(() {
-                              isVisible=false;
+                              isVisible = false;
                               _character = value;
-                              reason=reasons[2];
+                              reason = reasons[2];
                             });
                           },
                         ),
                         RadioListTile<SingingCharacter>(
                           contentPadding: EdgeInsets.all(0),
-                          title:  Text(reasons[3]),
+                          title: Text(reasons[3]),
                           value: SingingCharacter.reason4,
                           groupValue: _character,
                           onChanged: (value) {
                             setState(() {
                               _character = value;
-                              isVisible=true;
+                              isVisible = true;
                             });
                           },
                         ),
                         Visibility(
                           visible: isVisible,
                           child: Padding(
-                            padding: const EdgeInsets.only(left:40.0),
+                            padding: const EdgeInsets.only(left: 40.0),
                             child: TextFormField(
                               controller: _textEditingController,
-                              validator: (value){
-                                return value.isNotEmpty ? null : "Enter the reason of rejection";
+                              validator: (value) {
+                                return value.isNotEmpty
+                                    ? null
+                                    : "Enter the reason of rejection";
                               },
                               decoration: InputDecoration(hintText: " Reason"),
                             ),
                           ),
                         ),
-
                       ],
                     ),
                   ),
@@ -105,34 +115,29 @@ Future<String> showReasonsDialog(BuildContext context,Orders order) async {
             actions: <Widget>[
               TextButton(
                 child: Text('Cancel'),
-                onPressed: (){
-
+                onPressed: () {
                   Navigator.of(context).pop();
                 },
               ),
               DefaultButton(
-                text:('Continue'),
-                press: (){
-                  if(isVisible) {
+                text: ('Continue'),
+                press: () {
+                  if (isVisible) {
                     if (_formKey.currentState.validate()) {
                       reason = _textEditingController.text;
-                      print(reason);
                       orders.rejectOrder(order);
-                      APIServices.addRejectionStatus(order.orderId,
-                          reason, AppConfig.rejectedStatus);
+                      APIServices.addRejectionStatus(
+                          order.orderId, reason, AppConfig.rejectedStatus);
                       // Do something like updating SharedPreferences or User Settings etc.
                       Navigator.of(context).pop();
                     }
+                  } else {
+                    orders.rejectOrder(order);
+                    APIServices.addRejectionStatus(
+                        order.orderId, reason, AppConfig.rejectedStatus);
+                    // Do something like updating SharedPreferences or User Settings etc.
+                    Navigator.of(context).pop();
                   }
-                  else
-                  {
-                      orders.rejectOrder(order);
-                  APIServices.addRejectionStatus(order.orderId,
-                      reason, AppConfig.rejectedStatus);
-                  // Do something like updating SharedPreferences or User Settings etc.
-                  Navigator.of(context).pop();
-                  }
-                  
                 },
               ),
             ],

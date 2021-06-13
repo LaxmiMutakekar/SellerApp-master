@@ -1,102 +1,84 @@
+import 'package:Seller_App/App_configs/sizeConfigs.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:numberpicker/numberpicker.dart';
 
 import '../mainScreen.dart';
+
 final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-enum SingingCharacter { timing1, timing2 ,timing3,timing4}
-final List<String> reasons = [
-  '5 minutes',
-  '10 minutes',
-  '15 minutes',
-  '30 minutes',
-];
-double duration=0;
+double duration = 0;
+
 Future<dynamic> updateETC(BuildContext context) async {
-  //final orders = Provider.of<Update>(context, listen: false);
-  return  showDialog(context: context,
-      builder: (context){
-        SingingCharacter  _character = SingingCharacter.timing1;
-        return StatefulBuilder(builder: (context,setState){
+  int _currentHorizontalIntValue = 10;
+  return showDialog(
+      context: context,
+      builder: (context) {
+        return StatefulBuilder(builder: (context, setState) {
           return AlertDialog(
-            contentPadding:EdgeInsets.only(left: 24,right: 24,top: 10,bottom: 0),
-            shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-            title: Text('Select the updating timing',style: TextStyle(fontSize: 20),),
-            content: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(0.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    RadioListTile<SingingCharacter>(
-                      contentPadding: EdgeInsets.all(0),
-                      title:  Text(reasons[0]),
-                      value: SingingCharacter.timing1,
-                      groupValue: _character,
-                      onChanged: (value) {
-                        setState(() {
-                          duration=5;
-                          _character = value;
-                        });
-                      },
+            content: Container(
+              height: getProportionateScreenHeight(150),
+              width: getProportionateScreenWidth(500),
+              child: Column(
+                children: [
+                  NumberPicker(
+                    value: _currentHorizontalIntValue,
+                    minValue: 10,
+                    maxValue: 40,
+                    step: 1,
+                    axis: Axis.horizontal,
+                    haptics: true,
+                    infiniteLoop: true,
+                    selectedTextStyle: TextStyle(fontWeight: FontWeight.bold),
+                    onChanged: (value) =>
+                        setState(() => _currentHorizontalIntValue = value),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(color: Colors.black26),
                     ),
-                    RadioListTile<SingingCharacter>(
-                      contentPadding: EdgeInsets.all(0),
-                      title:  Text(reasons[1]),
-                      value: SingingCharacter.timing2,
-                      groupValue: _character,
-                      onChanged: (value) {
-                        setState(() {
-                          _character = value;
-                          duration=10;
-                        });
-                      },
-                    ),
-                    RadioListTile<SingingCharacter>(
-                      contentPadding: EdgeInsets.all(0),
-                      title:  Text(reasons[2]),
-                      value: SingingCharacter.timing3,
-                      groupValue: _character,
-                      onChanged: (value) {
-                        setState(() {
-                          _character = value;
-                          duration=15;
-                        });
-                      },
-                    ),
-                    RadioListTile<SingingCharacter>(
-                      contentPadding: EdgeInsets.all(0),
-                      title:  Text(reasons[3]),
-                      value: SingingCharacter.timing4,
-                      groupValue: _character,
-                      onChanged: (value) {
-                        setState(() {
-                          duration=30;
-                          _character = value;
-
-                        });
-                      },
-                    ),
-                    
-
-                  ],
-                ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      IconButton(
+                        icon: Icon(Icons.remove),
+                        onPressed: () => setState(() {
+                          final newValue = _currentHorizontalIntValue - 1;
+                          _currentHorizontalIntValue = newValue.clamp(10, 40);
+                        }),
+                      ),
+                      Text('value: $_currentHorizontalIntValue'),
+                      IconButton(
+                        icon: Icon(Icons.add),
+                        onPressed: () => setState(() {
+                          final newValue = _currentHorizontalIntValue + 1;
+                          _currentHorizontalIntValue = newValue.clamp(10, 40);
+                        }),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      TextButton(
+                        child: Text('Cancel'),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                      TextButton(
+                        child: Text('Continue'),
+                        onPressed: () {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text(
+                                  "Added $_currentHorizontalIntValue minutes")));
+                          Navigator.of(context).pop(_currentHorizontalIntValue);
+                        },
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
-            actions: <Widget>[
-              TextButton(
-                child: Text('Cancel'),
-                onPressed: (){
-
-                  Navigator.of(context).pop();
-                },
-              ),
-              TextButton(
-                child: Text('Continue'),
-                onPressed: (){
-                  Navigator.of(context).pop(duration);
-                },
-              ),
-            ],
           );
         });
       });

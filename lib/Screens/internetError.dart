@@ -1,5 +1,6 @@
 import 'package:Seller_App/widgets/defaultButton.dart';
 import 'package:flutter/material.dart';
+
 //Screen shown when device is offline indicating to check the connection
 class InternetError extends StatefulWidget {
   static String routeName = '/internetError';

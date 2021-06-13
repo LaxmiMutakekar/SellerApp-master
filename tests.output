@@ -1,0 +1,13 @@
+{"protocolVersion":"0.1.1","runnerVersion":null,"pid":15083,"type":"start","time":0}
+{"suite":{"id":0,"platform":"vm","path":"/Users/laxmimutakekar/Desktop/sellerApp/SellerApp-master/test/widget_test.dart"},"type":"suite","time":0}
+{"test":{"id":1,"name":"loading /Users/laxmimutakekar/Desktop/sellerApp/SellerApp-master/test/widget_test.dart","suiteID":0,"groupIDs":[],"metadata":{"skip":false,"skipReason":null},"line":null,"column":null,"url":null},"type":"testStart","time":1}
+{"count":1,"type":"allSuites","time":3}
+
+[{"event":"test.startedProcess","params":{"observatoryUri":"http://127.0.0.1:59774/X-I8SMxZ8cs=/"}}]
+{"testID":1,"result":"success","skipped":false,"hidden":true,"type":"testDone","time":2206}
+{"group":{"id":2,"suiteID":0,"parentID":null,"name":"","metadata":{"skip":false,"skipReason":null},"testCount":1,"line":null,"column":null,"url":null},"type":"group","time":2210}
+{"test":{"id":3,"name":"Counter increments smoke test","suiteID":0,"groupIDs":[2],"metadata":{"skip":false,"skipReason":null},"line":138,"column":5,"url":"package:flutter_test/src/widget_tester.dart","root_line":14,"root_column":3,"root_url":"file:///Users/laxmimutakekar/Desktop/sellerApp/SellerApp-master/test/widget_test.dart"},"type":"testStart","time":2210}
+{"testID":3,"messageType":"print","message":"══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════\nThe following TestFailure object was thrown running a test:\n  Expected: exactly one matching node in the widget tree\n  Actual: _TextFinder:<zero widgets with text \"0\" (ignoring offstage widgets)>\n   Which: means none were found but one was expected\n\nWhen the exception was thrown, this was the stack:\n#4      main.<anonymous closure> (file:///Users/laxmimutakekar/Desktop/sellerApp/SellerApp-master/test/widget_test.dart:19:5)\n<asynchronous suspension>\n<asynchronous suspension>\n(elided one frame from package:stack_trace)\n...\n\nThis was caught by the test expectation on the following line:\n  file:///Users/laxmimutakekar/Desktop/sellerApp/SellerApp-master/test/widget_test.dart line 19\nThe test description was:\n  Counter increments smoke test\n════════════════════════════════════════════════════════════════════════════════════════════════════","type":"print","time":2846}
+{"testID":3,"error":"Test failed. See exception logs above.\nThe test description was: Counter increments smoke test","stackTrace":"","isFailure":false,"type":"error","time":2849}
+{"testID":3,"result":"error","skipped":false,"hidden":false,"type":"testDone","time":2852}
+{"success":false,"type":"done","time":4176}

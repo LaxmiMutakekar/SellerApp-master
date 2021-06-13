@@ -17,6 +17,7 @@ class DefaultSwitch extends StatefulWidget {
   String type;
   var product;
   var model;
+
   @override
   _DefaultSwitchState createState() => _DefaultSwitchState();
 }
@@ -42,7 +43,6 @@ class _DefaultSwitchState extends State<DefaultSwitch> {
         onToggle: (val) {
           setState(() {
             showMyDialog(context, val).then((value) {
-              print(value);
               if (value == true) {
                 if (widget.type == 'Seller') {
                   widget.model.changeAvailabiliy(val);

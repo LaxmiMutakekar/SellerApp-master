@@ -11,13 +11,23 @@ class SwipingText extends StatefulWidget {
   final EdgeInsets padding;
   final Size size;
 
-  const SwipingText({Key key, this.defaultValue, this.textStyle, this.decoration, this.swipeDirection, this.padding, this.size,this.textColor}) : super(key: key);
+  const SwipingText(
+      {Key key,
+      this.defaultValue,
+      this.textStyle,
+      this.decoration,
+      this.swipeDirection,
+      this.padding,
+      this.size,
+      this.textColor})
+      : super(key: key);
 
   @override
   SwipingTextState createState() => SwipingTextState();
 }
 
-class SwipingTextState extends State<SwipingText> with TickerProviderStateMixin {
+class SwipingTextState extends State<SwipingText>
+    with TickerProviderStateMixin {
   int _currentValue = 0;
   int _nextValue = 0;
   AnimationController _controller;
@@ -38,7 +48,8 @@ class SwipingTextState extends State<SwipingText> with TickerProviderStateMixin 
 
   _init() {
     _gotData = false;
-    _controller = AnimationController(vsync: this, duration: Duration(milliseconds: 450));
+    _controller =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 450));
     _swipeAnimation1 = _controller.drive(_swipeDetails1);
     _swipeAnimation2 = _controller.drive(_swipeDetails2);
 
@@ -86,7 +97,6 @@ class SwipingTextState extends State<SwipingText> with TickerProviderStateMixin 
         style: widget.textStyle,
         textScaleFactor: 1.0,
         textAlign: TextAlign.center,
-        
       ),
     );
 
@@ -105,7 +115,10 @@ class SwipingTextState extends State<SwipingText> with TickerProviderStateMixin 
             children: <Widget>[
               _gotData
                   ? FractionalTranslation(
-                      translation: (widget.swipeDirection == SwipeDirection.down) ? _swipeAnimation1.value : -_swipeAnimation1.value,
+                      translation:
+                          (widget.swipeDirection == SwipeDirection.down)
+                              ? _swipeAnimation1.value
+                              : -_swipeAnimation1.value,
                       child: ClipRect(
                         clipper: BoundClipper(
                           percentage: _swipeAnimation1.value.dy,
@@ -122,7 +135,9 @@ class SwipingTextState extends State<SwipingText> with TickerProviderStateMixin 
                     )
                   : SizedBox(),
               FractionalTranslation(
-                translation: (widget.swipeDirection == SwipeDirection.down) ? _swipeAnimation2.value : -_swipeAnimation2.value,
+                translation: (widget.swipeDirection == SwipeDirection.down)
+                    ? _swipeAnimation2.value
+                    : -_swipeAnimation2.value,
                 child: ClipRect(
                   clipper: BoundClipper(
                     percentage: _swipeAnimation2.value.dy,

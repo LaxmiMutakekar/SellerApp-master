@@ -14,12 +14,12 @@ class NotificationDrawer extends StatelessWidget {
     this.orderProvider,
   }) : super(key: key);
 
-   double screenwidth;
+  double screenwidth;
   OrderProvider orderProvider;
 
   @override
   Widget build(BuildContext context) {
-    screenwidth=MediaQuery.of(context).size.width;
+    screenwidth = MediaQuery.of(context).size.width;
     return Consumer<Messages>(builder: (context, Messages msg, child) {
       List<Message> messageList = msg.messagesList;
       return Container(

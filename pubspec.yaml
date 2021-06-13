@@ -1,6 +1,6 @@
 name: Seller_App
 description: A Mobile application for seller
-publish_to: 'none' 
+publish_to: 'none'
 version: 1.0.0+1
 environment:
   sdk: ">=2.7.0 <3.0.0"
@@ -13,11 +13,13 @@ dependencies:
   google_fonts: ^2.0.0
   intl: ^0.17.0
   flutter_svg: ^0.22.0
-  
-  
-  flutter:  
+  numberpicker: ^2.1.1
+
+
+
+  flutter:
     sdk: flutter
-    
+
   cupertino_icons: ^1.0.2
   http: ^0.13.1
   cached_network_image: ^3.0.0
@@ -26,12 +28,16 @@ dependencies:
   provider: ^5.0.0
   fluttertoast: ^3.1.3
   avatar_glow: ^1.1.0
+  timeago: ^3.0.2
 
-  pin_code_fields:   
+  pin_code_fields:
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  build_runner:up
+  mockito: ^5.0.10
+
 dependency_overrides:
   flutter_offline: ^2.0.0
   connectivity: ^3.0.6
@@ -39,10 +45,10 @@ dependency_overrides:
 flutter:
 
   uses-material-design: true
- 
+
   assets:
     - assets/Images/
- 
+
   fonts:
     - family: Raleway
       fonts:

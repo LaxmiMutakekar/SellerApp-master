@@ -6,20 +6,23 @@ import 'package:Seller_App/widgets/timer/sliding_text.dart';
 import 'package:Seller_App/widgets/timer/swipe_direction.dart';
 import 'package:flutter/material.dart';
 
+import 'defaultAleart.dart';
+
 class UpCounter extends StatefulWidget {
   final Orders order;
+
   UpCounter({
     Key key,
     this.order,
   }) : super(
           key: key,
         );
+
   @override
   _UpCounterState createState() => _UpCounterState();
 }
 
 class _UpCounterState extends State<UpCounter> {
- 
   Timer _timer;
   int seconds = 0;
   int minutes = 0;
@@ -58,31 +61,51 @@ class _UpCounterState extends State<UpCounter> {
       ),
     );
   }
- GlobalKey<SwipingTextState> _secKey = GlobalKey<SwipingTextState>();
+
+  GlobalKey<SwipingTextState> _secKey = GlobalKey<SwipingTextState>();
   GlobalKey<SwipingTextState> _sec10Key = GlobalKey<SwipingTextState>();
   GlobalKey<SwipingTextState> _minKey = GlobalKey<SwipingTextState>();
   GlobalKey<SwipingTextState> _min10Key = GlobalKey<SwipingTextState>();
+
+  // _checkDelayExceed() async {
+  //   if(widget.order.getDelayedSec>widget.order.orderPreparationTime*60)
+  //   {
+  //     showAleartDialog(
+  //       context,
+  //       'Sorry delay exceeded',
+  //       Text(
+  //         'You have take much longer to complete this order and now we have to auto reject this',
+  //         textAlign: TextAlign.center,
+  //         maxLines: 3,
+  //       ),
+  //     );
+  //   }
+  // }
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     setState(() {
-      seconds=widget.order.getDelayedSec??0;
-      minutes=seconds~/60;
-      seconds=seconds%60;
+      seconds = widget.order.getDelayedSec;
+      minutes = seconds ~/ 60;
+      seconds = seconds % 60;
     });
-       print(widget.order.getDelayedSec);
-    //seconds=widget.order.orderStatusHistory.orderTimeout
     startTimer();
   }
-@override
+
+  @override
   void dispose() {
     _timer?.cancel();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
-
+    // Future.delayed(
+    //     Duration(minutes: widget.order.orderPreparationTime.toInt()),
+    //     () {print(widget.order.orderId.toString()+'delay exceeded');
+    //
+    //     });
     return Column(
       children: [
         Container(
@@ -113,39 +136,54 @@ class _UpCounterState extends State<UpCounter> {
                 key: _min10Key,
                 defaultValue: minutes ~/ 10,
                 textStyle: TextStyle(
-                    color: Colors.red, fontSize: 15, fontWeight: FontWeight.w400),
+                    color: Colors.red,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w400),
                 swipeDirection: SwipeDirection.up,
               ),
               SwipingText(
                 key: _minKey,
                 textStyle: TextStyle(
-                    color: Colors.red, fontSize: 15, fontWeight: FontWeight.w400),
+                    color: Colors.red,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w400),
                 defaultValue: minutes % 10,
                 swipeDirection: SwipeDirection.up,
               ),
               Text(
                 ':',
                 style: TextStyle(
-                    color: Colors.red, fontSize: 15, fontWeight: FontWeight.w400),
+                    color: Colors.red,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w400),
               ),
               SwipingText(
                 key: _sec10Key,
                 textStyle: TextStyle(
-                    color: Colors.red, fontSize: 15, fontWeight: FontWeight.w400),
+                    color: Colors.red,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w400),
                 defaultValue: seconds ~/ 10,
                 swipeDirection: SwipeDirection.up,
               ),
               SwipingText(
                 key: _secKey,
                 textStyle: TextStyle(
-                    color: Colors.red, fontSize: 15, fontWeight: FontWeight.w400),
-                defaultValue: seconds %10,
+                    color: Colors.red,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w400),
+                defaultValue: seconds % 10,
                 swipeDirection: SwipeDirection.up,
               ),
             ],
           ),
         ),
-        Text('Delayed by')
+        Opacity(
+            opacity: 0.7,
+            child: Text(
+              ' Delayed by',
+              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+            ))
       ],
     );
   }

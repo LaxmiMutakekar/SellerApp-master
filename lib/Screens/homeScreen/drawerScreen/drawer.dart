@@ -53,7 +53,10 @@ class _MenuDashboardState extends State<MenuDashboard> {
                       children: [
                         Text('Welcome',
                             style: GoogleFonts.raleway(
-                                textStyle: Theme.of(context).textTheme.subtitle2.copyWith(color: Colors.white))),
+                                textStyle: Theme.of(context)
+                                    .textTheme
+                                    .subtitle2
+                                    .copyWith(color: Colors.white))),
                         Text(sellerName == null ? ('Loading..') : sellerName,
                             style: TextStyle(
                                 color: Colors.white,

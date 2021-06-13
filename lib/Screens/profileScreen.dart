@@ -3,13 +3,15 @@ import 'package:Seller_App/providers/seller.dart';
 import 'package:provider/provider.dart';
 
 class ProfilePage extends StatefulWidget {
-   static String routeName="/profile";
+  static String routeName = "/profile";
+
   @override
   _ProfilePageState createState() => _ProfilePageState();
 }
 
 class _ProfilePageState extends State<ProfilePage> {
   bool isObscurePassword = true;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,7 +79,8 @@ class _ProfilePageState extends State<ProfilePage> {
                       children: [
                         buildTextField("Full Name", seller.seller.name, false),
                         buildTextField("Email", seller.seller.email, false),
-                        buildTextField("Phone Number", seller.seller.phone, false),
+                        buildTextField(
+                            "Phone Number", seller.seller.phone, false),
                         buildTextField("Password", "1234", true),
                         buildTextField("Type", seller.seller.type, false),
                         //buildTextField("Location", seller.seller.location, false),
@@ -107,7 +110,6 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                     ),
                   ),
-
                   ElevatedButton(
                     onPressed: () {},
                     child: Text(
@@ -137,12 +139,12 @@ class _ProfilePageState extends State<ProfilePage> {
         decoration: InputDecoration(
           suffixIcon: isPasswordTextField
               ? IconButton(
-              icon: Icon(Icons.remove_red_eye, color: Colors.grey),
-              onPressed: () {
-                setState(() {
-                  isObscurePassword = !isObscurePassword;
-                });
-              })
+                  icon: Icon(Icons.remove_red_eye, color: Colors.grey),
+                  onPressed: () {
+                    setState(() {
+                      isObscurePassword = !isObscurePassword;
+                    });
+                  })
               : null,
           contentPadding: EdgeInsets.only(bottom: 5),
           labelText: labelText,

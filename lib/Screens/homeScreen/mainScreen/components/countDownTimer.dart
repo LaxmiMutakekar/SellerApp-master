@@ -9,20 +9,29 @@ import 'package:flutter/material.dart';
 class CountDownTimer {
   OrderProvider orderProvider;
   Orders order;
+
   CountDownTimer(this.orderProvider, this.order);
+
   DownTimerController _timerController = DownTimerController();
+
   set updateEtcTime(double duration) {
     _timerController.updateDuration(
         Duration(seconds: order.remSeconds + duration.toInt() * 60));
-    orderProvider.updateETC(order,duration);
+    orderProvider.updateETC(order, duration);
   }
 
   Widget get countDownTimer {
     return Column(
       children: [
         Opacity(
-          opacity: 0.6,
-          child: Text('Time left',style: TextStyle(fontSize: 12,fontWeight: FontWeight.w200,),)),
+            opacity: 0.6,
+            child: Text(
+              'Time left',
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w200,
+              ),
+            )),
         Container(
           width: getProportionateScreenWidth(70),
           padding: EdgeInsets.all(3),
@@ -44,25 +53,23 @@ class CountDownTimer {
             color: Colors.transparent,
             borderRadius: BorderRadius.circular(5.0),
           ),
-          child: 
-              DownTimer(
-                timerController: _timerController,
-                timerTextStyle: TimerTextStyle(
-                  uniformTextStyle: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                duration: Duration(seconds: order.remSeconds),
-                onComplete: () {
-                  APIServices.changeOrderStatus(order, AppConfig.delayedStatus);
-                  APIServices.updateButton(order.orderId);
-                  orderProvider.activeOrdersUpdate(order, AppConfig.delayedStatus);
-                },
+          child: DownTimer(
+            timerController: _timerController,
+            timerTextStyle: TimerTextStyle(
+              uniformTextStyle: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w500,
               ),
-            
+            ),
+            duration: Duration(seconds: order.remSeconds),
+            onComplete: () {
+              APIServices.changeOrderStatus(order, AppConfig.delayedStatus);
+              APIServices.updateButton(order.orderId);
+              orderProvider.activeOrdersUpdate(order, AppConfig.delayedStatus);
+            },
+          ),
         ),
-        Text('MM : SS'), 
+        Text('MM : SS'),
       ],
     );
   }

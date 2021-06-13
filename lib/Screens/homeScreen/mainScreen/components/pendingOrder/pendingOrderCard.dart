@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:Seller_App/App_configs/sizeConfigs.dart';
 import 'package:Seller_App/Screens/homeScreen/mainScreen/components/pendingOrder/buttons.dart';
 import 'package:Seller_App/models/orders.dart';
@@ -10,7 +12,7 @@ import 'package:Seller_App/widgets/timer/sliding_text.dart';
 import 'package:Seller_App/widgets/timer/swipe_direction.dart';
 import 'package:flutter/material.dart';
 
-class PendingOrderCard extends StatelessWidget {
+class PendingOrderCard extends StatefulWidget {
   PendingOrderCard({
     Key key,
     @required this.pendingOrder,
@@ -21,7 +23,42 @@ class PendingOrderCard extends StatelessWidget {
   final OrderProvider provider;
 
   @override
+  _PendingOrderCardState createState() => _PendingOrderCardState();
+}
+
+class _PendingOrderCardState extends State<PendingOrderCard> {
+  Timer _timer;
+  String minAfterPlaced = '';
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    minAfterPlaced = widget.pendingOrder.placedAgo;
+    startTimer();
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  void startTimer() {
+    const oneMin = const Duration(minutes: 1);
+    _timer = new Timer.periodic(
+      oneMin,
+      (Timer timer) => setState(
+        () {
+          minAfterPlaced = widget.pendingOrder.placedAgo;
+        },
+      ),
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
     return Padding(
       padding: const EdgeInsets.only(left: 16),
       child: GestureDetector(
@@ -30,15 +67,15 @@ class PendingOrderCard extends StatelessWidget {
             HeroDialogRoute(
               builder: (context) => Center(
                 child: DetailScreen(
-                  order: pendingOrder,
-                  provider: provider,
+                  order: widget.pendingOrder,
+                  provider: widget.provider,
                 ),
               ),
             ),
           );
         },
         child: Hero(
-          tag: pendingOrder.orderId,
+          tag: widget.pendingOrder.orderId,
           child: Cards(
               radius: BorderRadius.circular(16),
               margin: EdgeInsets.all(3),
@@ -54,26 +91,37 @@ class PendingOrderCard extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              '#00000000${pendingOrder.orderId}',
+                              '#00000000${widget.pendingOrder.orderId}',
                               style: Theme.of(context).textTheme.bodyText1,
                             ),
                             Spacer(),
                             Column(
                               children: [
-                                Text(pendingOrder.timePassedFromPlaced),
+                                Opacity(
+                                    opacity: 0.6,
+                                    child: Column(
+                                      children: [
+                                        Text(
+                                          'Received ' + minAfterPlaced,
+                                          style: textTheme.bodyText1.copyWith(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                      ],
+                                    )),
                                 SizedBox(height: 2),
-                                Container(
-                                  height: 1.3,
-                                  width: getProportionateScreenWidth(80),
-                                  color: Colors.black87,
-                                )
+                                // Container(
+                                //   height: 1.3,
+                                //   width: getProportionateScreenWidth(80),
+                                //   color: Colors.black87,
+                                // )
                               ],
                             )
                           ]),
                     ),
-                    SizedBox(height: 2),
+                    SizedBox(height: 5),
                     Text(
-                      '\$' + pendingOrder.totalPrice.toInt().toString(),
+                      '\$' + widget.pendingOrder.totalPrice.toInt().toString(),
                       style: TextStyle(
                           color: Color(0xff55B793),
                           fontSize: 16,
@@ -81,24 +129,31 @@ class PendingOrderCard extends StatelessWidget {
                     ),
                     SizedBox(height: getProportionateScreenHeight(3)),
                     OverFlowText(
-                      text: pendingOrder.orderItemProducts,
+                      width: 300,
+                      text: widget.pendingOrder.orderItemProducts,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8.0),
-                      child: Container(
-                          height: 0.9,
-                          width: getProportionateScreenWidth(295),
-                          color: Colors.black),
-                    ),
+                    Spacer(),
+                    // Padding(
+                    //   padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    //   child: Container(
+                    //       height: 0.9,
+                    //       width: getProportionateScreenWidth(200),
+                    //       color: Colors.black),
+                    // ),
                     Row(
                         //mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                'Orders from',
-                                style: TextStyle(fontStyle: FontStyle.italic),
+                              Opacity(
+                                opacity: 0.6,
+                                child: Text(
+                                  'Orders from',
+                                  style: TextStyle(
+                                      fontStyle: FontStyle.italic,
+                                      fontSize: 10),
+                                ),
                               ),
                               Container(
                                   height: 30,
@@ -112,9 +167,10 @@ class PendingOrderCard extends StatelessWidget {
                             width: getProportionateScreenWidth(16),
                           ),
                           SizedBox(
-                            width: getProportionateScreenWidth(200),
+                            width: getProportionateScreenWidth(210),
                             child: PendingOrderButtons(
-                                pendingOrder: pendingOrder, provider: provider),
+                                pendingOrder: widget.pendingOrder,
+                                provider: widget.provider),
                           ),
                         ])
                   ],

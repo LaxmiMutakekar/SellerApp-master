@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
-   Future<void> showAleartDialog(BuildContext context,String title,Widget content) async {
+Future<dynamic> showAleartDialog(
+    BuildContext context, String title, Widget content) async {
   return showDialog<void>(
     context: context,
-    barrierDismissible: false, //this means the user must tap a button to exit the Alert Dialog
+    barrierDismissible: false,
+    //this means the user must tap a button to exit the Alert Dialog
     builder: (BuildContext context) {
       return AlertDialog(
         title: Text(title),

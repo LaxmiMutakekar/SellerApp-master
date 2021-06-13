@@ -1,5 +1,4 @@
 import 'package:Seller_App/App_configs/app_configs.dart';
-import 'package:Seller_App/App_configs/sizeConfigs.dart';
 import 'package:Seller_App/Screens/homeScreen/mainScreen/components/activeOrderButtons.dart';
 import 'package:Seller_App/models/orders.dart';
 import 'package:Seller_App/providers/orderProvider.dart';
@@ -12,8 +11,6 @@ import 'package:Seller_App/widgets/upCounter.dart';
 import 'package:flutter/material.dart';
 
 import 'countDownTimer.dart';
-
-OrderDetail orderDetail;
 
 class ActiveOrderCard extends StatefulWidget {
   ActiveOrderCard({
@@ -67,7 +64,6 @@ class _ActiveOrderCardState extends State<ActiveOrderCard> {
               padding: const EdgeInsets.all(8.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
                 children: [
                   Column(
                     children: [
@@ -101,11 +97,11 @@ class _ActiveOrderCardState extends State<ActiveOrderCard> {
                   ),
                   SizedBox(height: 5),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       OverFlowText(
                         text: widget.activeOrder.orderItemProducts,
                       ),
+                      Spacer(),
                       (widget.activeOrder.status == AppConfig.preparingStatus)
                           ? Container(
                               child: _countDownTimer.countDownTimer,
