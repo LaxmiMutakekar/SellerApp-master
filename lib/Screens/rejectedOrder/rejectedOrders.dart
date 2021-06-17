@@ -72,7 +72,7 @@ class _RejectedOrdersState extends State<RejectedOrders> {
       return Scaffold(
           appBar: AppBar(
             title: Text(
-              'Rejected Orders',
+              'Rejected Order',
               style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,

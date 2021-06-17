@@ -20,7 +20,7 @@ class ProductDetails extends StatelessWidget {
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height / 2,
               child: Hero(
-                tag: product.pid,
+                tag: product.skuId,
                 child: CachedNetworkImage(
                   imageUrl: product.image,
                   fit: BoxFit.fill,

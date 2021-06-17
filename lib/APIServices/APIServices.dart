@@ -12,15 +12,11 @@ import 'package:Seller_App/models/statusUpd.dart';
 
 class APIServices {
   static Future<dynamic> login(
-      LoginRequestModel requestModel,http.Client client) async {
+      LoginRequestModel requestModel, http.Client client) async {
     try {
       Uri url = Uri.parse(AppConfig.baseUrl + "/login/seller");
-      Map<String, String> headers = {
-        "Accept": "application/json",
-        "content-type": "application/json"
-      };
 
-      final response = await http.post(
+      final response = await client.post(
         url,
         body: jsonEncode(requestModel.toJson()),
         headers: <String, String>{
@@ -30,18 +26,18 @@ class APIServices {
 
       print(response.statusCode);
       if (response.statusCode == 200) {
+        print('status =200');
         Session.token = json.decode(response.body)['token'];
         return LoginResponseModel.fromJson(
           json.decode(response.body),
         );
-      } else {
-        return LoginResponseModel.fromJson(
+      } else if (response.statusCode == 401) {
+        print('status =401');
+        return Error.fromJson(
           json.decode(response.body),
         );
       }
-    }
-    catch(e)
-    {
+    } catch (e) {
       return e;
     }
   }
@@ -59,6 +55,9 @@ class APIServices {
       ordersList.sort((a, b) {
         return a.orderFulfillmentTime.compareTo(b.orderFulfillmentTime);
       });
+      // ordersList.sort((a, b) {
+      //   return a.orderPlacedDate.compareTo(b.orderPlacedDate);
+      // });
 
       if (response.statusCode == 200) {
         return ordersList;
@@ -84,7 +83,7 @@ class APIServices {
     }
   }
 
-  static Future<http.Response> updateAvailable(bool value) async {
+  static Future<bool> updateAvailable(bool value) async {
     try {
       final response = await http.patch(
         Uri.parse(AppConfig.baseUrl + "/update/seller/available"),
@@ -97,7 +96,10 @@ class APIServices {
         }),
       );
       if (response.statusCode == 200) {
-      } else {}
+        return true;
+      } else {
+        return false;
+      }
     } catch (e) {
       print(e);
     }
@@ -128,7 +130,7 @@ class APIServices {
     }
   }
 
-  static Future<http.Response> updateETC(Orders order, int duration) async {
+  static Future<bool> updateETC(Orders order, int duration) async {
     try {
       final response = await http.patch(
         Uri.parse(AppConfig.baseUrl +
@@ -144,8 +146,10 @@ class APIServices {
         }),
       );
       if (response.statusCode == 200) {
-        print("button availability changed!");
-      } else {}
+        return true;
+      } else {
+        return false;
+      }
     } catch (e) {
       print(e);
     }
@@ -163,23 +167,22 @@ class APIServices {
           "status": status,
         }),
       );
-      dynamic responseJson = json.decode(response.body);
-      UpdateResponse updateResponse = updateResponseFromJson(response.body);
       if (response.statusCode == 200) {
+        print(response.statusCode);
+        dynamic responseJson = json.decode(response.body);
+        UpdateResponse updateResponse = updateResponseFromJson(response.body);
         order.orderPre = updateResponseFromJson(response.body).localDateTime;
         if (status == AppConfig.delayedStatus) {
           order.delayedTime =
               updateResponseFromJson(response.body).localDateTime;
           order.updateButtonStatus = false;
         }
-
-        // }
         return true;
       } else {
         return false;
-        //print("Seller status update failed!");
       }
     } catch (e) {
+      return false;
       print(e);
     }
   }
@@ -199,7 +202,7 @@ class APIServices {
         }),
       );
       if (response.statusCode == 200) {
-        //print("Order status changed!");
+
       } else {
         //print("Seller status update failed!");
       }
@@ -208,6 +211,28 @@ class APIServices {
     }
   }
 
+  // static Future<bool> changeOrderStatus(
+  //     Orders order, String status) async {
+  //   try {
+  //     final response = await http.patch(
+  //       Uri.parse(AppConfig.baseUrl + "/orders/" + order.orderId.toString()),
+  //       headers: <String, String>{
+  //         'Content-Type': 'application/json; charset=UTF-8',
+  //       },
+  //       body: jsonEncode(<String, String>{
+  //         "status": status,
+  //       }),
+  //     );
+  //     print('accepted status ${response.statusCode}');
+  //     if (response.statusCode == 200) {
+  //
+  //     } else {
+  //       //print("Seller status update failed!");
+  //     }
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  // }
   static Future<List<Products>> fetchProducts() async {
     try {
       final response = await http.get(

@@ -43,12 +43,23 @@ class PendingOrderButtons extends StatelessWidget {
             text: ('Accept'),
             press: () {
               {
-                pendingOrder.orderPre = DateTime.now();
-                provider.acceptOrder(pendingOrder);
-                provider.updateAcceptTimings(pendingOrder, DateTime.now());
+
                 APIServices.changeOrderStatus(
-                    pendingOrder, AppConfig.preparingStatus);
-                showInSnackBar('Order accepted successfully!!', context);
+                    pendingOrder, AppConfig.preparingStatus).then((success){
+                      if(success)
+                        {
+                          pendingOrder.orderPre = DateTime.now();
+                          provider.acceptOrder(pendingOrder);
+                          provider.updateAcceptTimings(pendingOrder, DateTime.now());
+                          showInSnackBar('Order accepted successfully!!', context);
+                        }
+                      else
+                        {
+                          showInSnackBar('Server error', context);
+                        }
+
+                });
+
 
               }
             },

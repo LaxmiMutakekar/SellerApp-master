@@ -62,7 +62,7 @@ class DetailScreen extends StatelessWidget {
                               ])),
                       ConstrainedBox(
                         constraints:
-                            BoxConstraints(maxHeight: 390, minHeight: 360),
+                            BoxConstraints(maxHeight: 360, minHeight: 360),
                         child: RawScrollbar(
                           thumbColor: Colors.black45,
                           isAlwaysShown: true,
@@ -155,6 +155,65 @@ class DetailScreen extends StatelessWidget {
                                     ],
                                   ),
                                 ),
+                                (order.deliveryResource.driverName != null)
+                                    ? Container(
+                                        margin: EdgeInsets.all(20),
+                                        padding: EdgeInsets.all(5),
+                                        child: Column(children: [
+                                          Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    Column(
+                                                      //mainAxisAlignment: MainAxisAlignment.start,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Text('Delivered By',
+                                                            style: Theme.of(
+                                                                    context)
+                                                                .textTheme
+                                                                .subtitle2
+                                                                .copyWith(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold)),
+                                                        Text(
+                                                          order.deliveryResource
+                                                              .driverName,
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                                Padding(
+                                                  padding: const EdgeInsets.all(
+                                                      16.0),
+                                                  child: Column(
+                                                    children: [
+                                                      Text(
+                                                        'Vehicle Number',
+                                                        style: Theme.of(context)
+                                                            .textTheme
+                                                            .bodyText1,
+                                                      ),
+                                                      Text(
+                                                        order.deliveryResource
+                                                            .vehicleNumber,
+                                                        style: Theme.of(context)
+                                                            .textTheme
+                                                            .caption,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ]),
+                                        ]))
+                                    : Container(),
                                 OrderItemList(
                                   order: order,
                                 ),

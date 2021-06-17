@@ -95,7 +95,7 @@ class _MenuDashboardState extends State<MenuDashboard> {
                             color: Colors.white,
                           ),
                           label: Text(
-                            'Order history',
+                            'Order History',
                             style: TextStyle(color: Colors.white),
                           ),
                         ),
@@ -114,7 +114,7 @@ class _MenuDashboardState extends State<MenuDashboard> {
                               );
                             },
                             label: Text(
-                              'Rejected order',
+                              'Rejected Order',
                               style: TextStyle(color: Colors.white),
                             ),
                             icon: Icon(Icons.cancel, color: Colors.white))
@@ -124,21 +124,21 @@ class _MenuDashboardState extends State<MenuDashboard> {
                 ),
                 Row(children: [
                   SizedBox(width: 10),
-                  TextButton.icon(
-                    onPressed: () {},
-                    icon: Icon(Icons.settings, color: Colors.white),
-                    label: Text(
-                      'Settings',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
-                  SizedBox(width: 10),
-                  Container(
-                    width: 2,
-                    height: 20,
-                    color: Colors.white,
-                  ),
-                  SizedBox(width: 10),
+                  // TextButton.icon(
+                  //   onPressed: () {},
+                  //   icon: Icon(Icons.settings, color: Colors.white),
+                  //   label: Text(
+                  //     'Settings',
+                  //     style: TextStyle(color: Colors.white),
+                  //   ),
+                  // ),
+                  // SizedBox(width: 10),
+                  // Container(
+                  //   width: 2,
+                  //   height: 20,
+                  //   color: Colors.white,
+                  // ),
+                  // SizedBox(width: 10),
                   TextButton.icon(
                     onPressed: () {
                       Session.logout();

@@ -30,6 +30,7 @@ class Orders {
     this.deliveryResource,
     this.orderStatusHistory,
     this.orderUpdateEtc,
+    this.isCancelled,
   });
 
   String get businessLogo {
@@ -63,7 +64,7 @@ class Orders {
   OrderStatusHistory orderStatusHistory;
   double updatedEtc;
   bool orderUpdateEtc;
-
+  bool isCancelled;
   int get remSeconds {
     var time =
         DateTime.parse(this.orderStatusHistory.orderPreparing.toString());
@@ -74,7 +75,12 @@ class Orders {
     var now = DateTime.now();
     return (offset.millisecondsSinceEpoch - now.millisecondsSinceEpoch) ~/ 1000;
   }
-
+  bool get cancelledStatus{
+    return this.isCancelled;
+  }
+  set updateCancelledStatus(bool status){
+    this.isCancelled=status;
+  }
   String get placedTime {
     return (DateFormat.jm().format(this.orderPlacedDate));
   }
@@ -134,9 +140,8 @@ class Orders {
     (productsList.length > 2)
         ? (products = productsList.getRange(0, 2).join(',').toString() +
             ' ' +
-            '(' +
-            (productsList.length - 2).toString() +
-            ')' +
+            '&' +
+            (productsList.length - 2).toString()  +
             ' more')
         : products = productsList.join(',');
 

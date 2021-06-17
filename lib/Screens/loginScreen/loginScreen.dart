@@ -12,7 +12,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  bool hidePassword = true;
   bool isApiCallProcess = false;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
@@ -31,7 +30,6 @@ class _LoginPageState extends State<LoginPage> {
       key: scaffoldKey,
       backgroundColor: Theme.of(context).accentColor,
       body: LoginBody(
-        hidePassword: hidePassword,
         scaffoldKey: scaffoldKey,
         isApiCallProcess: isApiCallProcess,
       ),

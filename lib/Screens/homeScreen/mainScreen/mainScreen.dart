@@ -148,6 +148,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                               ),
                             ),
                             onTap: () {
+                              orderProvider.cancelledStatusChange(false);
                               Scaffold.of(context).openEndDrawer();
                               message.messageRead();
                             },

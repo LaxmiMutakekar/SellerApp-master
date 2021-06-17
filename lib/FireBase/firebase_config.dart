@@ -57,5 +57,14 @@ class FirebaseConfig {
       APIServices.updateButton(oid)
           .then((value) => value ? order.updateButton(oid) : null);
     }
+    if(body=='Order Cancelled')
+      {
+        Message msg = Message(title, body, mMessage);
+        msgs.addMessages(msg);
+        msgs.readMessage();
+        order.cancelledStatusChange(true);
+        order.changeCancelledStatus(oid);
+
+      }
   }
 }

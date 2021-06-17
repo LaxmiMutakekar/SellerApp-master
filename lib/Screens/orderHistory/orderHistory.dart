@@ -27,7 +27,7 @@ class _OrderHistoryState extends State<OrderHistory> {
     return Scaffold(
         appBar: AppBar(
           title: Text(
-            'Order history',
+            'Order History',
             style: TextStyle(
                 fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black),
           ),
@@ -72,7 +72,13 @@ class OrderHistoryCard extends StatelessWidget {
               ),
               Row(
                 children: [
-                  Icon(Icons.check_circle, color: Colors.green),
+                  Text(
+                    'Completed At : ',
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyText1
+                        .copyWith(color: Colors.green[300], fontSize: 12),
+                  ),
                   SizedBox(width: 5),
                   Text(order.fulfilledTime),
                 ],

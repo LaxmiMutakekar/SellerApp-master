@@ -45,8 +45,19 @@ class _DefaultSwitchState extends State<DefaultSwitch> {
             showMyDialog(context, val).then((value) {
               if (value == true) {
                 if (widget.type == 'Seller') {
-                  widget.model.changeAvailabiliy(val);
-                  APIServices.updateAvailable(val);
+
+                  APIServices.updateAvailable(val).then((success){
+                    if(success)
+                      {
+                        widget.model.changeAvailabiliy(val);
+                      }
+                    else
+                      {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text(
+                                "Not able to update, error in server")));
+                      }
+                  });
                 } else {
                   widget.model.updateAvlb(widget.product, val);
                   APIServices.updateProduct(widget.product.pid, val);

@@ -117,16 +117,16 @@ class Verify extends StatelessWidget {
     final snackBar = SnackBar(
       duration: const Duration(seconds: 3),
       content: Container(
-        height: 50.0,
+        height: 30.0,
         child: Center(
           child: Text(
             'OTP Verified Successfully',
-            style: const TextStyle(fontSize: 22.0),
+            style: const TextStyle(fontSize: 22.0,color: Colors.white,letterSpacing: 1.2),
             textAlign: TextAlign.center,
           ),
         ),
       ),
-      backgroundColor: Colors.white24,
+      backgroundColor: Colors.black,
     );
     Scaffold.of(context)
       ..hideCurrentSnackBar()
@@ -137,16 +137,16 @@ class Verify extends StatelessWidget {
     final snackBar = SnackBar(
       duration: const Duration(seconds: 3),
       content: Container(
-        height: 50.0,
+        height: 30.0,
         child: Center(
           child: Text(
             'Please Enter the OTP',
-            style: const TextStyle(fontSize: 22.0),
+            style: const TextStyle(fontSize: 22.0,color: Colors.white,letterSpacing: 1.2),
             textAlign: TextAlign.center,
           ),
         ),
       ),
-      backgroundColor: Colors.white24,
+      backgroundColor: Colors.black,
     );
     Scaffold.of(context)
       ..hideCurrentSnackBar()
@@ -155,18 +155,20 @@ class Verify extends StatelessWidget {
 
   void showError(BuildContext context) {
     final snackBar = SnackBar(
-      duration: const Duration(seconds: 3),
+      duration: const Duration(seconds: 5),
       content: Container(
-        height: 50.0,
+        height: 30.0,
         child: Center(
           child: Text(
-            'Sorry!! Wrong OTP Entered Try Again ',
-            style: TextStyle(fontSize: 20.0),
+            'Wrong OTP entered. Try again!',
+
+            style: TextStyle(fontSize: 20.0,color: Colors.white,letterSpacing: 1.2),
+
             textAlign: TextAlign.center,
           ),
         ),
       ),
-      backgroundColor: Colors.white24,
+      backgroundColor: Colors.black,
     );
     Scaffold.of(context)
       ..hideCurrentSnackBar()

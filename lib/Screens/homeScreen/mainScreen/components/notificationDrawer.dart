@@ -69,7 +69,7 @@ class NotificationDrawer extends StatelessWidget {
                               .firstWhere((element) => element.orderId == oid);
 
                           return Cards(
-                              color: Color(0xffF1F5EF),
+                              color: (message.body=='Order Cancelled')?Color(0x20ff4680):Color(0xffF1F5EF),
                               padding: EdgeInsets.all(0),
                               child: Container(
                                 padding: EdgeInsets.symmetric(vertical: 10),
@@ -92,7 +92,7 @@ class NotificationDrawer extends StatelessWidget {
                                               getProportionateScreenWidth(42),
                                           decoration: BoxDecoration(
                                               shape: BoxShape.circle,
-                                              color: Color(0xff79BB8B)),
+                                              color: (message.body=='Order Cancelled')?Color(0x40ff0038):Color(0xff79BB8B)),
                                           child: Center(
                                               child: Text(
                                             '#00${message.title}',
@@ -110,7 +110,7 @@ class NotificationDrawer extends StatelessWidget {
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 Text(
-                                                  'You have received a new order !',
+                                                  message.body,
                                                   style: TextStyle(
                                                       fontSize: 12,
                                                       color: Colors.black,

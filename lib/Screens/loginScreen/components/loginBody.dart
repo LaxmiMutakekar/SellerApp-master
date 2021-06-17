@@ -9,12 +9,10 @@ import 'package:http/http.dart'as http;
 class LoginBody extends StatefulWidget {
   LoginBody({
     Key key,
-    @required this.hidePassword,
     @required this.scaffoldKey,
     @required this.isApiCallProcess,
   }) : super(key: key);
 
-  final bool hidePassword;
   final GlobalKey<ScaffoldState> scaffoldKey;
   bool isApiCallProcess;
 
@@ -30,6 +28,7 @@ class _LoginBodyState extends State<LoginBody> {
   void initState() {
     super.initState();
     loginRequestModel = new LoginRequestModel();
+    //print(loginRequestModel.password);
   }
 
   @override
@@ -66,13 +65,13 @@ class _LoginBodyState extends State<LoginBody> {
                       BuildEmailFormField(loginRequestModel: loginRequestModel),
                       SizedBox(height: 20),
                       BuildPassWordform(
-                          loginRequestModel: loginRequestModel,
-                          hidePassword: widget.hidePassword),
+                          loginRequestModel: loginRequestModel,),
                       SizedBox(height: 30),
                       FlatButton(
                         padding:
                             EdgeInsets.symmetric(vertical: 12, horizontal: 80),
                         onPressed: () {
+                          print(loginRequestModel.email);
                           if (validateAndSave()) {
                             setState(() {
                               widget.isApiCallProcess = true;

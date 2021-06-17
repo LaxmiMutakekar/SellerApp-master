@@ -46,7 +46,7 @@ Future<dynamic> updateETC(BuildContext context) async {
                           _currentHorizontalIntValue = newValue.clamp(10, 40);
                         }),
                       ),
-                      Text('value: $_currentHorizontalIntValue'),
+                      Text('Minutes: $_currentHorizontalIntValue'),
                       IconButton(
                         icon: Icon(Icons.add),
                         onPressed: () => setState(() {

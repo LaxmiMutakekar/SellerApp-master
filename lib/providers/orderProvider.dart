@@ -12,7 +12,25 @@ class OrderProvider extends ChangeNotifier {
   List<Orders> preparingOrderList = [];
   List<Orders> readyOrderList = [];
   List<Orders> delayedOrderList = [];
+  bool cancelledStatus=false;
+  void cancelledStatusChange(bool value)
+  {
+    print(cancelledStatus);
+    cancelledStatus=value;
+    print(cancelledStatus);
+    notifyListeners();
+    delayedStatus();
 
+  }
+  void delayedStatus()
+  {
+    Future.delayed(Duration(seconds: 20), () {
+      cancelledStatus=false;
+      print(cancelledStatus);
+      notifyListeners();
+    });
+
+  }
   void fetchOrders() async {
     //all order lists cleared
     pendingOrderList.clear();
@@ -62,7 +80,15 @@ class OrderProvider extends ChangeNotifier {
     });
     notifyListeners();
   }
+  void changeCancelledStatus( int oid)
+  {
+      print(oid);
 
+        pendingOrderList.firstWhere((element) => element.orderId==oid).isCancelled=true;
+        activeOrderList.firstWhere((element) => element.orderId==oid).isCancelled=true;
+
+    notifyListeners();
+  }
   void acceptOrder(Orders order) {
     //after accepting order order is moved to preparingList from pending list
     order.status = AppConfig.preparingStatus;

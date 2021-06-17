@@ -14,6 +14,7 @@ import 'providers/notification.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Session.init();
+  //Session.logout();
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider<Product>(

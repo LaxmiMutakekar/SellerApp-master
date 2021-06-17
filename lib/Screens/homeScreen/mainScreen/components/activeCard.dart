@@ -56,76 +56,80 @@ class _ActiveOrderCardState extends State<ActiveOrderCard> {
       },
       child: Hero(
         tag: widget.activeOrder.orderId,
-        child: Cards(
-            radius: BorderRadius.circular(20),
-            margin: EdgeInsets.all(10),
-            padding: EdgeInsets.all(10),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Column(
-                    children: [
-                      Row(children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              '#00000000${widget.activeOrder.orderId}',
-                              style: Theme.of(context).textTheme.bodyText1,
-                            ),
-                            Text(
-                              '\$' +
-                                  widget.activeOrder.totalPrice
-                                      .toInt()
-                                      .toString(),
-                              style: TextStyle(
-                                  color: Color(0xff55B793),
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                          ],
+        child: Container(
+          clipBehavior: Clip.hardEdge,
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
+          child: Cards(
+              radius: BorderRadius.circular(20),
+              margin: EdgeInsets.all(10),
+              padding: EdgeInsets.all(10),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Column(
+                      children: [
+                        Row(children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                '#00000000${widget.activeOrder.orderId}',
+                                style: Theme.of(context).textTheme.bodyText1,
+                              ),
+                              Text(
+                                '\$' +
+                                    widget.activeOrder.totalPrice
+                                        .toInt()
+                                        .toString(),
+                                style: TextStyle(
+                                    color: Color(0xff55B793),
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            ],
+                          ),
+                          Spacer(),
+                          ColoredBadge(
+                            text: widget.activeOrder.status,
+                            color: AppConfig.getColor[widget.activeOrder.status],
+                          ),
+                        ]),
+                      ],
+                    ),
+                    SizedBox(height: 5),
+                    Row(
+                      children: [
+                        OverFlowText(
+                          text: widget.activeOrder.orderItemProducts,
                         ),
                         Spacer(),
-                        ColoredBadge(
-                          text: widget.activeOrder.status,
-                          color: AppConfig.getColor[widget.activeOrder.status],
-                        ),
-                      ]),
-                    ],
-                  ),
-                  SizedBox(height: 5),
-                  Row(
-                    children: [
-                      OverFlowText(
-                        text: widget.activeOrder.orderItemProducts,
-                      ),
-                      Spacer(),
-                      (widget.activeOrder.status == AppConfig.preparingStatus)
-                          ? Container(
-                              child: _countDownTimer.countDownTimer,
-                            )
-                          : (widget.activeOrder.status ==
-                                  AppConfig.delayedStatus)
-                              ? Column(
-                                  children: [
-                                    UpCounter(
-                                      order: widget.activeOrder,
-                                    ),
-                                  ],
-                                )
-                              : Container()
-                    ],
-                  ),
-                  ActiveOrderButton(
-                    orderProvider: widget.orderProvider,
-                    order: widget.activeOrder,
-                    countDownTimer: _countDownTimer,
-                  ),
-                ],
-              ),
-            )),
+                        (widget.activeOrder.status == AppConfig.preparingStatus)
+                            ? Container(
+                                child: _countDownTimer.countDownTimer,
+                              )
+                            : (widget.activeOrder.status ==
+                                    AppConfig.delayedStatus)
+                                ? Column(
+                                    children: [
+                                      UpCounter(
+                                        order: widget.activeOrder,
+                                      ),
+                                    ],
+                                  )
+                                : Container()
+                      ],
+                    ),
+                    ActiveOrderButton(
+                      orderProvider: widget.orderProvider,
+                      order: widget.activeOrder,
+                      countDownTimer: _countDownTimer,
+                    ),
+                  ],
+                ),
+              )),
+        ),
       ),
     );
   }
