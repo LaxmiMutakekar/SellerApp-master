@@ -15,6 +15,7 @@ class FirebaseConfig {
     FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
     _firebaseMessaging.getToken().then((token) {
       var devicetoken = token;
+      print(devicetoken);
       if (token != seller.seller.deviceId) {
         APIServices.updateSellerDevice(devicetoken);
       }
@@ -46,7 +47,7 @@ class FirebaseConfig {
     if (body == 'ORDER_DELIVERY_ASSIGNED') {
       order.fetchOrders();
     }
-    if (body == 'ORDER_ADDED') {
+    if (body == 'Received a new order') {
       Message msg = Message(title, body, mMessage);
       msgs.addMessages(msg);
       msgs.readMessage();
@@ -63,8 +64,7 @@ class FirebaseConfig {
         msgs.addMessages(msg);
         msgs.readMessage();
         order.cancelledStatusChange(true);
-        order.changeCancelledStatus(oid);
-
+        order.fetchOrders();
       }
   }
 }

@@ -1,3 +1,5 @@
+import 'package:Seller_App/App_configs/app_configs.dart';
+import 'package:Seller_App/widgets/coloredBadge.dart';
 import 'package:Seller_App/widgets/textOverFlow.dart';
 import 'package:flutter/material.dart';
 import 'package:Seller_App/providers/orderProvider.dart';
@@ -24,6 +26,7 @@ class _OrderHistoryState extends State<OrderHistory> {
   Widget build(BuildContext context) {
     final provider = widget.orderProvider;
     List<Orders> completeList = provider.completedOrderList;
+    print(completeList.length);
     return Scaffold(
         appBar: AppBar(
           title: Text(
@@ -38,7 +41,7 @@ class _OrderHistoryState extends State<OrderHistory> {
           shrinkWrap: true,
           itemBuilder: (BuildContext context, int index) {
             Orders item = completeList[index];
-            if (item.status == 'Order Complete') {
+            if (item.status == 'Order Complete'||item.status=='Order Cancelled') {
               return OrderHistoryCard(order: item);
             } else {
               return Container();
@@ -63,6 +66,7 @@ class OrderHistoryCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -72,22 +76,23 @@ class OrderHistoryCard extends StatelessWidget {
               ),
               Row(
                 children: [
-                  Text(
-                    'Completed At : ',
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyText1
-                        .copyWith(color: Colors.green[300], fontSize: 12),
-                  ),
+                  Container(
+                      alignment: Alignment.topRight,
+                     // width: 120,
+                      child: ColoredBadge(text: order.status==AppConfig.cancelledStatus?'Cancelled':'Completed',color: AppConfig.getColor[order.status])),
                   SizedBox(width: 5),
-                  Text(order.fulfilledTime),
+                  //(order.status=='Order Cancelled')?Text(''):Text(order.fulfilledTime),
                 ],
               )
             ],
           ),
-          OverFlowText(
-            text: order.orderItemProducts,
-            textSize: 12,
+          Row(
+            children: [
+              OverFlowText(
+                text: order.orderItemProducts,
+                textSize: 12,
+              ),
+            ],
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -111,6 +116,12 @@ class OrderHistoryCard extends StatelessWidget {
                     style: TextStyle(
                         fontSize: 10,
                         color: Colors.black45,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    (order.status==AppConfig.completedStatus)?order.fulfilledTime:'',
+                    style: TextStyle(
+                        fontSize: 14,
                         fontWeight: FontWeight.bold),
                   ),
                 ],

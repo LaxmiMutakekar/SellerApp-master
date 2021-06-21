@@ -1,6 +1,6 @@
 final List<String> reasons = [
   'Product out of stock',
-  'Currently unavailable',
+  'Currently closed',
   'Delivery not available',
   'Other reason',
 ];

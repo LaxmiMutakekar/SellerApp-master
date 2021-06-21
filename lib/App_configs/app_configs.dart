@@ -21,8 +21,9 @@ class AppConfig {
   static const String readyStatus='Order Ready';
   static const String rejectedStatus='Order Rejected';
   static const String delayedStatus='Order Timeout';
+  static const String cancelledStatus='Order Cancelled';
   static const String handedoverStatus='Delivery Assigned';
-  static const String doneStatus='Order Complete';
+  static const String completedStatus='Order Complete';
   static double elevation=8;
   static Color readyColor=Color(0xff10942C);
   static Color preparingColor=Color(0xff0089A9);
@@ -37,7 +38,9 @@ class AppConfig {
   {
     preparingStatus:preparingColor,
     readyStatus:readyColor,
-    delayedStatus:delayedColor
+    delayedStatus:delayedColor,
+    completedStatus:readyColor,
+    cancelledStatus:delayedColor
   };
   static Future goto(BuildContext context, Widget page, {bool replace = false}) {
     if (replace) {

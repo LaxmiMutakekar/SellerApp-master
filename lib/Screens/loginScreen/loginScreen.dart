@@ -19,20 +19,11 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return ProgressHUD(
-      child: _uiSetup(context),
+      child: LoginBody(isApiCallProcess: isApiCallProcess,),
       inAsyncCall: isApiCallProcess,
       opacity: 0.3,
     );
   }
 
-  Widget _uiSetup(BuildContext context) {
-    return Scaffold(
-      key: scaffoldKey,
-      backgroundColor: Theme.of(context).accentColor,
-      body: LoginBody(
-        scaffoldKey: scaffoldKey,
-        isApiCallProcess: isApiCallProcess,
-      ),
-    );
-  }
+
 }

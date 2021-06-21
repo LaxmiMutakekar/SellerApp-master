@@ -6,7 +6,6 @@ class Session {
   static Future<void> init() async {
     _pref = await SharedPreferences.getInstance();
   }
-
   static String get token => _pref?.getString("token");
 
   static set token(String token) => _pref?.setString('token', token);
@@ -15,4 +14,10 @@ class Session {
     token = "";
     _pref?.clear();
   }
+}
+class GetToken{
+  static String tokenVal='';
+  static String get tokenValue=>Session.token??tokenVal;
+  static set tokenValue(String token)=>tokenVal=token;
+
 }

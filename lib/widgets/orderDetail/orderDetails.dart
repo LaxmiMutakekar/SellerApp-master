@@ -38,6 +38,7 @@ class DetailScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
+                        padding: EdgeInsets.only(top: 10),
                         alignment: Alignment.center,
                         child: Text(
                           '#00000000' + order.orderId.toString(),

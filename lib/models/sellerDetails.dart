@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'orders.dart';
+
 Seller SellerFromJson(String str) => Seller.fromJson(json.decode(str));
 
 String SellerToJson(Seller data) => json.encode(data.toJson());
@@ -51,22 +53,4 @@ class Seller {
         "location": location.toJson(),
     };
 }
-class Location {
-    Location({
-        this.latitude,
-        this.longitude,
-    });
 
-    double latitude;
-    double longitude;
-
-    factory Location.fromJson(Map<String, dynamic> json) => Location(
-        latitude: json["latitude"].toDouble(),
-        longitude: json["longitude"].toDouble(),
-    );
-
-    Map<String, dynamic> toJson() => {
-        "latitude": latitude,
-        "longitude": longitude,
-    };
-}

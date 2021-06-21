@@ -2,5 +2,5 @@ projectKey=seller_app_test
 serverUrl=http://localhost:9000
 serverVersion=8.9.0.43852
 dashboardUrl=http://localhost:9000/dashboard?id=seller_app_test
-ceTaskId=AXoTe31CjXw1ia9PWrMw
-ceTaskUrl=http://localhost:9000/api/ce/task?id=AXoTe31CjXw1ia9PWrMw
+ceTaskId=AXosylCw0NAzJD2WEiHp
+ceTaskUrl=http://localhost:9000/api/ce/task?id=AXosylCw0NAzJD2WEiHp

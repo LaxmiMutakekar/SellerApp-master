@@ -137,15 +137,24 @@ class Orders {
     this.orderItems.forEach((element) {
       productsList.add(element.productName);
     });
-    (productsList.length > 2)
-        ? (products = productsList.getRange(0, 2).join(',').toString() +
-            ' ' +
-            '&' +
-            (productsList.length - 2).toString()  +
-            ' more')
-        : products = productsList.join(',');
+    var product=productsList.join(',');
+    var finalProductList=product.substring(0,(product.length>13)?13:product.length-1);
+    int containedLength=','.allMatches(finalProductList).length;
+    if(containedLength!=productsList.length-1)
+    {
+      finalProductList+=' &'+(productsList.length-containedLength-1).toString()+' more';
+    }
 
-    return products;
+
+    // (productsList.length > 2)
+    //     ? (products = productsList.getRange(0, 2).join(',').toString() +
+    //         ' ' +
+    //         '&' +
+    //         (productsList.length - 2).toString()  +
+    //         ' more')
+    //     : products = productsList.join(',');
+
+    return finalProductList;
   }
 
   factory Orders.fromJson(Map<String, dynamic> json) => Orders(

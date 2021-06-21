@@ -93,6 +93,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                     : DefaultIconButton(
                         icon: Icon(Icons.menu),
                         onPress: () {
+                          orderProvider.cancelledStatusChange(false);
                           setState(() {
                             isDrawerOpen = !isDrawerOpen;
                             _controller.forward();
@@ -108,7 +109,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                       style: Theme.of(context)
                           .textTheme
                           .bodyText2
-                          .copyWith(fontSize: 14),
+                          .copyWith(fontSize: 16),
                     ),
                     Row(
                       children: [
@@ -127,7 +128,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                           style: Theme.of(context)
                               .textTheme
                               .bodyText1
-                              .copyWith(fontSize: 12),
+                              .copyWith(fontSize: 14),
                         ),
                       ],
                     ),

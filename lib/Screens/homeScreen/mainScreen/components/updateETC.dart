@@ -39,21 +39,21 @@ Future<dynamic> updateETC(BuildContext context) async {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      IconButton(
-                        icon: Icon(Icons.remove),
-                        onPressed: () => setState(() {
-                          final newValue = _currentHorizontalIntValue - 1;
-                          _currentHorizontalIntValue = newValue.clamp(10, 40);
-                        }),
-                      ),
+                      // IconButton(
+                      //   icon: Icon(Icons.remove),
+                      //   onPressed: () => setState(() {
+                      //     final newValue = _currentHorizontalIntValue - 1;
+                      //     _currentHorizontalIntValue = newValue.clamp(10, 40);
+                      //   }),
+                      // ),
                       Text('Minutes: $_currentHorizontalIntValue'),
-                      IconButton(
-                        icon: Icon(Icons.add),
-                        onPressed: () => setState(() {
-                          final newValue = _currentHorizontalIntValue + 1;
-                          _currentHorizontalIntValue = newValue.clamp(10, 40);
-                        }),
-                      ),
+                      // IconButton(
+                      //   icon: Icon(Icons.add),
+                      //   onPressed: () => setState(() {
+                      //     final newValue = _currentHorizontalIntValue + 1;
+                      //     _currentHorizontalIntValue = newValue.clamp(10, 40);
+                      //   }),
+                      // ),
                     ],
                   ),
                   Row(

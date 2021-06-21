@@ -87,7 +87,7 @@ class Verify extends StatelessWidget {
                           } else if (otp == order.deliveryResource.otp) {
                             orders.completeOrders(order);
                             APIServices.changeOrderStatus(
-                                order, AppConfig.doneStatus);
+                                order, AppConfig.completedStatus);
                             showSnackBar(context);
                             Navigator.push(
                                 context,

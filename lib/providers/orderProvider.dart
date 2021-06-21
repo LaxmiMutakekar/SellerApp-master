@@ -15,7 +15,6 @@ class OrderProvider extends ChangeNotifier {
   bool cancelledStatus=false;
   void cancelledStatusChange(bool value)
   {
-    print(cancelledStatus);
     cancelledStatus=value;
     print(cancelledStatus);
     notifyListeners();
@@ -24,7 +23,7 @@ class OrderProvider extends ChangeNotifier {
   }
   void delayedStatus()
   {
-    Future.delayed(Duration(seconds: 20), () {
+    Future.delayed(Duration(seconds: 13), () {
       cancelledStatus=false;
       print(cancelledStatus);
       notifyListeners();
@@ -72,7 +71,7 @@ class OrderProvider extends ChangeNotifier {
             rejectedOrderList.add(element);
           }
           break;
-        //completed orderds added
+        //completed orders added
         default:
           completedOrderList.add(element);
           break;
@@ -80,15 +79,7 @@ class OrderProvider extends ChangeNotifier {
     });
     notifyListeners();
   }
-  void changeCancelledStatus( int oid)
-  {
-      print(oid);
 
-        pendingOrderList.firstWhere((element) => element.orderId==oid).isCancelled=true;
-        activeOrderList.firstWhere((element) => element.orderId==oid).isCancelled=true;
-
-    notifyListeners();
-  }
   void acceptOrder(Orders order) {
     //after accepting order order is moved to preparingList from pending list
     order.status = AppConfig.preparingStatus;
@@ -152,7 +143,7 @@ class OrderProvider extends ChangeNotifier {
         }
         break;
     }
-    order.status = AppConfig.doneStatus;
+    order.status = AppConfig.completedStatus;
     completedOrderList.add(order);
     activeOrderList.remove(order);
     notifyListeners();
